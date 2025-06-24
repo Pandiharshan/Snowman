@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/Snowman/static/css/main.800a943b.css",
+    "main.js": "/Snowman/static/js/main.ec2e0046.js",
+    "index.html": "/Snowman/index.html",
+    "main.800a943b.css.map": "/Snowman/static/css/main.800a943b.css.map",
+    "main.ec2e0046.js.map": "/Snowman/static/js/main.ec2e0046.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.800a943b.css",
+    "static/js/main.ec2e0046.js"
+  ]
+}
