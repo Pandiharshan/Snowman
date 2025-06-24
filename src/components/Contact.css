@@ -1,0 +1,544 @@
+/* ==========================================================================
+   CONTACT SECTION - DISNEY WINTER/CHRISTMAS THEME
+   ========================================================================== */
+
+/* CSS Custom Properties for Theme Management */
+:root {
+  /* Light Mode - Disney Winter Morning */
+  --bg-primary: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 25%, #f8fafc 50%, #f1f5f9 100%);
+  --bg-secondary: rgba(255, 255, 255, 0.95);
+  --bg-form: rgba(255, 255, 255, 0.98);
+  --text-primary: #1e293b;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --accent-primary: #3b82f6;
+  --accent-secondary: #6366f1;
+  --accent-glow: rgba(59, 130, 246, 0.15);
+  --border-color: rgba(148, 163, 184, 0.3);
+  --shadow-soft: rgba(59, 130, 246, 0.08);
+  --shadow-medium: rgba(59, 130, 246, 0.12);
+  --shadow-strong: rgba(59, 130, 246, 0.2);
+  --snowflake-color: rgba(255, 255, 255, 0.8);
+  --magical-shimmer: rgba(147, 197, 253, 0.4);
+}
+
+/* Dark Mode - Disney Christmas Night */
+[data-theme="dark"] {
+  --bg-primary: linear-gradient(135deg, #0f172a 0%, #1e1b4b 25%, #312e81 50%, #1e293b 100%);
+  --bg-secondary: rgba(15, 23, 42, 0.95);
+  --bg-form: rgba(30, 41, 59, 0.98);
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --accent-primary: #fbbf24;
+  --accent-secondary: #f59e0b;
+  --accent-glow: rgba(251, 191, 36, 0.2);
+  --border-color: rgba(148, 163, 184, 0.2);
+  --shadow-soft: rgba(251, 191, 36, 0.1);
+  --shadow-medium: rgba(251, 191, 36, 0.15);
+  --shadow-strong: rgba(251, 191, 36, 0.25);
+  --snowflake-color: rgba(251, 191, 36, 0.6);
+  --magical-shimmer: rgba(251, 191, 36, 0.3);
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  z-index: 1000;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 2px solid var(--border-color);
+  background: var(--bg-form);
+  backdrop-filter: blur(20px);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 32px var(--shadow-medium);
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1) rotate(180deg);
+  box-shadow: 0 12px 40px var(--shadow-strong);
+  background: var(--accent-primary);
+  border-color: var(--accent-primary);
+  color: white;
+}
+
+.theme-toggle:active {
+  transform: scale(0.95) rotate(180deg);
+}
+
+/* Snowfall Animation Background */
+.contact::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(2px 2px at 20px 30px, var(--snowflake-color), transparent),
+    radial-gradient(2px 2px at 40px 70px, var(--snowflake-color), transparent),
+    radial-gradient(1px 1px at 90px 40px, var(--snowflake-color), transparent),
+    radial-gradient(1px 1px at 130px 80px, var(--snowflake-color), transparent),
+    radial-gradient(2px 2px at 160px 30px, var(--snowflake-color), transparent);
+  background-repeat: repeat;
+  background-size: 200px 100px;
+  animation: snowfall 20s linear infinite;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+@keyframes snowfall {
+  0% { transform: translateY(-100px); }
+  100% { transform: translateY(100vh); }
+}
+
+/* Magical Sparkles */
+.contact::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(1px 1px at 25px 45px, var(--magical-shimmer), transparent),
+    radial-gradient(1px 1px at 75px 15px, var(--magical-shimmer), transparent),
+    radial-gradient(1px 1px at 125px 65px, var(--magical-shimmer), transparent);
+  background-repeat: repeat;
+  background-size: 150px 80px;
+  animation: sparkle 8s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes sparkle {
+  0% { opacity: 0.3; transform: scale(1); }
+  100% { opacity: 0.8; transform: scale(1.1); }
+}
+
+/* Contact Section */
+.contact {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background: var(--bg-primary);
+  padding: clamp(4rem, 8vw, 8rem) 0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  overflow: hidden;
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.contact-container {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  z-index: 10;
+}
+
+/* Section Header */
+.contact-header {
+  text-align: center;
+  margin-bottom: clamp(3rem, 6vw, 4rem);
+  opacity: 0;
+  animation: enchantedFadeIn 1s ease-out forwards;
+  animation-delay: 0.3s;
+}
+
+.contact-title {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0 0 1rem 0;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-primary) 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 30px var(--accent-glow);
+  transition: all 0.4s ease;
+}
+
+.contact-title:hover {
+  transform: scale(1.02);
+  filter: drop-shadow(0 0 20px var(--accent-glow));
+}
+
+.contact-subtitle {
+  font-size: clamp(1.125rem, 2.5vw, 1.375rem);
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.7;
+  font-weight: 400;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  opacity: 0.9;
+  transition: color 0.4s ease;
+}
+
+/* Form Wrapper */
+.contact-form-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  position: relative;
+}
+
+/* Contact Form */
+.contact-form {
+  background: var(--bg-form);
+  backdrop-filter: blur(20px);
+  padding: clamp(2rem, 4vw, 3.5rem);
+  border-radius: 24px;
+  border: 1px solid var(--border-color);
+  box-shadow: 
+    0 20px 60px var(--shadow-soft),
+    0 8px 25px var(--shadow-medium),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  width: 100%;
+  max-width: 650px;
+  opacity: 0;
+  animation: enchantedSlideUp 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation-delay: 0.6s;
+  position: relative;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.contact-form:hover {
+  transform: translateY(-8px);
+  box-shadow: 
+    0 30px 80px var(--shadow-medium),
+    0 12px 35px var(--shadow-strong),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* Magical Border Glow */
+.contact-form::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, var(--accent-primary), var(--accent-secondary), var(--accent-primary));
+  border-radius: 26px;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.contact-form:hover::before {
+  opacity: 0.3;
+  animation: magicalGlow 2s ease-in-out infinite;
+}
+
+@keyframes magicalGlow {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.6; }
+}
+
+/* Form Groups */
+.form-group {
+  margin-bottom: clamp(1.5rem, 3vw, 2rem);
+  position: relative;
+}
+
+.form-group:last-of-type {
+  margin-bottom: clamp(2rem, 4vw, 2.5rem);
+}
+
+/* Form Labels */
+.form-label {
+  display: block;
+  font-size: clamp(0.875rem, 2vw, 0.95rem);
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 0.75rem;
+  letter-spacing: 0.02em;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.form-label::after {
+  content: '✨';
+  position: absolute;
+  right: -20px;
+  opacity: 0;
+  transition: all 0.3s ease;
+  font-size: 0.8em;
+}
+
+.form-group:focus-within .form-label::after {
+  opacity: 1;
+  transform: translateX(5px);
+}
+
+/* Form Inputs */
+.form-input,
+.form-textarea {
+  width: 100%;
+  padding: clamp(12px, 2vw, 16px) clamp(16px, 3vw, 20px);
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  font-size: clamp(0.9rem, 2vw, 1rem);
+  font-family: inherit;
+  color: var(--text-primary);
+  background: var(--bg-form);
+  backdrop-filter: blur(10px);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-sizing: border-box;
+  position: relative;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  box-shadow: 
+    0 0 0 4px var(--accent-glow),
+    0 8px 25px var(--shadow-medium);
+  transform: translateY(-2px);
+  background: var(--bg-form);
+}
+
+.form-input:hover,
+.form-textarea:hover {
+  border-color: var(--accent-secondary);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px var(--shadow-soft);
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+  color: var(--text-muted);
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+}
+
+.form-input:focus::placeholder,
+.form-textarea:focus::placeholder {
+  opacity: 0.5;
+  transform: translateY(-2px);
+}
+
+/* Textarea Specific */
+.form-textarea {
+  resize: vertical;
+  min-height: clamp(100px, 15vw, 140px);
+  line-height: 1.7;
+}
+
+/* Submit Button */
+.form-submit {
+  width: 100%;
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+  color: white;
+  padding: clamp(14px, 3vw, 18px) clamp(24px, 4vw, 32px);
+  border: none;
+  border-radius: 12px;
+  font-size: clamp(0.95rem, 2vw, 1.1rem);
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 
+    0 8px 25px var(--shadow-medium),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  letter-spacing: 0.02em;
+  position: relative;
+  overflow: hidden;
+}
+
+.form-submit::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.6s;
+}
+
+.form-submit:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 
+    0 15px 40px var(--shadow-strong),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  filter: brightness(1.1);
+}
+
+.form-submit:hover::before {
+  left: 100%;
+}
+
+.form-submit:active {
+  transform: translateY(-1px) scale(1.01);
+  transition: transform 0.1s ease;
+}
+
+/* Magical Animations */
+@keyframes enchantedFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes enchantedSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .theme-toggle {
+    top: 1.5rem;
+    right: 1.5rem;
+    width: 50px;
+    height: 50px;
+    font-size: 1.25rem;
+  }
+
+  .contact {
+    padding: clamp(3rem, 6vw, 6rem) 0;
+  }
+
+  .contact-container {
+    padding: 0 1.5rem;
+  }
+
+  .contact-form {
+    border-radius: 20px;
+  }
+
+  .form-input,
+  .form-textarea {
+    border-radius: 10px;
+  }
+
+  .form-submit {
+    border-radius: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .theme-toggle {
+    top: 1rem;
+    right: 1rem;
+    width: 45px;
+    height: 45px;
+    font-size: 1.1rem;
+  }
+
+  .contact {
+    padding: clamp(2rem, 5vw, 4rem) 0;
+  }
+
+  .contact-container {
+    padding: 0 1rem;
+  }
+
+  .contact-form {
+    border-radius: 16px;
+  }
+
+  .form-input,
+  .form-textarea {
+    border-radius: 8px;
+  }
+
+  .form-submit {
+    border-radius: 8px;
+  }
+
+  .form-textarea {
+    min-height: 100px;
+  }
+}
+
+/* Accessibility & Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .contact-form,
+  .contact-header {
+    animation: none;
+    opacity: 1;
+  }
+
+  .contact::before,
+  .contact::after {
+    animation: none;
+  }
+
+  .form-submit:hover,
+  .contact-form:hover,
+  .theme-toggle:hover {
+    transform: none;
+  }
+
+  .form-submit::before {
+    display: none;
+  }
+}
+
+/* Enhanced Focus Styles for Accessibility */
+.form-input:focus-visible,
+.form-textarea:focus-visible,
+.form-submit:focus-visible,
+.theme-toggle:focus-visible {
+  outline: 3px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
+/* Loading/Disabled States */
+.form-submit:disabled {
+  background: linear-gradient(135deg, var(--text-muted) 0%, var(--border-color) 100%);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+  opacity: 0.6;
+}
+
+.form-submit:disabled:hover {
+  transform: none;
+  box-shadow: none;
+  filter: none;
+}
+
+.form-submit:disabled::before {
+  display: none;
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+  :root {
+    --border-color: #000;
+    --text-primary: #000;
+    --text-secondary: #000;
+  }
+
+  [data-theme="dark"] {
+    --border-color: #fff;
+    --text-primary: #fff;
+    --text-secondary: #fff;
+  }
+}

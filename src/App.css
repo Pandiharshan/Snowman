@@ -1,0 +1,428 @@
+/* ===== CSS CUSTOM PROPERTIES FOR THEMING ===== */
+:root {
+  /* Light Mode - Disney Winter Morning */
+  --bg-primary-light: linear-gradient(
+    180deg,
+    #f0f9ff 0%,      /* Sky blue */
+    #e0f2fe 15%,     /* Light cyan */
+    #bae6fd 30%,     /* Soft blue */
+    #e0e7ff 45%,     /* Lavender tint */
+    #f1f5f9 60%,     /* Snow white */
+    #ffffff 75%,     /* Pure white */
+    #f8fafc 90%,     /* Off white */
+    #ffffff 100%     /* Pure white base */
+  );
+  
+  --bg-aurora-light: 
+    radial-gradient(
+      ellipse 80% 40% at 20% 0%,
+      rgba(147, 197, 253, 0.15) 0%,
+      rgba(196, 181, 253, 0.08) 40%,
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 60% 30% at 80% 10%,
+      rgba(219, 234, 254, 0.12) 0%,
+      rgba(233, 213, 255, 0.06) 30%,
+      transparent 60%
+    );
+    
+  --snowflake-light: rgba(255, 255, 255, 0.9);
+  --text-primary-light: #1e293b;
+  --accent-light: #3b82f6;
+  
+  /* Dark Mode - Disney Christmas Night */
+  --bg-primary-dark: linear-gradient(
+    180deg,
+    #0a0a0f 0%,      /* Almost black */
+    #1e1b4b 8%,      /* Deep indigo */
+    #312e81 15%,     /* Rich purple */
+    #1e3a8a 25%,     /* Deep royal blue */
+    #1e1b4b 40%,     /* Deep indigo */
+    #581c87 55%,     /* Rich purple */
+    #312e81 70%,     /* Deep indigo */
+    #1e1b4b 85%,     /* Deep indigo */
+    #020617 100%     /* Nearly black */
+  );
+  
+  --bg-aurora-dark:
+    radial-gradient(
+      ellipse 70% 30% at 30% 0%,
+      rgba(99, 102, 241, 0.12) 0%,
+      rgba(139, 92, 246, 0.06) 40%,
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 50% 40% at 90% 20%,
+      rgba(59, 130, 246, 0.1) 0%,
+      rgba(147, 51, 234, 0.05) 30%,
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 80% 25% at 50% 100%,
+      rgba(124, 58, 237, 0.08) 0%,
+      transparent 50%
+    );
+    
+  --snowflake-dark: rgba(255, 255, 255, 0.7);
+  --text-primary-dark: #f1f5f9;
+  --accent-dark: #8b5cf6;
+  
+  /* Dynamic theme variables */
+  --bg-primary: var(--bg-primary-light);
+  --bg-aurora: var(--bg-aurora-light);
+  --snowflake-color: var(--snowflake-light);
+  --text-primary: var(--text-primary-light);
+  --accent-color: var(--accent-light);
+  
+  /* Animation durations */
+  --aurora-duration: 30s;
+  --snowfall-duration: 20s;
+  --shimmer-duration: 8s;
+  
+  /* Responsive spacing */
+  --container-padding: clamp(1rem, 4vw, 2rem);
+  --border-radius: clamp(8px, 1.5vw, 16px);
+}
+
+/* Dark mode theme switching */
+[data-theme="dark"] {
+  --bg-primary: var(--bg-primary-dark);
+  --bg-aurora: var(--bg-aurora-dark);
+  --snowflake-color: var(--snowflake-dark);
+  --text-primary: var(--text-primary-dark);
+  --accent-color: var(--accent-dark);
+  --aurora-duration: 25s;
+  --snowfall-duration: 25s;
+}
+
+/* ===== MAIN APP CONTAINER ===== */
+.app {
+  position: relative;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* ===== MAGICAL AURORA BACKGROUND LAYER ===== */
+.app::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--bg-aurora);
+  pointer-events: none;
+  z-index: 1;
+  animation: magical-aurora var(--aurora-duration) ease-in-out infinite;
+  transition: opacity 0.6s ease;
+}
+
+/* ===== SNOWFALL ANIMATION LAYER ===== */
+.app::after {
+  content: '';
+  position: fixed;
+  top: -10%;
+  left: 0;
+  width: 100%;
+  height: 120%;
+  background-image: 
+    /* Large snowflakes */
+    radial-gradient(3px 3px at 20% 30%, var(--snowflake-color), transparent),
+    radial-gradient(2px 2px at 40% 70%, var(--snowflake-color), transparent),
+    radial-gradient(2px 2px at 90% 40%, var(--snowflake-color), transparent),
+    radial-gradient(1px 1px at 60% 90%, var(--snowflake-color), transparent),
+    /* Medium snowflakes */
+    radial-gradient(2px 2px at 10% 60%, var(--snowflake-color), transparent),
+    radial-gradient(1px 1px at 80% 20%, var(--snowflake-color), transparent),
+    radial-gradient(1px 1px at 30% 10%, var(--snowflake-color), transparent),
+    /* Small snowflakes */
+    radial-gradient(1px 1px at 70% 80%, var(--snowflake-color), transparent),
+    radial-gradient(0.5px 0.5px at 25% 50%, var(--snowflake-color), transparent),
+    radial-gradient(0.5px 0.5px at 50% 25%, var(--snowflake-color), transparent);
+  background-size: 
+    400px 400px, 500px 500px, 450px 450px, 380px 380px, 420px 420px,
+    300px 300px, 350px 350px, 280px 280px, 320px 320px, 250px 250px;
+  pointer-events: none;
+  z-index: 2;
+  animation: gentle-snowfall var(--snowfall-duration) linear infinite;
+  opacity: 0.8;
+  transition: opacity 0.6s ease;
+}
+
+/* ===== THEME TOGGLE BUTTON ===== */
+.theme-toggle {
+  position: fixed;
+  top: clamp(1rem, 3vw, 2rem);
+  right: clamp(1rem, 3vw, 2rem);
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50px;
+  padding: clamp(8px, 2vw, 12px) clamp(16px, 4vw, 24px);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: clamp(14px, 3vw, 16px);
+  font-weight: 500;
+  color: var(--text-primary);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  user-select: none;
+}
+
+.theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.theme-toggle:active {
+  transform: translateY(0) scale(0.98);
+  transition-duration: 0.1s;
+}
+
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 4px;
+}
+
+/* ===== UNIVERSAL BUTTON STYLES ===== */
+.btn, button:not(.theme-toggle) {
+  position: relative;
+  padding: clamp(12px, 3vw, 16px) clamp(24px, 5vw, 32px);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--border-radius);
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: clamp(14px, 3.5vw, 16px);
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 
+    0 4px 16px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.btn::before, button:not(.theme-toggle)::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.6s ease;
+  z-index: 1;
+}
+
+.btn:hover, button:not(.theme-toggle):hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-3px);
+  box-shadow: 
+    0 8px 25px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.btn:hover::before, button:not(.theme-toggle):hover::before {
+  left: 100%;
+}
+
+.btn:active, button:not(.theme-toggle):active {
+  transform: translateY(-1px) scale(0.98);
+  transition-duration: 0.1s;
+}
+
+.btn:focus-visible, button:not(.theme-toggle):focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 4px;
+}
+
+/* ===== LINK STYLES ===== */
+a:not(.btn) {
+  color: var(--accent-color);
+  text-decoration: none;
+  position: relative;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+a:not(.btn)::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent-color), transparent);
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+a:not(.btn):hover {
+  color: var(--text-primary);
+  text-shadow: 0 0 8px var(--accent-color);
+}
+
+a:not(.btn):hover::after {
+  width: 100%;
+}
+
+/* ===== CONTENT LAYERING ===== */
+.app > *:not(.theme-toggle) {
+  position: relative;
+  z-index: 10;
+  padding: var(--container-padding);
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes magical-aurora {
+  0%, 100% {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotate(0deg);
+  }
+  25% {
+    opacity: 0.8;
+    transform: translateY(-10px) scale(1.02) rotate(0.5deg);
+  }
+  50% {
+    opacity: 0.6;
+    transform: translateY(-5px) scale(1.01) rotate(-0.5deg);
+  }
+  75% {
+    opacity: 0.9;
+    transform: translateY(-15px) scale(1.03) rotate(0.3deg);
+  }
+}
+
+@keyframes gentle-snowfall {
+  0% {
+    transform: translateY(-10%) rotate(0deg);
+  }
+  100% {
+    transform: translateY(110%) rotate(360deg);
+  }
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 768px) {
+  :root {
+    --aurora-duration: 20s;
+    --snowfall-duration: 15s;
+  }
+  
+  .app::after {
+    background-size: 
+      300px 300px, 350px 350px, 320px 320px, 280px 280px, 310px 310px,
+      200px 200px, 250px 250px, 180px 180px, 220px 220px, 160px 160px;
+  }
+  
+  .theme-toggle {
+    top: 1rem;
+    right: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --aurora-duration: 15s;
+    --snowfall-duration: 12s;
+  }
+  
+  .app::after {
+    background-size: 
+      200px 200px, 240px 240px, 220px 220px, 180px 180px, 210px 210px,
+      120px 120px, 150px 150px, 100px 100px, 140px 140px, 80px 80px;
+  }
+}
+
+/* ===== ACCESSIBILITY ===== */
+@media (prefers-reduced-motion: reduce) {
+  .app::before,
+  .app::after,
+  .btn::before,
+  button:not(.theme-toggle)::before {
+    animation: none;
+  }
+  
+  .theme-toggle,
+  .btn,
+  button:not(.theme-toggle),
+  a:not(.btn) {
+    transition-duration: 0.1s;
+  }
+}
+
+@media (prefers-contrast: high) {
+  :root {
+    --bg-primary-light: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    --bg-primary-dark: linear-gradient(180deg, #000000 0%, #1a1a1a 100%);
+  }
+  
+  .theme-toggle,
+  .btn,
+  button:not(.theme-toggle) {
+    border-width: 2px;
+    border-color: var(--text-primary);
+  }
+}
+
+/* ===== UTILITY HELPER CLASSES ===== */
+.magic-container {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--border-radius);
+  padding: var(--container-padding);
+  margin: clamp(1rem, 3vw, 2rem) 0;
+  transition: all 0.3s ease;
+}
+
+.magic-container:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.text-shimmer {
+  background: linear-gradient(
+    45deg,
+    var(--text-primary),
+    var(--accent-color),
+    var(--text-primary)
+  );
+  background-size: 200% 200%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: text-shimmer var(--shimmer-duration) ease-in-out infinite;
+}
+
+@keyframes text-shimmer {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}

@@ -1,0 +1,484 @@
+/* ========================================
+   DISNEY WINTER THEME - HOME PAGE
+   ======================================== */
+
+/* CSS Custom Properties for Theme Management */
+:root {
+  /* Light Mode - Disney Winter Morning */
+  --bg-primary: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 20%, #bae6fd 40%, #ddd6fe 60%, #f0f9ff 100%);
+  --bg-secondary: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 249, 255, 0.9) 50%, rgba(224, 242, 254, 0.85) 100%);
+  --bg-overlay: rgba(255, 255, 255, 0.3);
+  
+  --section-bg: rgba(255, 255, 255, 0.2);
+  --section-border: rgba(59, 130, 246, 0.15);
+  --section-shadow: 0 8px 32px rgba(59, 130, 246, 0.1);
+  
+  --text-primary: #1e293b;
+  --text-secondary: #475569;
+  
+  --accent-primary: linear-gradient(135deg, #3b82f6 0%, #6366f1 50%, #8b5cf6 100%);
+  --accent-glow: rgba(59, 130, 246, 0.4);
+  
+  --glass-bg: rgba(255, 255, 255, 0.25);
+  --glass-border: rgba(255, 255, 255, 0.4);
+  
+  --snowflake-color: rgba(255, 255, 255, 0.8);
+  --sparkle-color: rgba(59, 130, 246, 0.6);
+}
+
+/* Dark Mode - Disney Christmas Night */
+[data-theme="dark"] {
+  --bg-primary: linear-gradient(135deg, #0f172a 0%, #1e1b4b 20%, #312e81 40%, #581c87 60%, #0f172a 100%);
+  --bg-secondary: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 27, 75, 0.9) 50%, rgba(49, 46, 129, 0.85) 100%);
+  --bg-overlay: rgba(30, 27, 75, 0.4);
+  
+  --section-bg: rgba(30, 27, 75, 0.3);
+  --section-border: rgba(251, 191, 36, 0.2);
+  --section-shadow: 0 8px 32px rgba(251, 191, 36, 0.15);
+  
+  --text-primary: #f1f5f9;
+  --text-secondary: #cbd5e1;
+  
+  --accent-primary: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+  --accent-glow: rgba(251, 191, 36, 0.5);
+  
+  --glass-bg: rgba(30, 27, 75, 0.3);
+  --glass-border: rgba(251, 191, 36, 0.3);
+  
+  --snowflake-color: rgba(251, 191, 36, 0.7);
+  --sparkle-color: rgba(16, 185, 129, 0.8);
+}
+
+/* Theme Toggle Button - Global positioning */
+.theme-toggle {
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  z-index: 9999;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  border: 2px solid var(--glass-border);
+  border-radius: 50px;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  box-shadow: 0 8px 32px var(--accent-glow);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  user-select: none;
+  transform: translateZ(0);
+}
+
+.theme-toggle:hover {
+  transform: translateY(-3px) scale(1.08);
+  box-shadow: 0 12px 40px var(--accent-glow);
+  background: var(--accent-primary);
+  color: white;
+  border-color: transparent;
+}
+
+.theme-toggle:active {
+  transform: translateY(-1px) scale(1.02);
+}
+
+.theme-toggle::before {
+  content: "☀️";
+  font-size: 1.3rem;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-block;
+}
+
+[data-theme="dark"] .theme-toggle::before {
+  content: "🌙";
+  transform: rotate(360deg);
+}
+
+.theme-toggle span {
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* Animated Background Particles */
+.homepage::before,
+.homepage::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -2;
+}
+
+/* Light Mode - Snowflakes */
+.homepage::before {
+  background: 
+    radial-gradient(3px 3px at 25px 35px, var(--snowflake-color), transparent),
+    radial-gradient(2px 2px at 50px 75px, var(--snowflake-color), transparent),
+    radial-gradient(2px 2px at 90px 45px, var(--sparkle-color), transparent),
+    radial-gradient(1px 1px at 135px 85px, var(--snowflake-color), transparent),
+    radial-gradient(2px 2px at 165px 35px, var(--sparkle-color), transparent),
+    radial-gradient(1px 1px at 200px 65px, var(--snowflake-color), transparent);
+  background-repeat: repeat;
+  background-size: 250px 120px;
+  animation: snowDrift 25s linear infinite;
+  opacity: 0.4;
+}
+
+.homepage::after {
+  background: 
+    radial-gradient(1px 1px at 30px 40px, var(--sparkle-color), transparent),
+    radial-gradient(2px 2px at 80px 20px, var(--snowflake-color), transparent),
+    radial-gradient(1px 1px at 120px 70px, var(--sparkle-color), transparent),
+    radial-gradient(1px 1px at 180px 50px, var(--snowflake-color), transparent);
+  background-repeat: repeat;
+  background-size: 200px 100px;
+  animation: snowDrift 30s linear infinite reverse;
+  opacity: 0.3;
+}
+
+/* Dark Mode - Stars and Christmas Lights */
+[data-theme="dark"] .homepage::before {
+  background: 
+    radial-gradient(2px 2px at 25px 35px, var(--snowflake-color), transparent),
+    radial-gradient(1px 1px at 50px 75px, var(--sparkle-color), transparent),
+    radial-gradient(2px 2px at 90px 45px, var(--snowflake-color), transparent),
+    radial-gradient(1px 1px at 135px 85px, var(--sparkle-color), transparent),
+    radial-gradient(2px 2px at 165px 35px, var(--snowflake-color), transparent),
+    radial-gradient(1px 1px at 200px 65px, var(--sparkle-color), transparent);
+  animation: christmasLights 20s ease-in-out infinite;
+  opacity: 0.6;
+}
+
+[data-theme="dark"] .homepage::after {
+  background: 
+    radial-gradient(1px 1px at 40px 30px, var(--sparkle-color), transparent),
+    radial-gradient(1px 1px at 70px 60px, var(--snowflake-color), transparent),
+    radial-gradient(1px 1px at 110px 20px, var(--sparkle-color), transparent),
+    radial-gradient(1px 1px at 150px 80px, var(--snowflake-color), transparent);
+  animation: starTwinkle 15s ease-in-out infinite;
+  opacity: 0.5;
+}
+
+/* Animation Keyframes */
+@keyframes snowDrift {
+  0% { transform: translateY(-100vh) translateX(0px); }
+  100% { transform: translateY(100vh) translateX(100px); }
+}
+
+@keyframes christmasLights {
+  0%, 100% { opacity: 0.4; filter: hue-rotate(0deg); }
+  25% { opacity: 0.8; filter: hue-rotate(60deg); }
+  50% { opacity: 0.6; filter: hue-rotate(120deg); }
+  75% { opacity: 0.9; filter: hue-rotate(240deg); }
+}
+
+@keyframes starTwinkle {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.2); }
+}
+
+/* Main Homepage Container */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg-primary);
+  transition: background 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow-x: hidden;
+}
+
+.homepage {
+  width: 100%;
+  min-height: 100vh;
+  background: var(--bg-primary);
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+  position: relative;
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: pageLoad 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes pageLoad {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Homepage Container with Glass Effect */
+.homepage-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+/* Enhanced Homepage Sections */
+.homepage-section {
+  width: 100%;
+  margin: clamp(3rem, 6vw, 6rem) 0;
+  position: relative;
+  animation: sectionFadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  animation-fill-mode: both;
+}
+
+/* Remove margin from first section */
+.homepage-section:first-child {
+  margin-top: 0;
+  padding-top: clamp(2rem, 4vw, 4rem);
+}
+
+/* Remove margin from last section */
+.homepage-section:last-child {
+  margin-bottom: 0;
+  padding-bottom: clamp(2rem, 4vw, 4rem);
+}
+
+/* Glass-morphism Section Enhancement */
+.homepage-section:not(:first-child):not(:last-child) {
+  background: var(--section-bg);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--section-border);
+  border-radius: clamp(16px, 3vw, 32px);
+  box-shadow: var(--section-shadow);
+  margin: clamp(4rem, 8vw, 8rem) clamp(1rem, 3vw, 2rem);
+  padding: clamp(2rem, 4vw, 4rem) clamp(1rem, 3vw, 2rem);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Hover Effects for Glass Sections */
+.homepage-section:not(:first-child):not(:last-child):hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 48px var(--accent-glow);
+  border-color: var(--accent-primary);
+}
+
+/* Shimmer Effect on Sections */
+.homepage-section:not(:first-child):not(:last-child)::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 1s ease;
+  pointer-events: none;
+}
+
+.homepage-section:not(:first-child):not(:last-child):hover::before {
+  left: 100%;
+}
+
+/* Section Animation Staggering */
+.homepage-section:nth-child(1) { animation-delay: 0.1s; }
+.homepage-section:nth-child(2) { animation-delay: 0.2s; }
+.homepage-section:nth-child(3) { animation-delay: 0.3s; }
+.homepage-section:nth-child(4) { animation-delay: 0.4s; }
+.homepage-section:nth-child(5) { animation-delay: 0.5s; }
+
+@keyframes sectionFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(60px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Floating Elements Animation */
+.homepage-section:nth-child(odd) {
+  animation: float 6s ease-in-out infinite;
+}
+
+.homepage-section:nth-child(even) {
+  animation: float 6s ease-in-out infinite reverse;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+/* Enhanced Responsive Design */
+@media (max-width: 1024px) {
+  .theme-toggle {
+    top: 1.5rem;
+    right: 1.5rem;
+    padding: 0.6rem 1.2rem;
+    font-size: 0.95rem;
+  }
+  
+  .homepage-container {
+    padding: 0 1.5rem;
+  }
+  
+  .homepage-section:not(:first-child):not(:last-child) {
+    margin: clamp(3rem, 6vw, 6rem) clamp(0.5rem, 2vw, 1rem);
+    padding: clamp(1.5rem, 3vw, 3rem) clamp(1rem, 2vw, 1.5rem);
+  }
+}
+
+@media (max-width: 768px) {
+  .theme-toggle {
+    top: 1rem;
+    right: 1rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    border-radius: 40px;
+  }
+  
+  .theme-toggle span {
+    display: none;
+  }
+  
+  .homepage-container {
+    padding: 0 1rem;
+  }
+  
+  .homepage-section {
+    margin: clamp(2rem, 4vw, 3rem) 0;
+  }
+  
+  .homepage-section:first-child {
+    margin-top: 0;
+    padding-top: 2rem;
+  }
+  
+  .homepage-section:last-child {
+    margin-bottom: 0;
+    padding-bottom: 2rem;
+  }
+  
+  .homepage-section:not(:first-child):not(:last-child) {
+    margin: clamp(2rem, 4vw, 4rem) 0;
+    padding: clamp(1.5rem, 3vw, 2rem) clamp(1rem, 2vw, 1.5rem);
+    border-radius: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .theme-toggle {
+    position: fixed;
+    top: 0.75rem;
+    right: 0.75rem;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+    border-radius: 30px;
+  }
+  
+  .theme-toggle::before {
+    font-size: 1.1rem;
+  }
+  
+  .homepage-container {
+    padding: 0 0.75rem;
+  }
+  
+  .homepage-section {
+    margin: clamp(1.5rem, 3vw, 2rem) 0;
+  }
+  
+  .homepage-section:first-child {
+    padding-top: 1.5rem;
+  }
+  
+  .homepage-section:last-child {
+    padding-bottom: 1.5rem;
+  }
+  
+  .homepage-section:not(:first-child):not(:last-child) {
+    margin: clamp(1.5rem, 3vw, 2.5rem) 0;
+    padding: clamp(1rem, 2vw, 1.5rem);
+    border-radius: 12px;
+  }
+  
+  /* Reduce animation intensity on mobile */
+  .homepage-section:nth-child(odd),
+  .homepage-section:nth-child(even) {
+    animation: floatMobile 8s ease-in-out infinite;
+  }
+  
+  @keyframes floatMobile {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-4px); }
+  }
+}
+
+/* Focus and Accessibility */
+.theme-toggle:focus-visible {
+  outline: 3px solid var(--accent-glow);
+  outline-offset: 3px;
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+  :root {
+    --section-border: rgba(59, 130, 246, 0.4);
+    --glass-border: rgba(59, 130, 246, 0.5);
+  }
+  
+  [data-theme="dark"] {
+    --section-border: rgba(251, 191, 36, 0.4);
+    --glass-border: rgba(251, 191, 36, 0.5);
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.3s !important;
+  }
+  
+  .homepage::before,
+  .homepage::after {
+    animation: none;
+  }
+  
+  .homepage-section:nth-child(odd),
+  .homepage-section:nth-child(even) {
+    animation: none;
+  }
+  
+  .theme-toggle:hover {
+    transform: none;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .theme-toggle {
+    display: none;
+  }
+  
+  .homepage::before,
+  .homepage::after {
+    display: none;
+  }
+  
+  .homepage-section:not(:first-child):not(:last-child) {
+    background: white;
+    box-shadow: none;
+    border: 1px solid #ccc;
+  }
+}

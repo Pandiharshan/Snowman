@@ -1,0 +1,829 @@
+/* Enhanced Disney Winter Navbar - Magical Responsive Design (Complete) */
+
+/* CSS Variables for Light/Dark Mode */
+:root {
+  /* Light Mode - Disney Winter Wonderland Morning */
+  --navbar-bg-light: 
+    linear-gradient(135deg, 
+      rgba(248, 250, 252, 0.98) 0%, 
+      rgba(240, 249, 255, 0.95) 30%, 
+      rgba(219, 234, 254, 0.93) 70%, 
+      rgba(243, 244, 246, 0.96) 100%);
+  --navbar-border-light: rgba(147, 197, 253, 0.4);
+  --navbar-shadow-light: 
+    0 4px 32px rgba(59, 130, 246, 0.15),
+    0 2px 16px rgba(147, 197, 253, 0.12),
+    0 8px 64px rgba(79, 172, 254, 0.08);
+  --navbar-brand-light: linear-gradient(135deg, #1e40af 0%, #3730a3 40%, #581c87 100%);
+  --navbar-link-light: #64748b;
+  --navbar-link-hover-light: #1e293b;
+  --navbar-link-active-light: #3b82f6;
+  --navbar-hamburger-light: #475569;
+  --navbar-glow-light: rgba(59, 130, 246, 0.15);
+  --navbar-backdrop-light: rgba(248, 250, 252, 0.88);
+  --navbar-snowflake-light: rgba(147, 197, 253, 0.7);
+  --navbar-frost-light: rgba(255, 255, 255, 0.6);
+  
+  /* Dark Mode - Disney Christmas Enchanted Night */
+  --navbar-bg-dark: 
+    linear-gradient(135deg, 
+      rgba(15, 23, 42, 0.98) 0%, 
+      rgba(30, 27, 75, 0.96) 25%, 
+      rgba(49, 46, 129, 0.94) 60%, 
+      rgba(88, 28, 135, 0.92) 85%,
+      rgba(124, 58, 237, 0.90) 100%);
+  --navbar-border-dark: rgba(139, 92, 246, 0.4);
+  --navbar-shadow-dark: 
+    0 4px 35px rgba(139, 92, 246, 0.28),
+    0 2px 20px rgba(196, 181, 253, 0.18),
+    0 8px 70px rgba(167, 139, 250, 0.12);
+  --navbar-brand-dark: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 40%, #ddd6fe 80%, #f3e8ff 100%);
+  --navbar-link-dark: #cbd5e1;
+  --navbar-link-hover-dark: #f1f5f9;
+  --navbar-link-active-dark: #a78bfa;
+  --navbar-hamburger-dark: #e2e8f0;
+  --navbar-glow-dark: rgba(167, 139, 250, 0.22);
+  --navbar-backdrop-dark: rgba(15, 23, 42, 0.94);
+  --navbar-star-dark: rgba(196, 181, 253, 0.8);
+  --navbar-magic-dark: rgba(255, 215, 0, 0.6);
+  
+  /* Enhanced Animation Variables */
+  --navbar-transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  --navbar-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --navbar-smooth: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --navbar-elastic: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --navbar-float-duration: 4s;
+  --navbar-twinkle-duration: 3s;
+  --navbar-aurora-duration: 15s;
+}
+
+/* Navbar Base Styles - Enhanced */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: var(--navbar-bg-light);
+  backdrop-filter: blur(28px) saturate(200%) brightness(105%);
+  -webkit-backdrop-filter: blur(28px) saturate(200%) brightness(105%);
+  border-bottom: 1px solid var(--navbar-border-light);
+  box-shadow: var(--navbar-shadow-light);
+  z-index: 1000;
+  font-family: 'Inter', 'SF Pro Display', system-ui, -apple-system, sans-serif;
+  transition: var(--navbar-transition);
+  animation: navbarSlideDown 0.9s var(--navbar-bounce);
+  overflow: hidden;
+  min-height: clamp(65px, 8vw, 85px);
+  will-change: transform, opacity;
+}
+
+/* Dark Mode Navbar */
+.navbar[data-theme="dark"] {
+  background: var(--navbar-bg-dark);
+  border-bottom-color: var(--navbar-border-dark);
+  box-shadow: var(--navbar-shadow-dark);
+  backdrop-filter: blur(30px) saturate(180%) brightness(110%);
+  -webkit-backdrop-filter: blur(30px) saturate(180%) brightness(110%);
+}
+
+/* Enhanced Magical Background Effects */
+.navbar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(ellipse at 15% 25%, var(--navbar-glow-light) 0%, transparent 65%),
+    radial-gradient(ellipse at 85% 75%, var(--navbar-glow-light) 0%, transparent 65%),
+    radial-gradient(ellipse at 50% 5%, rgba(219, 234, 254, 0.35) 0%, transparent 50%),
+    radial-gradient(ellipse at 25% 95%, rgba(147, 197, 253, 0.2) 0%, transparent 60%);
+  opacity: 0.85;
+  transition: var(--navbar-transition);
+  pointer-events: none;
+  animation: navbarAurora var(--navbar-aurora-duration) ease-in-out infinite;
+  will-change: opacity;
+}
+
+.navbar[data-theme="dark"]::before {
+  background: 
+    radial-gradient(ellipse at 15% 25%, var(--navbar-glow-dark) 0%, transparent 65%),
+    radial-gradient(ellipse at 85% 75%, var(--navbar-glow-dark) 0%, transparent 65%),
+    radial-gradient(ellipse at 50% 0%, rgba(99, 102, 241, 0.18) 0%, transparent 75%),
+    radial-gradient(ellipse at 30% 100%, rgba(147, 51, 234, 0.12) 0%, transparent 55%),
+    radial-gradient(ellipse at 70% 50%, rgba(255, 215, 0, 0.08) 0%, transparent 40%);
+}
+/* Enhanced Brand/Logo Interactive Effects */
+
+/* Enhanced Brand Link with Magical Underline */
+.brand-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0.5rem;
+  left: 50%;
+  width: 0;
+  height: 3px;
+  background: linear-gradient(90deg, 
+    var(--navbar-link-active-light), 
+    rgba(147, 51, 234, 0.8),
+    rgba(79, 172, 254, 0.6));
+  border-radius: 3px;
+  transform: translateX(-50%);
+  transition: width 0.5s var(--navbar-elastic);
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.5);
+}
+
+.navbar[data-theme="dark"] .brand-link::after {
+  background: linear-gradient(90deg, 
+    var(--navbar-link-active-dark), 
+    rgba(196, 181, 253, 0.8),
+    rgba(255, 215, 0, 0.6));
+  box-shadow: 0 0 15px rgba(167, 139, 250, 0.6);
+}
+
+/* Enhanced Brand Text with Glow Effect */
+.navbar-brand {
+  transition: var(--navbar-transition);
+  transform-origin: center;
+}
+
+/* Enhanced Brand Link Hover States */
+.brand-link:hover {
+  transform: translateY(-4px) scale(1.08) rotate(-1deg);
+}
+
+.brand-link:hover .navbar-brand {
+  text-shadow: 
+    0 0 2px rgba(30, 64, 175, 1),
+    0 2px 4px rgba(59, 130, 246, 0.9),
+    0 4px 8px rgba(30, 64, 175, 0.7),
+    0 6px 16px rgba(59, 130, 246, 0.5),
+    0 8px 32px rgba(59, 130, 246, 0.3);
+  filter: contrast(1.5) brightness(1.3) saturate(1.2);
+}
+
+.navbar[data-theme="dark"] .brand-link:hover .navbar-brand {
+  text-shadow: 
+    0 0 2px rgba(241, 245, 249, 1),
+    0 2px 6px rgba(167, 139, 250, 0.9), 
+    0 4px 12px rgba(224, 231, 255, 0.7),
+    0 6px 24px rgba(255, 215, 0, 0.5),
+    0 8px 32px rgba(167, 139, 250, 0.4),
+    0 10px 48px rgba(255, 215, 0, 0.2);
+  filter: contrast(1.4) brightness(1.25) saturate(1.15);
+}
+
+.brand-link:hover::after {
+  width: 85%;
+}
+
+/* Enhanced Focus States */
+.brand-link:focus .navbar-brand {
+  text-shadow: 
+    0 0 1px rgba(30, 64, 175, 0.95),
+    0 1px 3px rgba(59, 130, 246, 0.85),
+    0 2px 6px rgba(30, 64, 175, 0.65),
+    0 3px 12px rgba(59, 130, 246, 0.45),
+    0 4px 24px rgba(59, 130, 246, 0.25);
+  filter: contrast(1.45) brightness(1.25) saturate(1.15);
+}
+
+.navbar[data-theme="dark"] .brand-link:focus .navbar-brand {
+  text-shadow: 
+    0 0 1px rgba(241, 245, 249, 0.95),
+    0 1px 4px rgba(167, 139, 250, 0.85), 
+    0 2px 8px rgba(224, 231, 255, 0.65),
+    0 3px 16px rgba(255, 215, 0, 0.45),
+    0 4px 24px rgba(167, 139, 250, 0.35);
+  filter: contrast(1.35) brightness(1.2) saturate(1.1);
+}
+
+.brand-link:active {
+  transform: translateY(-2px) scale(1.02) rotate(0deg);
+}
+
+/* Floating Snowman Background Decoration */
+.navbar::after {
+  content: '☃️';
+  position: absolute;
+  top: 15%;
+  right: 8%;
+  font-size: clamp(2.5rem, 4vw, 3.5rem);
+  opacity: 0.15;
+  transform-origin: center;
+  animation: snowmanFloat var(--navbar-float-duration) ease-in-out infinite,
+             snowmanTwinkle var(--navbar-twinkle-duration) ease-in-out infinite;
+  pointer-events: none;
+  z-index: 1;
+  filter: drop-shadow(0 0 15px rgba(147, 197, 253, 0.4));
+  will-change: transform, opacity;
+}
+
+.navbar[data-theme="dark"]::after {
+  content: '🎄';
+  opacity: 0.2;
+  filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.3));
+}
+
+/* Floating Magical Elements */
+.navbar .snowflake-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.navbar .snowflake-bg::before {
+  content: '❄️ ✨ ❄️ ⭐ ❄️ ✨ ❄️ 🌟';
+  position: absolute;
+  top: 50%;
+  left: -120px;
+  width: calc(100% + 240px);
+  color: var(--navbar-snowflake-light);
+  font-size: clamp(0.75rem, 1.3vw, 1.1rem);
+  letter-spacing: clamp(10vw, 18vw, 25vw);
+  transform: translateY(-50%);
+  animation: magicalFloat 30s linear infinite;
+  opacity: 0.7;
+  filter: drop-shadow(0 0 10px rgba(147, 197, 253, 0.5));
+  will-change: transform;
+}
+
+.navbar[data-theme="dark"] .snowflake-bg::before {
+  content: '⭐ ✨ 🌟 ⭐ ✨ 🎁 ⭐ ✨';
+  color: var(--navbar-star-dark);
+  filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.4));
+}
+
+/* Container - Enhanced */
+.navbar-container {
+  position: relative;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: clamp(0.875rem, 2.2vw, 1.375rem) clamp(1.25rem, 4.5vw, 2.25rem);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 10;
+  transition: var(--navbar-transition);
+}
+
+/* Brand/Logo Styles - Enhanced with Improved Visibility */
+.navbar-brand {
+  font-size: clamp(1.375rem, 3.8vw, 2.25rem);
+  font-weight: 900;
+  background: var(--navbar-brand-light);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: #1e40af; /* Enhanced fallback color for better visibility */
+  text-shadow: 
+    0 0 1px rgba(30, 64, 175, 0.9),
+    0 1px 2px rgba(59, 130, 246, 0.8),
+    0 2px 4px rgba(30, 64, 175, 0.6),
+    0 3px 8px rgba(59, 130, 246, 0.4);
+  transition: var(--navbar-transition);
+  position: relative;
+  letter-spacing: -0.025em;
+  z-index: 15;
+  font-feature-settings: 'liga' 1, 'kern' 1;
+  filter: contrast(1.4) brightness(1.2) saturate(1.1);
+}
+
+.navbar[data-theme="dark"] .navbar-brand {
+  background: var(--navbar-brand-dark);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: #f1f5f9; /* Enhanced fallback color for dark mode */
+  text-shadow: 
+    0 0 1px rgba(241, 245, 249, 0.9),
+    0 1px 3px rgba(167, 139, 250, 0.8), 
+    0 2px 6px rgba(224, 231, 255, 0.6),
+    0 3px 12px rgba(255, 215, 0, 0.4),
+    0 4px 16px rgba(167, 139, 250, 0.3);
+  filter: contrast(1.3) brightness(1.15) saturate(1.05);
+}
+/* Enhanced Brand Link */
+.brand-link {
+  text-decoration: none;
+  cursor: pointer;
+  transition: var(--navbar-transition);
+  position: relative;
+  padding: clamp(0.625rem, 1.2vw, 0.875rem);
+  border-radius: 1.25rem;
+  display: inline-block;
+  overflow: hidden;
+  z-index: 15;
+  transform-origin: center;
+}
+
+.brand-link::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, 
+    rgba(59, 130, 246, 0.1), 
+    rgba(147, 51, 234, 0.08),
+    rgba(79, 172, 254, 0.06));
+  border-radius: 1.25rem;
+  opacity: 0;
+  transform: scale(0.6) rotate(8deg);
+  transition: all 0.5s var(--navbar-elastic);
+  z-index: -1;
+}
+
+.navbar[data-theme="dark"] .brand-link::before {
+  background: linear-gradient(135deg, 
+    rgba(167, 139, 250, 0.15), 
+    rgba(196, 181, 253, 0.12),
+    rgba(255, 215, 0, 0.08));
+}
+
+.brand-link:hover {
+  transform: translateY(-4px) scale(1.08) rotate(-1deg);
+}
+
+.brand-link:hover::before {
+  opacity: 1;
+  transform: scale(1) rotate(0deg);
+}
+
+.brand-link:focus {
+  outline: 3px solid rgba(59, 130, 246, 0.7);
+  outline-offset: 4px;
+  border-radius: 1.25rem;
+}
+
+.navbar[data-theme="dark"] .brand-link:focus {
+  outline-color: rgba(167, 139, 250, 0.8);
+}
+
+/* Navigation Links - Enhanced Fluid Design */
+.navbar-links {
+  display: flex;
+  align-items: center;
+  gap: clamp(1.25rem, 3.5vw, 3rem);
+  transition: var(--navbar-transition);
+}
+
+.nav-link {
+  position: relative;
+  color: var(--navbar-link-light);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: clamp(0.9375rem, 2.2vw, 1.0625rem);
+  cursor: pointer;
+  transition: var(--navbar-transition);
+  padding: clamp(0.875rem, 1.8vw, 1.125rem) clamp(1.125rem, 2.2vw, 1.375rem);
+  border-radius: 1rem;
+  overflow: hidden;
+  transform-origin: center;
+  letter-spacing: -0.015em;
+  font-feature-settings: 'liga' 1;
+}
+
+.navbar[data-theme="dark"] .nav-link {
+  color: var(--navbar-link-dark);
+}
+
+/* Enhanced Link Background Effect */
+.nav-link::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, 
+    rgba(59, 130, 246, 0.12), 
+    rgba(147, 51, 234, 0.08),
+    rgba(79, 172, 254, 0.06));
+  opacity: 0;
+  transform: scale(0.7) rotate(5deg);
+  transition: all 0.4s var(--navbar-elastic);
+  border-radius: 1rem;
+  z-index: -1;
+}
+
+.navbar[data-theme="dark"] .nav-link::before {
+  background: linear-gradient(135deg, 
+    rgba(167, 139, 250, 0.18), 
+    rgba(196, 181, 253, 0.12),
+    rgba(255, 215, 0, 0.08));
+}
+
+/* Magical Underline Effect */
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0.4rem;
+  left: 50%;
+  width: 0;
+  height: 3px;
+  background: linear-gradient(90deg, 
+    var(--navbar-link-active-light), 
+    rgba(147, 51, 234, 0.8),
+    rgba(79, 172, 254, 0.6));
+  border-radius: 3px;
+  transform: translateX(-50%);
+  transition: width 0.5s var(--navbar-elastic);
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.5);
+}
+
+.navbar[data-theme="dark"] .nav-link::after {
+  background: linear-gradient(90deg, 
+    var(--navbar-link-active-dark), 
+    rgba(196, 181, 253, 0.8),
+    rgba(255, 215, 0, 0.6));
+  box-shadow: 0 0 15px rgba(167, 139, 250, 0.6);
+}
+
+/* Enhanced Link Hover States */
+.nav-link:hover {
+  color: var(--navbar-link-hover-light);
+  transform: translateY(-3px) scale(1.08) rotate(-0.5deg);
+  text-shadow: 0 5px 15px rgba(59, 130, 246, 0.35);
+}
+
+.navbar[data-theme="dark"] .nav-link:hover {
+  color: var(--navbar-link-hover-dark);
+  text-shadow: 0 5px 20px rgba(167, 139, 250, 0.45);
+}
+
+.nav-link:hover::before {
+  opacity: 1;
+  transform: scale(1) rotate(0deg);
+}
+
+.nav-link:hover::after {
+  width: 90%;
+}
+
+.nav-link:focus {
+  outline: 3px solid rgba(59, 130, 246, 0.6);
+  outline-offset: 4px;
+  transform: translateY(-2px) scale(1.05);
+  border-radius: 1rem;
+}
+
+.navbar[data-theme="dark"] .nav-link:focus {
+  outline-color: rgba(167, 139, 250, 0.7);
+}
+
+.nav-link:active {
+  transform: translateY(0) scale(0.96);
+}
+
+/* Active Link Styles - Enhanced */
+.nav-link.active {
+  color: var(--navbar-link-active-light);
+  background: rgba(59, 130, 246, 0.15);
+  transform: scale(1.05);
+  box-shadow: 0 5px 20px rgba(59, 130, 246, 0.25);
+}
+
+.navbar[data-theme="dark"] .nav-link.active {
+  color: var(--navbar-link-active-dark);
+  background: rgba(167, 139, 250, 0.18);
+  box-shadow: 0 5px 25px rgba(167, 139, 250, 0.3);
+}
+
+.nav-link.active::after {
+  width: 90%;
+}
+
+/* Enhanced Theme Toggle */
+.navbar .theme-toggle {
+  background: rgba(255, 255, 255, 0.96);
+  border: 2px solid rgba(59, 130, 246, 0.35);
+  border-radius: 50%;
+  width: clamp(2.75rem, 4.5vw, 3.25rem);
+  height: clamp(2.75rem, 4.5vw, 3.25rem);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(1.2rem, 2.2vw, 1.5rem);
+  transition: var(--navbar-transition);
+  box-shadow: 
+    0 5px 25px rgba(59, 130, 246, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(20px);
+  margin-left: clamp(1.25rem, 2.5vw, 1.875rem);
+  position: relative;
+  overflow: hidden;
+  transform-origin: center;
+}
+
+.navbar[data-theme="dark"] .theme-toggle {
+  background: rgba(30, 27, 75, 0.96);
+  border-color: rgba(167, 139, 250, 0.45);
+  box-shadow: 
+    0 5px 30px rgba(167, 139, 250, 0.3),
+    inset 0 1px 0 rgba(167, 139, 250, 0.25);
+}
+
+.navbar .theme-toggle::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, 
+    transparent, 
+    rgba(59, 130, 246, 0.15), 
+    transparent,
+    rgba(79, 172, 254, 0.1),
+    transparent);
+  opacity: 0;
+  transition: all 0.8s var(--navbar-smooth);
+  transform: rotate(0deg);
+}
+
+.navbar[data-theme="dark"] .theme-toggle::before {
+  background: linear-gradient(45deg, 
+    transparent, 
+    rgba(167, 139, 250, 0.2), 
+    transparent,
+    rgba(255, 215, 0, 0.15),
+    transparent);
+}
+
+.navbar .theme-toggle:hover {
+  transform: translateY(-4px) scale(1.15) rotate(10deg);
+  box-shadow: 
+    0 10px 40px rgba(59, 130, 246, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+}
+
+.navbar[data-theme="dark"] .theme-toggle:hover {
+  box-shadow: 
+    0 10px 45px rgba(167, 139, 250, 0.4),
+    inset 0 1px 0 rgba(167, 139, 250, 0.35);
+}
+
+.navbar .theme-toggle:hover::before {
+  opacity: 1;
+  transform: rotate(360deg);
+}
+
+/* Enhanced Hamburger Menu */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  padding: clamp(0.875rem, 1.8vw, 1.125rem);
+  gap: 5px;
+  border-radius: 1rem;
+  transition: var(--navbar-transition);
+  position: relative;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  transform-origin: center;
+}
+
+.navbar[data-theme="dark"] .hamburger {
+  background: rgba(30, 27, 75, 0.3);
+  border-color: rgba(167, 139, 250, 0.3);
+}
+
+.hamburger:hover {
+  background: rgba(59, 130, 246, 0.18);
+  transform: scale(1.08) rotate(8deg);
+  box-shadow: 0 5px 20px rgba(59, 130, 246, 0.25);
+}
+
+.navbar[data-theme="dark"] .hamburger:hover {
+  background: rgba(167, 139, 250, 0.25);
+  box-shadow: 0 5px 25px rgba(167, 139, 250, 0.3);
+}
+
+.hamburger-line {
+  width: 30px;
+  height: 3px;
+  background: var(--navbar-hamburger-light);
+  transition: var(--navbar-transition);
+  transform-origin: center;
+  border-radius: 3px;
+  position: relative;
+}
+
+.navbar[data-theme="dark"] .hamburger-line {
+  background: var(--navbar-hamburger-dark);
+}
+
+.hamburger-line::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, 
+    rgba(59, 130, 246, 0.8), 
+    rgba(147, 51, 234, 0.8));
+  border-radius: 3px;
+  opacity: 0;
+  transition: opacity 0.4s var(--navbar-smooth);
+}
+
+.navbar[data-theme="dark"] .hamburger-line::before {
+  background: linear-gradient(90deg, 
+    rgba(167, 139, 250, 0.9), 
+    rgba(196, 181, 253, 0.9));
+}
+
+.hamburger:hover .hamburger-line::before {
+  opacity: 1;
+}
+
+/* Hamburger Animation States */
+.hamburger-line.active:nth-child(1) {
+  transform: rotate(45deg) translate(8px, 8px);
+}
+
+.hamburger-line.active:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.hamburger-line.active:nth-child(3) {
+  transform: rotate(-45deg) translate(8px, -8px);
+}
+
+/* Enhanced Keyframe Animations */
+@keyframes navbarSlideDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-120%) scale(0.95);
+  }
+  60% {
+    opacity: 0.8;
+    transform: translateY(5%) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes navbarAurora {
+  0%, 100% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  25% {
+    opacity: 0.9;
+    transform: scale(1.02);
+  }
+  50% {
+    opacity: 0.95;
+    transform: scale(1.05);
+  }
+  75% {
+    opacity: 0.8;
+    transform: scale(1.01);
+  }
+}
+
+@keyframes magicalFloat {
+  0% {
+    transform: translateX(-180px) translateY(-50%) rotate(0deg) scale(0.8);
+    opacity: 0;
+  }
+  8% {
+    opacity: 0.7;
+    transform: translateX(-120px) translateY(-50%) rotate(20deg) scale(1);
+  }
+  92% {
+    opacity: 0.7;
+    transform: translateX(calc(100vw + 120px)) translateY(-50%) rotate(340deg) scale(1);
+  }
+  100% {
+    transform: translateX(calc(100vw + 180px)) translateY(-50%) rotate(360deg) scale(0.8);
+    opacity: 0;
+  }
+}
+
+@keyframes snowmanFloat {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg) scale(1);
+  }
+  25% {
+    transform: translateY(-8px) rotate(2deg) scale(1.05);
+  }
+  50% {
+    transform: translateY(-12px) rotate(0deg) scale(1.1);
+  }
+  75% {
+    transform: translateY(-6px) rotate(-2deg) scale(1.05);
+  }
+}
+
+@keyframes snowmanTwinkle {
+  0%, 100% {
+    opacity: 0.15;
+    filter: drop-shadow(0 0 15px rgba(147, 197, 253, 0.4));
+  }
+  50% {
+    opacity: 0.25;
+    filter: drop-shadow(0 0 25px rgba(147, 197, 253, 0.6));
+  }
+}
+
+/* Enhanced Mobile Responsive Styles */
+@media (max-width: 1024px) {
+  .navbar::after {
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    right: 6%;
+  }
+  
+  .navbar .snowflake-bg::before {
+    letter-spacing: 15vw;
+    font-size: 0.9rem;
+  }
+  
+  .navbar-container {
+    padding: clamp(0.875rem, 2.2vw, 1.25rem) clamp(1.25rem, 3.5vw, 2rem);
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar-container {
+    padding: clamp(0.875rem, 2.2vw, 1.125rem) clamp(1.25rem, 3.5vw, 1.75rem);
+  }
+
+  .hamburger {
+    display: flex;
+    order: 3;
+  }
+
+  .navbar .theme-toggle {
+    order: 2;
+    margin-left: 0;
+    margin-right: clamp(1.25rem, 2.5vw, 1.75rem);
+  }
+
+  .navbar-links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--navbar-backdrop-light);
+    backdrop-filter: blur(35px) saturate(200%);
+    -webkit-backdrop-filter: blur(35px) saturate(200%);
+    flex-direction: column;
+    padding: clamp(1.75rem, 4.5vw, 2.75rem);
+    gap: clamp(1.25rem, 3.5vw, 1.75rem);
+    border-top: 1px solid var(--navbar-border-light);
+    box-shadow: 0 10px 45px rgba(59, 130, 246, 0.25);
+    transform: translateY(-100%);
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--navbar-transition);
+    z-index: -1;
+    max-height: calc(100vh - 85px);
+    overflow-y: auto;
+  }
+
+  .navbar[data-theme="dark"] .navbar-links {
+    background: var(--navbar-backdrop-dark);
+    border-top-color: var(--navbar-border-dark);
+    box-shadow: 0 10px 50px rgba(167, 139, 250, 0.3);
+  }
+
+  .navbar-links-open {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+    z-index: 5;
+  }
+
+  .nav-link {
+    font-size: clamp(1.125rem, 2.8vw, 1.375rem);
+    padding: clamp(1.125rem, 2.8vw, 1.375rem);
+    text-align: center;
+    width: 100%;
+    border-radius: 1.25rem;
+  }
+
+  .nav-link::after {
+    bottom: 0.6rem;
+  }
+
+  .navbar::after {
+    font-size: clamp(1.8rem, 3.2vw, 2.4rem);
+    right: 5%;
+    top: 20%;
+  }
+}
