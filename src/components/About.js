@@ -3,7 +3,7 @@ import './About.css';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, useGLTF } from '@react-three/drei';
 const SnowmanModel = () => {
-  const { scene } = useGLTF('/models/snow_man.glb');
+  const { scene } = useGLTF(process.env.PUBLIC_URL + '/models/snow_man.glb');
   return <primitive object={scene} />;
 };
 const About = () => {
