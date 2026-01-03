@@ -1,0 +1,429 @@
+/* Premium Reactive Login Page - Snowman Branding */
+
+.login-container {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* ================================
+   REACTIVE BACKGROUND SYSTEM
+   ================================ */
+
+.login-background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.background-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    165deg,
+    hsl(0, 0%, 100%) 0%,
+    hsl(200, 50%, 97%) 30%,
+    hsl(200, 65%, 90%) 60%,
+    hsl(200, 75%, 82%) 100%
+  );
+}
+
+/* Ambient Light - Follows Cursor */
+.ambient-light {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  background: radial-gradient(
+    ellipse 60% 50% at var(--light-x, 50%) var(--light-y, 50%),
+    hsla(200, 90%, 88%, 0.6) 0%,
+    hsla(200, 80%, 92%, 0.3) 30%,
+    transparent 70%
+  );
+  z-index: 1;
+}
+
+.ambient-light.active {
+  opacity: 1;
+}
+
+/* ================================
+   CURSOR LIGHT FIELD (KEY EFFECT)
+   ================================ */
+
+.cursor-light {
+  position: fixed;
+  width: 400px;
+  height: 400px;
+  pointer-events: none;
+  z-index: 2;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(
+    circle,
+    hsla(200, 85%, 92%, 0.5) 0%,
+    hsla(200, 80%, 88%, 0.25) 30%,
+    hsla(200, 70%, 85%, 0.1) 50%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  filter: blur(2px);
+}
+
+.cursor-light.active {
+  opacity: 1;
+}
+
+/* ================================
+   LOGIN CARD - GLASSMORPHISM
+   ================================ */
+
+.login-card {
+  position: relative;
+  z-index: 20;
+  width: 100%;
+  max-width: 380px;
+  margin: 0 24px;
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0.85;
+  transform: translateY(8px);
+}
+
+.login-card.awake {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.login-card.hovered {
+  transform: translateY(-6px);
+}
+
+/* Card outer glow */
+.card-glow {
+  position: absolute;
+  inset: -2px;
+  border-radius: 30px;
+  background: linear-gradient(
+    145deg,
+    hsla(200, 80%, 85%, 0.4) 0%,
+    hsla(200, 70%, 90%, 0.2) 50%,
+    hsla(200, 60%, 92%, 0.3) 100%
+  );
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  z-index: -1;
+  filter: blur(8px);
+}
+
+.login-card.awake .card-glow {
+  opacity: 0.6;
+}
+
+.login-card.hovered .card-glow {
+  opacity: 1;
+}
+
+.login-card-inner {
+  background: linear-gradient(
+    155deg,
+    hsla(0, 0%, 100%, 0.85) 0%,
+    hsla(200, 60%, 97%, 0.7) 50%,
+    hsla(200, 70%, 94%, 0.6) 100%
+  );
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-radius: 28px;
+  border: 1px solid hsla(0, 0%, 100%, 0.7);
+  padding: 48px 40px;
+  box-shadow: 
+    0 25px 50px hsla(200, 50%, 50%, 0.12),
+    0 10px 20px hsla(200, 50%, 60%, 0.08),
+    inset 0 1px 0 hsla(0, 0%, 100%, 0.9),
+    inset 0 -1px 0 hsla(200, 40%, 90%, 0.3);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.login-card.hovered .login-card-inner {
+  box-shadow: 
+    0 35px 70px hsla(200, 50%, 50%, 0.18),
+    0 15px 30px hsla(200, 50%, 60%, 0.1),
+    0 0 60px hsla(200, 70%, 85%, 0.2),
+    inset 0 1px 0 hsla(0, 0%, 100%, 1),
+    inset 0 -1px 0 hsla(200, 40%, 90%, 0.4);
+  border-color: hsla(0, 0%, 100%, 0.9);
+}
+
+/* ================================
+   TYPOGRAPHY
+   ================================ */
+
+.login-title {
+  font-size: 34px;
+  font-weight: 650;
+  color: hsl(210, 45%, 20%);
+  text-align: center;
+  margin: 0 0 10px 0;
+  letter-spacing: -0.8px;
+  line-height: 1.1;
+}
+
+.login-subtitle {
+  font-size: 15px;
+  color: hsl(200, 25%, 50%);
+  text-align: center;
+  margin: 0 0 44px 0;
+  font-weight: 400;
+  letter-spacing: 0.1px;
+}
+
+/* ================================
+   FORM ELEMENTS
+   ================================ */
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.input-group {
+  position: relative;
+}
+
+.login-input {
+  width: 100%;
+  padding: 20px 22px;
+  font-size: 16px;
+  font-weight: 450;
+  color: hsl(210, 40%, 18%);
+  background: hsla(0, 0%, 100%, 0.7);
+  border: 1.5px solid hsla(200, 40%, 88%, 0.6);
+  border-radius: 16px;
+  outline: none;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  box-sizing: border-box;
+}
+
+.login-input:focus {
+  background: hsla(0, 0%, 100%, 0.95);
+  border-color: hsla(200, 70%, 65%, 0.8);
+  box-shadow: 
+    0 0 0 4px hsla(200, 80%, 80%, 0.15),
+    0 8px 25px hsla(200, 50%, 60%, 0.12);
+}
+
+.login-input::placeholder {
+  color: transparent;
+}
+
+.floating-label {
+  position: absolute;
+  left: 22px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  font-weight: 450;
+  color: hsl(200, 20%, 58%);
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.floating-label.active {
+  top: 0;
+  left: 18px;
+  font-size: 12px;
+  font-weight: 550;
+  color: hsl(200, 55%, 45%);
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    hsl(200, 50%, 98%) 45%,
+    hsl(200, 50%, 98%) 100%
+  );
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+/* ================================
+   BUTTON
+   ================================ */
+
+.login-button {
+  position: relative;
+  width: 100%;
+  padding: 20px 32px;
+  margin-top: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  color: hsl(0, 0%, 100%);
+  background: linear-gradient(
+    135deg,
+    hsl(200, 80%, 52%) 0%,
+    hsl(200, 75%, 58%) 50%,
+    hsl(200, 85%, 62%) 100%
+  );
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 
+    0 6px 20px hsla(200, 75%, 45%, 0.35),
+    0 2px 6px hsla(200, 70%, 50%, 0.2),
+    inset 0 1px 0 hsla(0, 0%, 100%, 0.3),
+    inset 0 -1px 0 hsla(200, 40%, 90%, 0.3);
+}
+
+.login-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 
+    0 12px 35px hsla(200, 75%, 45%, 0.5),
+    0 4px 10px hsla(200, 70%, 50%, 0.3),
+    inset 0 1px 0 hsla(0, 0%, 100%, 0.4),
+    inset 0 -1px 0 hsla(200, 40%, 90%, 0.4);
+}
+
+.login-button:active {
+  transform: translateY(-1px);
+}
+
+.login-button span {
+  position: relative;
+  z-index: 1;
+}
+
+.button-glow {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    135deg,
+    transparent 0%,
+    transparent 30%,
+    hsla(0, 0%, 100%, 0.3) 45%,
+    hsla(0, 0%, 100%, 0.5) 50%,
+    hsla(0, 0%, 100%, 0.3) 55%,
+    transparent 70%,
+    transparent 100%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  filter: blur(2px);
+  pointer-events: none;
+}
+
+.button-glow.active {
+  opacity: 1;
+}
+
+/* Diagonal sweep left-to-right (top-left to bottom-right) */
+.button-glow.ltr {
+  animation: buttonGlowDiagonalLTR 0.7s ease-out forwards;
+}
+
+/* Diagonal sweep right-to-left (bottom-right to top-left) */
+.button-glow.rtl {
+  animation: buttonGlowDiagonalRTL 0.7s ease-out forwards;
+}
+
+@keyframes buttonGlowDiagonalLTR {
+  0% {
+    transform: translate(-100%, -100%);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(100%, 100%);
+    opacity: 0;
+  }
+}
+
+@keyframes buttonGlowDiagonalRTL {
+  0% {
+    transform: translate(100%, 100%);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-100%, -100%);
+    opacity: 0;
+  }
+}
+
+/* ================================
+   FOOTER
+   ================================ */
+
+.login-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  margin-top: 36px;
+}
+
+.login-link {
+  font-size: 14px;
+  font-weight: 450;
+  color: hsl(200, 45%, 48%);
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.login-link:hover {
+  color: hsl(200, 60%, 38%);
+}
+
+.login-divider {
+  color: hsl(200, 25%, 75%);
+  font-size: 8px;
+}
+
+/* ================================
+   RESPONSIVE
+   ================================ */
+
+@media (max-width: 520px) {
+  .login-card-inner {
+    padding: 44px 32px;
+    border-radius: 24px;
+  }
+  
+  .login-title {
+    font-size: 28px;
+  }
+  
+  .login-subtitle {
+    font-size: 14px;
+    margin-bottom: 36px;
+  }
+  
+  .login-input {
+    padding: 18px 20px;
+  }
+  
+  .login-button {
+    padding: 18px 28px;
+  }
+  
+  .cursor-light {
+    width: 250px;
+    height: 250px;
+  }
+}
+
+@media (max-width: 380px) {
+  .login-card {
+    margin: 0 16px;
+  }
+  
+  .login-card-inner {
+    padding: 36px 24px;
+  }
+}
