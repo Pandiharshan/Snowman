@@ -17,22 +17,28 @@ const ShineEffect = ({ children, className = '' }: ShineEffectProps) => {
     >
       {children}
       
-      {/* Shine overlay */}
+      {/* Shine effect - thin light band sweep, clipped to card */}
       {isHovered && (
         <motion.div
-          className="absolute inset-0 pointer-events-none rounded-inherit"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
+          className="absolute inset-0 pointer-events-none rounded-3xl overflow-hidden"
+          style={{
+            zIndex: 20,
+          }}
         >
           <motion.div
-            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
-            initial={{ x: '-100%' }}
-            animate={{ x: '100%' }}
-            transition={{ duration: 0.6, ease: 'easeOut' }}
+            className="absolute"
             style={{
-              transform: 'skewX(-20deg)',
+              top: '-50%',
+              left: '-50%',
+              width: '200%',
+              height: '200%',
+              background: 'linear-gradient(135deg, transparent 0%, transparent 30%, hsla(0, 0%, 100%, 0.3) 45%, hsla(0, 0%, 100%, 0.5) 50%, hsla(0, 0%, 100%, 0.3) 55%, transparent 70%, transparent 100%)',
+              filter: 'blur(2px)',
             }}
+            initial={{ transform: 'translate(-100%, -100%)', opacity: 0 }}
+            animate={{ transform: 'translate(100%, 100%)', opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.7, ease: 'easeOut' }}
           />
         </motion.div>
       )}

@@ -67,19 +67,22 @@ const FeedbackSection = () => {
 
         <motion.form
           onSubmit={handleSubmit}
-          className="relative p-8 md:p-12 rounded-3xl backdrop-blur-xl border border-slate-200/50 dark:border-slate-700/50"
-          style={{
-            background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.4) 100%)',
-          }}
+          className="relative p-8 md:p-12 rounded-3xl bg-white/80 dark:bg-slate-800/60 backdrop-blur-xl border border-slate-200/50 dark:border-slate-700/50 group transition-all duration-500"
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.2 }}
+          whileHover={{ 
+            y: -8,
+            boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.15)',
+          }}
         >
-          {/* Glass overlay for dark mode */}
-          <div className="absolute inset-0 rounded-3xl bg-slate-800/60 dark:block hidden backdrop-blur-xl" style={{ zIndex: -1 }} />
-
-          <div className="grid md:grid-cols-2 gap-6 mb-6">
+          {/* Color glow effect on hover - matching CTA cards */}
+          <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-sky-500 to-blue-600 opacity-0 group-hover:opacity-15 transition-opacity duration-500" />
+          
+          {/* Content wrapper */}
+          <div className="relative z-10">
+            <div className="grid md:grid-cols-2 gap-6 mb-6">
             {/* Name Field */}
             <motion.div
               className="relative"
@@ -88,11 +91,11 @@ const FeedbackSection = () => {
               viewport={{ once: true }}
               transition={{ delay: 0.3 }}
             >
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+              <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">
                 Name
               </label>
               <div className="relative">
-                <User className={`absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 transition-colors duration-300 ${focusedField === 'name' ? 'text-sky-500' : 'text-slate-400'}`} />
+                <User className={`absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 transition-colors duration-300 ${focusedField === 'name' ? 'text-sky-500' : 'text-slate-800 dark:text-slate-300'}`} />
                 <input
                   type="text"
                   name="name"
@@ -102,7 +105,7 @@ const FeedbackSection = () => {
                   onBlur={() => setFocusedField(null)}
                   placeholder="Your name"
                   required
-                  className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white/80 dark:bg-slate-900/50 border-2 border-slate-200 dark:border-slate-700 text-slate-800 dark:text-white placeholder:text-slate-400 focus:border-sky-400 dark:focus:border-sky-500 focus:outline-none transition-all duration-300"
+                  className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white/40 dark:bg-slate-700/50 border-2 border-slate-300/60 dark:border-slate-600/60 text-slate-800 dark:text-white placeholder:text-slate-500 dark:placeholder:text-slate-400 focus:border-sky-400 dark:focus:border-sky-400 focus:outline-none transition-all duration-300 backdrop-blur-sm"
                 />
               </div>
             </motion.div>
@@ -115,11 +118,11 @@ const FeedbackSection = () => {
               viewport={{ once: true }}
               transition={{ delay: 0.4 }}
             >
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+              <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">
                 Email
               </label>
               <div className="relative">
-                <Mail className={`absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 transition-colors duration-300 ${focusedField === 'email' ? 'text-sky-500' : 'text-slate-400'}`} />
+                <Mail className={`absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 transition-colors duration-300 ${focusedField === 'email' ? 'text-sky-500' : 'text-slate-800 dark:text-slate-300'}`} />
                 <input
                   type="email"
                   name="email"
@@ -129,11 +132,11 @@ const FeedbackSection = () => {
                   onBlur={() => setFocusedField(null)}
                   placeholder="your@email.com"
                   required
-                  className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white/80 dark:bg-slate-900/50 border-2 border-slate-200 dark:border-slate-700 text-slate-800 dark:text-white placeholder:text-slate-400 focus:border-sky-400 dark:focus:border-sky-500 focus:outline-none transition-all duration-300"
+                  className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white/40 dark:bg-slate-700/50 border-2 border-slate-300/60 dark:border-slate-600/60 text-slate-800 dark:text-white placeholder:text-slate-500 dark:placeholder:text-slate-400 focus:border-sky-400 dark:focus:border-sky-400 focus:outline-none transition-all duration-300 backdrop-blur-sm"
                 />
               </div>
             </motion.div>
-          </div>
+            </div>
 
           {/* Message Field */}
           <motion.div
@@ -143,11 +146,11 @@ const FeedbackSection = () => {
             viewport={{ once: true }}
             transition={{ delay: 0.5 }}
           >
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">
               Message
             </label>
             <div className="relative">
-              <MessageSquare className={`absolute left-4 top-4 w-5 h-5 transition-colors duration-300 ${focusedField === 'message' ? 'text-sky-500' : 'text-slate-400'}`} />
+              <MessageSquare className={`absolute left-4 top-4 w-5 h-5 transition-colors duration-300 ${focusedField === 'message' ? 'text-sky-500' : 'text-slate-800 dark:text-slate-300'}`} />
               <textarea
                 name="message"
                 value={formData.message}
@@ -157,7 +160,7 @@ const FeedbackSection = () => {
                 placeholder="Share your thoughts, suggestions, or feedback..."
                 required
                 rows={5}
-                className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white/80 dark:bg-slate-900/50 border-2 border-slate-200 dark:border-slate-700 text-slate-800 dark:text-white placeholder:text-slate-400 focus:border-sky-400 dark:focus:border-sky-500 focus:outline-none transition-all duration-300 resize-none"
+                className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white/60 dark:bg-slate-700/50 border-2 border-slate-300/60 dark:border-slate-600/60 text-slate-800 dark:text-white placeholder:text-slate-500 dark:placeholder:text-slate-400 focus:border-sky-400 dark:focus:border-sky-400 focus:outline-none transition-all duration-300 resize-none backdrop-blur-sm"
               />
             </div>
           </motion.div>
@@ -188,6 +191,7 @@ const FeedbackSection = () => {
               )}
             </motion.button>
           </ShineEffect>
+          </div>
         </motion.form>
       </div>
     </section>

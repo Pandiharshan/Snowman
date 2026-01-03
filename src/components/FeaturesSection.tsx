@@ -83,8 +83,8 @@ const FeaturesSection = () => {
                 transition={{ delay: index * 0.1, duration: 0.6 }}
                 whileHover={{ y: -5, transition: { duration: 0.3 } }}
               >
-                {/* Glow effect on hover */}
-                <div className={`absolute inset-0 rounded-3xl bg-gradient-to-r ${feature.gradient} opacity-0 group-hover:opacity-10 dark:group-hover:opacity-5 transition-opacity duration-500`} />
+                {/* Glow effect on hover - color only visible on hover */}
+                <div className={`absolute inset-0 rounded-3xl bg-gradient-to-r ${feature.gradient} opacity-0 group-hover:opacity-15 transition-opacity duration-500`} />
                 
                 <motion.div
                   className={`w-14 h-14 rounded-2xl bg-gradient-to-r ${feature.gradient} flex items-center justify-center mb-5 shadow-lg`}

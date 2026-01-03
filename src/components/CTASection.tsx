@@ -63,12 +63,17 @@ const CTASection = () => {
               transition={{ delay: index * 0.15, duration: 0.7 }}
             >
               <motion.div
-                className="h-full p-8 rounded-3xl bg-white/80 dark:bg-slate-800/60 backdrop-blur-xl border border-slate-200/50 dark:border-slate-700/50 flex flex-col items-center text-center transition-all duration-500"
+                className="h-full p-8 rounded-3xl bg-white/80 dark:bg-slate-800/60 backdrop-blur-xl border border-slate-200/50 dark:border-slate-700/50 flex flex-col items-center text-center transition-all duration-500 relative"
                 whileHover={{ 
                   y: -8,
                   boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.15)',
                 }}
               >
+                {/* Color glow effect on hover - same as feature cards */}
+                <div className={`absolute inset-0 rounded-3xl bg-gradient-to-r ${card.gradient} opacity-0 group-hover:opacity-15 transition-opacity duration-500`} />
+                
+                {/* Content wrapper with relative z-index */}
+                <div className="relative z-10 w-full flex flex-col items-center h-full">
                 {/* Icon */}
                 <motion.div
                   className={`w-20 h-20 rounded-3xl bg-gradient-to-r ${card.gradient} flex items-center justify-center mb-6 shadow-xl ${card.shadowColor}`}
@@ -101,6 +106,7 @@ const CTASection = () => {
                     </motion.span>
                   </motion.button>
                 </ShineEffect>
+                </div>
               </motion.div>
             </motion.div>
           ))}
