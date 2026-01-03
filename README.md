@@ -2,7 +2,7 @@
 
 > A modern, fully-featured web application showcasing cutting-edge web technologies and premium UI/UX design.
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-Visit%20Now-blue?style=for-the-badge)](https://snowman-demo.vercel.app)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Visit%20Now-blue?style=for-the-badge)](https://pandiharshan.github.io/Snowman)
 [![GitHub](https://img.shields.io/badge/GitHub-Repository-black?style=for-the-badge)](https://github.com/Pandiharshan/Snowman)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 
@@ -46,7 +46,7 @@
 
 ## 🎬 Live Demo
 
-**[🌐 Visit Snowman Live Demo](https://snowman-demo.vercel.app)**
+**[🌐 Visit Snowman Live Demo](https://pandiharshan.github.io/Snowman)**
 
 Experience the premium login page with:
 - Cursor-reactive ambient lighting
