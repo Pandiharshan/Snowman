@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef, FormEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
 import './Login.css';
 
 const Login = () => {
@@ -12,6 +14,8 @@ const Login = () => {
   const [isButtonHovered, setIsButtonHovered] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const navigate = useNavigate();
+  const { login } = useAuth();
 
   // Single mouse listener for cursor-reactive ambient light
   useEffect(() => {
@@ -57,8 +61,10 @@ const Login = () => {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    console.log('Login attempt:', { email, password });
-    // TODO: Integrate with authentication service
+    // Extract username from email (part before @)
+    const username = email.split('@')[0];
+    login(username);
+    navigate('/home');
   };
 
   // Calculate ambient light position based on cursor
