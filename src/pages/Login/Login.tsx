@@ -6,6 +6,7 @@ import './Login.css';
 const Login = () => {
   const [mousePos, setMousePos] = useState({ x: 0.5, y: 0.5 });
   const [isPageActive, setIsPageActive] = useState(false);
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [focusedField, setFocusedField] = useState<string | null>(null);
@@ -61,9 +62,8 @@ const Login = () => {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    // Extract username from email (part before @)
-    const username = email.split('@')[0];
-    login(username);
+    // Use the name entered by user
+    login(name);
     navigate('/home');
   };
 
@@ -106,6 +106,25 @@ const Login = () => {
           <p className="login-subtitle">Sign in to start the journey</p>
           
           <form onSubmit={handleSubmit} className="login-form">
+            <div className="input-group">
+              <input
+                type="text"
+                id="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                onFocus={() => setFocusedField('name')}
+                onBlur={() => setFocusedField(null)}
+                className="login-input"
+                required
+              />
+              <label 
+                htmlFor="name" 
+                className={`floating-label ${name || focusedField === 'name' ? 'active' : ''}`}
+              >
+                Name
+              </label>
+            </div>
+
             <div className="input-group">
               <input
                 type="email"
