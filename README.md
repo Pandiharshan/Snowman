@@ -2,7 +2,7 @@
 
 > A modern, fully-featured web application showcasing cutting-edge web technologies and premium UI/UX design.
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-Visit%20Now-brightgreen?style=for-the-badge)](https://pandiharshan.github.io/Snowman/)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Visit%20Now-brightgreen?style=for-the-badge)](https://snowman-zeta.vercel.app/login)
 [![GitHub](https://img.shields.io/badge/GitHub-Repository-black?style=for-the-badge)](https://github.com/Pandiharshan/Snowman)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 
@@ -46,7 +46,7 @@
 
 ## 🎬 Live Demo
 
-**[🌐 Visit Snowman Live Demo](https://pandiharshan.github.io/Snowman/)**
+**[🌐 Visit Snowman Live Demo](https://snowman-zeta.vercel.app/login)**
 
 Experience the premium login page with:
 - Cursor-reactive ambient lighting
@@ -377,7 +377,7 @@ This project demonstrates:
 - React Router (routing)
 - React Query (data fetching)
 
-**[🌐 View Live Demo](https://pandiharshan.github.io/Snowman/)** | **[📖 Read Documentation](./START_HERE.md)** | **[🏗️ Architecture Guide](./ARCHITECTURE.md)**
+**[🌐 View Live Demo](https://snowman-zeta.vercel.app/login)** | **[📖 Read Documentation](./START_HERE.md)** | **[🏗️ Architecture Guide](./ARCHITECTURE.md)**
 
 ---
 
