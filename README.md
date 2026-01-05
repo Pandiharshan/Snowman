@@ -54,6 +54,96 @@ Experience the premium login page with:
 - Diagonal shine effects on button hover
 - Smooth, responsive interactions
 
+## 🚀 Deployment
+
+### Live Deployments
+- **GitHub Pages:** [https://pandiharshan.github.io/Snowman/](https://pandiharshan.github.io/Snowman/)
+- **Vercel:** Deploy your own version (see instructions below)
+
+### Quick Deploy to Vercel
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FPandiharshan%2FSnowman&project-name=snowman&repository-name=Snowman)
+
+Or follow these steps:
+
+1. **Fork this repository** on GitHub
+2. **Go to [vercel.com](https://vercel.com)** and sign up (free)
+3. **Click "New Project"** → **"Import Git Repository"**
+4. **Select your forked repository**
+5. **Vercel will auto-detect Vite** - just click **"Deploy"**
+
+**⚠️ Important:** Update `vite.config.ts` before deploying:
+```typescript
+// For Vercel (root domain):
+base: "/"
+
+// For GitHub Pages (subdirectory):
+base: "/Snowman/"
+```
+
+For detailed deployment instructions, see [DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md)
+
+## 📖 Getting Started
+
+### Prerequisites
+- Node.js 18+ ([Download](https://nodejs.org/))
+- npm or yarn
+
+### Local Development
+
+**1. Clone the repository:**
+```bash
+git clone https://github.com/Pandiharshan/Snowman.git
+cd Snowman
+```
+
+**2. Install dependencies:**
+```bash
+npm install
+```
+
+**3. Start development server:**
+```bash
+npm run dev
+```
+
+Visit: http://localhost:5174/Snowman/
+
+**4. Build for production:**
+```bash
+npm run build
+```
+
+**5. Preview production build:**
+```bash
+npm run preview
+```
+
+Visit: http://localhost:4173/Snowman/
+
+### Available Scripts
+
+```bash
+npm run dev       # Start development server with HMR
+npm run build     # Build for production
+npm run build:dev # Build in development mode
+npm run preview   # Preview production build locally
+npm run lint      # Run ESLint to check code quality
+```
+
+### Environment Variables
+
+No environment variables are required for basic deployment.
+
+If you add API endpoints, create `.env.local`:
+```
+VITE_API_URL=https://api.example.com
+```
+
+Then add to Vercel dashboard:
+- Project Settings → Environment Variables
+- Add `VITE_API_URL` with your value
+
 ## 📁 Project Structure
 
 ```
