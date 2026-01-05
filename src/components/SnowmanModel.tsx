@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { useGLTF, Environment, ContactShadows } from '@react-three/drei';
 import * as THREE from 'three';
@@ -61,14 +61,15 @@ const Model = ({ mousePosition }: ModelProps) => {
   );
 };
 
-const SnowmanModel = () => {
+const SnowmanModel = React.memo(() => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const lastMousePos = useRef({ x: 0, y: 0 });
+  const throttleRef = useRef(false);
 
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!containerRef.current) return;
+  const handleMouseMove = useCallback((e: React.MouseEvent) => {
+    if (!containerRef.current || !throttleRef.current) return;
     
     const rect = containerRef.current.getBoundingClientRect();
     const x = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
@@ -86,21 +87,29 @@ const SnowmanModel = () => {
     }
     
     lastMousePos.current = { x: e.clientX, y: e.clientY };
-  };
+    throttleRef.current = false;
+  }, [isDragging]);
 
-  const handleMouseDown = (e: React.MouseEvent) => {
+  // Throttle mouse move with requestAnimationFrame
+  const handleMouseMoveThrottled = useCallback((e: React.MouseEvent) => {
+    if (throttleRef.current) return;
+    throttleRef.current = true;
+    requestAnimationFrame(() => handleMouseMove(e));
+  }, [handleMouseMove]);
+
+  const handleMouseDown = useCallback((e: React.MouseEvent) => {
     setIsDragging(true);
     lastMousePos.current = { x: e.clientX, y: e.clientY };
-  };
+  }, []);
 
-  const handleMouseUp = () => {
+  const handleMouseUp = useCallback(() => {
     setIsDragging(false);
-  };
+  }, []);
 
-  const handleMouseLeave = () => {
+  const handleMouseLeave = useCallback(() => {
     setIsDragging(false);
     setMousePosition({ x: 0, y: 0 });
-  };
+  }, []);
 
   return (
     <motion.div
@@ -109,15 +118,16 @@ const SnowmanModel = () => {
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 1, ease: [0.25, 0.46, 0.45, 0.94] }}
-      onMouseMove={handleMouseMove}
+      onMouseMove={handleMouseMoveThrottled}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseLeave}
+      style={{ willChange: 'transform' }}
     >
       <Canvas
         shadows
         camera={{ position: [0, 1, 5.5], fov: 50 }}
-        gl={{ antialias: true, alpha: true }}
+        gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
       >
         <ambientLight intensity={0.6} />
         <directionalLight
@@ -142,6 +152,8 @@ const SnowmanModel = () => {
       </Canvas>
     </motion.div>
   );
-};
+});
+
+SnowmanModel.displayName = 'SnowmanModel';
 
 export default SnowmanModel;

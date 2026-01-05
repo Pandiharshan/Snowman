@@ -81,7 +81,10 @@ const FeaturesSection = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1, duration: 0.6 }}
-                whileHover={{ y: -5, transition: { duration: 0.3 } }}
+                whileHover={{ 
+                  y: -8,
+                  boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.15)',
+                }}
               >
                 {/* Glow effect on hover - color only visible on hover */}
                 <div className={`absolute inset-0 rounded-3xl bg-gradient-to-r ${feature.gradient} opacity-0 group-hover:opacity-15 transition-opacity duration-500`} />

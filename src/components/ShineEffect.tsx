@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
 
 interface ShineEffectProps {
@@ -6,14 +6,17 @@ interface ShineEffectProps {
   className?: string;
 }
 
-const ShineEffect = ({ children, className = '' }: ShineEffectProps) => {
+const ShineEffect = React.memo(({ children, className = '' }: ShineEffectProps) => {
   const [isHovered, setIsHovered] = useState(false);
+
+  const handleMouseEnter = useCallback(() => setIsHovered(true), []);
+  const handleMouseLeave = useCallback(() => setIsHovered(false), []);
 
   return (
     <div
       className={`relative ${className}`}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       {children}
       
@@ -34,6 +37,7 @@ const ShineEffect = ({ children, className = '' }: ShineEffectProps) => {
               height: '200%',
               background: 'linear-gradient(135deg, transparent 0%, transparent 30%, hsla(0, 0%, 100%, 0.3) 45%, hsla(0, 0%, 100%, 0.5) 50%, hsla(0, 0%, 100%, 0.3) 55%, transparent 70%, transparent 100%)',
               filter: 'blur(2px)',
+              willChange: 'transform',
             }}
             initial={{ transform: 'translate(-100%, -100%)', opacity: 0 }}
             animate={{ transform: 'translate(100%, 100%)', opacity: 1 }}
@@ -44,6 +48,8 @@ const ShineEffect = ({ children, className = '' }: ShineEffectProps) => {
       )}
     </div>
   );
-};
+});
+
+ShineEffect.displayName = 'ShineEffect';
 
 export default ShineEffect;

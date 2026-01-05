@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { useAuth } from '@/contexts/AuthContext';
 import { useTheme } from '@/contexts/ThemeContext';
@@ -6,28 +6,38 @@ import ThemeToggle from './ThemeToggle';
 import { LogOut, Snowflake } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-const Navbar = () => {
+const Navbar = React.memo(() => {
   const { username, logout } = useAuth();
   const { isDark } = useTheme();
   const navigate = useNavigate();
   const [isHovered, setIsHovered] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
+  // Throttled scroll handler
   useEffect(() => {
+    let ticking = false;
+    
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setScrolled(window.scrollY > 20);
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
-    window.addEventListener('scroll', handleScroll);
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleLogout = () => {
+  const handleLogout = useCallback(() => {
     logout();
     navigate('/login');
-  };
+  }, [logout, navigate]);
 
-  // Dynamic glass styles based on theme and hover
-  const getGlassBackground = () => {
+  // Memoize glass background calculation
+  const glassBackground = useMemo(() => {
     if (isDark) {
       return isHovered 
         ? 'rgba(30, 41, 59, 0.9)' 
@@ -36,7 +46,21 @@ const Navbar = () => {
     return isHovered 
       ? 'rgba(255, 255, 255, 0.9)' 
       : 'rgba(255, 255, 255, 0.4)';
-  };
+  }, [isDark, isHovered]);
+
+  // Memoize shadow style
+  const shadowStyle = useMemo(() => ({
+    boxShadow: scrolled 
+      ? '0 8px 32px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08)' 
+      : '0 4px 16px rgba(0, 0, 0, 0.06)',
+  }), [scrolled]);
+
+  // Memoize border style
+  const borderStyle = useMemo(() => ({
+    border: isDark 
+      ? '1px solid rgba(148, 163, 184, 0.1)' 
+      : '1px solid rgba(255, 255, 255, 0.5)',
+  }), [isDark]);
 
   return (
     <motion.nav
@@ -52,13 +76,10 @@ const Navbar = () => {
         style={{
           backdropFilter: isHovered ? 'blur(20px) saturate(180%)' : 'blur(8px) saturate(120%)',
           WebkitBackdropFilter: isHovered ? 'blur(20px) saturate(180%)' : 'blur(8px) saturate(120%)',
-          background: getGlassBackground(),
-          boxShadow: scrolled 
-            ? '0 8px 32px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08)' 
-            : '0 4px 16px rgba(0, 0, 0, 0.06)',
-          border: isDark 
-            ? '1px solid rgba(148, 163, 184, 0.1)' 
-            : '1px solid rgba(255, 255, 255, 0.5)',
+          background: glassBackground,
+          ...shadowStyle,
+          ...borderStyle,
+          willChange: 'background, box-shadow',
         }}
       >
         <div className="flex items-center justify-between">
@@ -71,6 +92,7 @@ const Navbar = () => {
             <motion.div
               animate={{ rotate: [0, 10, -10, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              style={{ willChange: 'transform' }}
             >
               <Snowflake className="w-8 h-8 text-sky-500 dark:text-sky-400" />
             </motion.div>
@@ -97,6 +119,7 @@ const Navbar = () => {
                   initial={{ scaleX: 0 }}
                   whileHover={{ scaleX: 1 }}
                   transition={{ duration: 0.3 }}
+                  style={{ willChange: 'transform' }}
                 />
               </motion.a>
             ))}
@@ -131,6 +154,8 @@ const Navbar = () => {
       </motion.div>
     </motion.nav>
   );
-};
+});
+
+Navbar.displayName = 'Navbar';
 
 export default Navbar;

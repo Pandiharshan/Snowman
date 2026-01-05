@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import SnowmanModel from './SnowmanModel';
 import ShineEffect from './ShineEffect';
@@ -8,7 +8,37 @@ interface HeroSectionProps {
   username: string | null;
 }
 
+// Memoized snow particle component
+const SnowParticle = React.memo(({ index }: { index: number }) => (
+  <motion.div
+    className="absolute w-2 h-2 bg-white/60 dark:bg-white/20 rounded-full"
+    initial={{
+      x: Math.random() * (typeof window !== 'undefined' ? window.innerWidth : 1000),
+      y: -20,
+    }}
+    animate={{
+      y: typeof window !== 'undefined' ? window.innerHeight + 20 : 1000,
+      x: `+=${Math.sin(index) * 100}`,
+    }}
+    transition={{
+      duration: 8 + Math.random() * 4,
+      repeat: Infinity,
+      delay: Math.random() * 5,
+      ease: "linear",
+    }}
+    style={{
+      filter: 'blur(1px)',
+      willChange: 'transform',
+    }}
+  />
+));
+
+SnowParticle.displayName = 'SnowParticle';
+
 const HeroSection = ({ username }: HeroSectionProps) => {
+  // Memoize particle array to prevent recreation
+  const particles = useMemo(() => [...Array(30)].map((_, i) => i), []);
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
       {/* Background gradient */}
@@ -16,28 +46,8 @@ const HeroSection = ({ username }: HeroSectionProps) => {
       
       {/* Animated snow particles */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(30)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-2 h-2 bg-white/60 dark:bg-white/20 rounded-full"
-            initial={{
-              x: Math.random() * (typeof window !== 'undefined' ? window.innerWidth : 1000),
-              y: -20,
-            }}
-            animate={{
-              y: typeof window !== 'undefined' ? window.innerHeight + 20 : 1000,
-              x: `+=${Math.sin(i) * 100}`,
-            }}
-            transition={{
-              duration: 8 + Math.random() * 4,
-              repeat: Infinity,
-              delay: Math.random() * 5,
-              ease: "linear",
-            }}
-            style={{
-              filter: 'blur(1px)',
-            }}
-          />
+        {particles.map((i) => (
+          <SnowParticle key={i} index={i} />
         ))}
       </div>
 
