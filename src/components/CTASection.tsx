@@ -30,16 +30,16 @@ const ctaCards = [
   },
 ];
 
-const CTASection = () => {
+const CTASection = React.memo(() => {
   return (
-    <section id="about" className="py-24 px-4 bg-gradient-to-b from-white to-sky-50/50 dark:from-slate-900 dark:to-slate-800 transition-colors duration-700">
+    <section id="about" className="py-24 px-4 bg-gradient-to-b from-white to-sky-50/50 dark:bg-none transition-colors duration-700">
       <div className="max-w-7xl mx-auto">
         <motion.div
           className="text-center mb-16"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
         >
           <h2 className="text-3xl md:text-5xl font-bold text-slate-800 dark:text-white mb-4">
             Ready to{' '}
@@ -60,14 +60,16 @@ const CTASection = () => {
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: index * 0.15, duration: 0.7 }}
+              transition={{ delay: index * 0.15, duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
             >
               <motion.div
-                className="h-full p-8 rounded-3xl bg-white/80 dark:bg-slate-800/60 backdrop-blur-xl border border-slate-200/50 dark:border-slate-700/50 flex flex-col items-center text-center transition-all duration-500 relative"
+                className="h-full p-8 rounded-3xl bg-white/80 dark:bg-white/5 backdrop-blur-xl border border-slate-200/50 dark:border-slate-700/30 flex flex-col items-center text-center transition-all duration-500 relative"
                 whileHover={{ 
                   y: -8,
                   boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.15)',
+                  transition: { type: 'spring', stiffness: 400, damping: 25 }
                 }}
+                style={{ willChange: 'transform' }}
               >
                 {/* Color glow effect on hover - same as feature cards */}
                 <div className={`absolute inset-0 rounded-3xl bg-gradient-to-r ${card.gradient} opacity-0 group-hover:opacity-15 transition-opacity duration-500`} />
@@ -95,6 +97,7 @@ const CTASection = () => {
                     className={`w-full py-4 px-6 rounded-2xl bg-gradient-to-r ${card.gradient} text-white font-semibold flex items-center justify-center gap-2 shadow-lg ${card.shadowColor} hover:shadow-xl transition-shadow duration-300`}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
+                    transition={{ type: 'spring', stiffness: 400, damping: 25 }}
                   >
                     {card.buttonText}
                     <motion.span
@@ -114,6 +117,8 @@ const CTASection = () => {
       </div>
     </section>
   );
-};
+});
+
+CTASection.displayName = 'CTASection';
 
 export default CTASection;

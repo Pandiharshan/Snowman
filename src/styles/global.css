@@ -54,42 +54,42 @@
   }
 
   .dark {
-    /* Dark Mode - Midnight Snow */
-    --background: 210 40% 10%;
+    /* Dark Mode - Deep Black */
+    --background: 0 0% 0%;
     --foreground: 210 40% 98%;
 
-    --card: 210 40% 15%;
+    --card: 0 0% 5%;
     --card-foreground: 210 40% 98%;
 
-    --popover: 210 40% 15%;
+    --popover: 0 0% 5%;
     --popover-foreground: 210 40% 98%;
 
     --primary: 200 85% 65%;
-    --primary-foreground: 210 40% 10%;
+    --primary-foreground: 0 0% 0%;
 
-    --secondary: 210 40% 20%;
+    --secondary: 0 0% 8%;
     --secondary-foreground: 210 40% 98%;
 
-    --muted: 210 40% 20%;
+    --muted: 0 0% 8%;
     --muted-foreground: 215 20.2% 65.1%;
 
     --accent: 200 90% 70%;
-    --accent-foreground: 210 40% 10%;
+    --accent-foreground: 0 0% 0%;
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 210 40% 20%;
-    --input: 210 40% 20%;
+    --border: 0 0% 10%;
+    --input: 0 0% 8%;
     --ring: 200 85% 65%;
 
-    --sidebar-background: 210 40% 10%;
+    --sidebar-background: 0 0% 0%;
     --sidebar-foreground: 210 40% 98%;
     --sidebar-primary: 200 85% 65%;
-    --sidebar-primary-foreground: 210 40% 10%;
-    --sidebar-accent: 210 40% 20%;
+    --sidebar-primary-foreground: 0 0% 0%;
+    --sidebar-accent: 0 0% 8%;
     --sidebar-accent-foreground: 210 40% 98%;
-    --sidebar-border: 210 40% 20%;
+    --sidebar-border: 0 0% 10%;
     --sidebar-ring: 200 85% 65%;
   }
 }
@@ -101,6 +101,26 @@
 
   body {
     @apply bg-background text-foreground;
+    /* Smooth scrolling */
+    scroll-behavior: smooth;
+    /* Performance optimization */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Dark mode - ONE continuous vertical gradient (Deep Black) */
+  .dark body {
+    background: linear-gradient(180deg, hsl(0, 0%, 3%) 0%, hsl(0, 0%, 1%) 40%, hsl(0, 0%, 0%) 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+  }
+
+  /* GPU acceleration for animations */
+  *[class*="animate-"],
+  *[class*="motion-"] {
+    will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
   }
 }
 

@@ -19,6 +19,7 @@
   position: absolute;
   inset: 0;
   z-index: 0;
+  will-change: background;
 }
 
 .background-gradient {
@@ -31,6 +32,12 @@
     hsl(200, 65%, 90%) 60%,
     hsl(200, 75%, 82%) 100%
   );
+  transition: background 0.7s ease;
+}
+
+/* Dark mode - Deep black gradient (uses body gradient) */
+.dark .background-gradient {
+  background: transparent;
 }
 
 /* Ambient Light - Follows Cursor */
@@ -46,6 +53,16 @@
     transparent 70%
   );
   z-index: 1;
+  will-change: opacity;
+}
+
+.dark .ambient-light {
+  background: radial-gradient(
+    ellipse 60% 50% at var(--light-x, 50%) var(--light-y, 50%),
+    hsla(200, 70%, 40%, 0.12) 0%,
+    hsla(200, 60%, 50%, 0.06) 30%,
+    transparent 70%
+  );
 }
 
 .ambient-light.active {
@@ -73,6 +90,17 @@
   opacity: 0;
   transition: opacity 0.6s ease;
   filter: blur(2px);
+  will-change: transform, opacity;
+}
+
+.dark .cursor-light {
+  background: radial-gradient(
+    circle,
+    hsla(200, 70%, 50%, 0.15) 0%,
+    hsla(200, 60%, 45%, 0.08) 30%,
+    hsla(200, 50%, 40%, 0.04) 50%,
+    transparent 70%
+  );
 }
 
 .cursor-light.active {
@@ -92,6 +120,7 @@
   transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   opacity: 0.85;
   transform: translateY(8px);
+  will-change: transform, opacity;
 }
 
 .login-card.awake {
@@ -118,6 +147,16 @@
   transition: opacity 0.6s ease;
   z-index: -1;
   filter: blur(8px);
+  will-change: opacity;
+}
+
+.dark .card-glow {
+  background: linear-gradient(
+    145deg,
+    hsla(200, 70%, 50%, 0.15) 0%,
+    hsla(200, 60%, 55%, 0.08) 50%,
+    hsla(200, 50%, 60%, 0.12) 100%
+  );
 }
 
 .login-card.awake .card-glow {
@@ -146,6 +185,22 @@
     inset 0 1px 0 hsla(0, 0%, 100%, 0.9),
     inset 0 -1px 0 hsla(200, 40%, 90%, 0.3);
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: box-shadow, border-color;
+}
+
+.dark .login-card-inner {
+  background: linear-gradient(
+    155deg,
+    hsla(220, 30%, 8%, 0.9) 0%,
+    hsla(220, 30%, 6%, 0.85) 50%,
+    hsla(220, 30%, 4%, 0.8) 100%
+  );
+  border: 1px solid hsla(220, 30%, 15%, 0.7);
+  box-shadow: 
+    0 25px 50px hsla(0, 0%, 0%, 0.6),
+    0 10px 20px hsla(0, 0%, 0%, 0.4),
+    inset 0 1px 0 hsla(220, 30%, 15%, 0.5),
+    inset 0 -1px 0 hsla(220, 30%, 2%, 0.3);
 }
 
 .login-card.hovered .login-card-inner {
@@ -156,6 +211,16 @@
     inset 0 1px 0 hsla(0, 0%, 100%, 1),
     inset 0 -1px 0 hsla(200, 40%, 90%, 0.4);
   border-color: hsla(0, 0%, 100%, 0.9);
+}
+
+.dark .login-card.hovered .login-card-inner {
+  box-shadow: 
+    0 35px 70px hsla(0, 0%, 0%, 0.7),
+    0 15px 30px hsla(0, 0%, 0%, 0.5),
+    0 0 60px hsla(200, 70%, 50%, 0.12),
+    inset 0 1px 0 hsla(220, 30%, 20%, 0.7),
+    inset 0 -1px 0 hsla(220, 30%, 2%, 0.4);
+  border-color: hsla(220, 30%, 20%, 0.9);
 }
 
 /* ================================
@@ -172,6 +237,10 @@
   line-height: 1.1;
 }
 
+.dark .login-title {
+  color: hsl(210, 40%, 98%);
+}
+
 .login-subtitle {
   font-size: 15px;
   color: hsl(200, 25%, 50%);
@@ -179,6 +248,10 @@
   margin: 0 0 44px 0;
   font-weight: 400;
   letter-spacing: 0.1px;
+}
+
+.dark .login-subtitle {
+  color: hsl(200, 20%, 65%);
 }
 
 /* ================================
@@ -207,6 +280,13 @@
   outline: none;
   transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   box-sizing: border-box;
+  will-change: border-color, box-shadow;
+}
+
+.dark .login-input {
+  color: hsl(210, 40%, 98%);
+  background: hsla(220, 30%, 10%, 0.7);
+  border: 1.5px solid hsla(220, 30%, 20%, 0.6);
 }
 
 .login-input:focus {
@@ -215,6 +295,14 @@
   box-shadow: 
     0 0 0 4px hsla(200, 80%, 80%, 0.15),
     0 8px 25px hsla(200, 50%, 60%, 0.12);
+}
+
+.dark .login-input:focus {
+  background: hsla(220, 30%, 12%, 0.95);
+  border-color: hsla(200, 70%, 55%, 0.8);
+  box-shadow: 
+    0 0 0 4px hsla(200, 70%, 50%, 0.08),
+    0 8px 25px hsla(200, 50%, 40%, 0.15);
 }
 
 .login-input::placeholder {
@@ -231,6 +319,11 @@
   color: hsl(200, 20%, 58%);
   pointer-events: none;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, font-size;
+}
+
+.dark .floating-label {
+  color: hsl(200, 15%, 60%);
 }
 
 .floating-label.active {
@@ -247,6 +340,16 @@
   );
   padding: 2px 8px;
   border-radius: 4px;
+}
+
+.dark .floating-label.active {
+  color: hsl(200, 60%, 60%);
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    hsl(220, 30%, 10%) 45%,
+    hsl(220, 30%, 10%) 100%
+  );
 }
 
 /* ================================
@@ -278,6 +381,7 @@
     0 2px 6px hsla(200, 70%, 50%, 0.2),
     inset 0 1px 0 hsla(0, 0%, 100%, 0.3),
     inset 0 -1px 0 hsla(200, 40%, 90%, 0.3);
+  will-change: transform, box-shadow;
 }
 
 .login-button:hover {
@@ -318,6 +422,7 @@
   transition: opacity 0.3s ease;
   filter: blur(2px);
   pointer-events: none;
+  will-change: transform, opacity;
 }
 
 .button-glow.active {

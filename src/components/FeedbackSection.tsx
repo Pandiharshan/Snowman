@@ -4,7 +4,7 @@ import ShineEffect from './ShineEffect';
 import { Send, MessageSquare, User, Mail, CheckCircle } from 'lucide-react';
 import { toast } from 'sonner';
 
-const FeedbackSection = () => {
+const FeedbackSection = React.memo(() => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -36,14 +36,14 @@ const FeedbackSection = () => {
   };
 
   return (
-    <section id="contact" className="py-24 px-4 bg-gradient-to-b from-sky-50/50 to-white dark:from-slate-800 dark:to-slate-900 transition-colors duration-700">
+    <section id="contact" className="py-24 px-4 bg-gradient-to-b from-sky-50/50 to-white dark:bg-none transition-colors duration-700">
       <div className="max-w-4xl mx-auto">
         <motion.div
           className="text-center mb-12"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
         >
           <motion.div
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-sky-100 dark:bg-sky-900/30 text-sky-600 dark:text-sky-400 text-sm font-medium mb-4"
@@ -67,15 +67,17 @@ const FeedbackSection = () => {
 
         <motion.form
           onSubmit={handleSubmit}
-          className="relative p-8 md:p-12 rounded-3xl bg-white/80 dark:bg-slate-800/60 backdrop-blur-xl border border-slate-200/50 dark:border-slate-700/50 group transition-all duration-500"
+          className="relative p-8 md:p-12 rounded-3xl bg-white/80 dark:bg-white/5 backdrop-blur-xl border border-slate-200/50 dark:border-slate-700/30 group transition-all duration-500"
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.2 }}
+          transition={{ duration: 0.8, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
           whileHover={{ 
             y: -8,
             boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.15)',
+            transition: { type: 'spring', stiffness: 400, damping: 25 }
           }}
+          style={{ willChange: 'transform' }}
         >
           {/* Color glow effect on hover - matching CTA cards */}
           <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-sky-500 to-blue-600 opacity-0 group-hover:opacity-15 transition-opacity duration-500" />
@@ -89,7 +91,7 @@ const FeedbackSection = () => {
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: 0.3 }}
+              transition={{ delay: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
             >
               <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">
                 Name
@@ -105,7 +107,7 @@ const FeedbackSection = () => {
                   onBlur={() => setFocusedField(null)}
                   placeholder="Your name"
                   required
-                  className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white/40 dark:bg-slate-700/50 border-2 border-slate-300/60 dark:border-slate-600/60 text-slate-800 dark:text-white placeholder:text-slate-500 dark:placeholder:text-slate-400 focus:border-sky-400 dark:focus:border-sky-400 focus:outline-none transition-all duration-300 backdrop-blur-sm"
+                  className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white/40 dark:bg-white/5 border-2 border-slate-300/60 dark:border-slate-600/40 text-slate-800 dark:text-white placeholder:text-slate-500 dark:placeholder:text-slate-400 focus:border-sky-400 dark:focus:border-sky-400 focus:outline-none transition-all duration-300 backdrop-blur-sm"
                 />
               </div>
             </motion.div>
@@ -116,7 +118,7 @@ const FeedbackSection = () => {
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: 0.4 }}
+              transition={{ delay: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
             >
               <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">
                 Email
@@ -132,7 +134,7 @@ const FeedbackSection = () => {
                   onBlur={() => setFocusedField(null)}
                   placeholder="your@email.com"
                   required
-                  className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white/40 dark:bg-slate-700/50 border-2 border-slate-300/60 dark:border-slate-600/60 text-slate-800 dark:text-white placeholder:text-slate-500 dark:placeholder:text-slate-400 focus:border-sky-400 dark:focus:border-sky-400 focus:outline-none transition-all duration-300 backdrop-blur-sm"
+                  className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white/40 dark:bg-white/5 border-2 border-slate-300/60 dark:border-slate-600/40 text-slate-800 dark:text-white placeholder:text-slate-500 dark:placeholder:text-slate-400 focus:border-sky-400 dark:focus:border-sky-400 focus:outline-none transition-all duration-300 backdrop-blur-sm"
                 />
               </div>
             </motion.div>
@@ -144,7 +146,7 @@ const FeedbackSection = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.5 }}
+            transition={{ delay: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
           >
             <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">
               Message
@@ -160,7 +162,7 @@ const FeedbackSection = () => {
                 placeholder="Share your thoughts, suggestions, or feedback..."
                 required
                 rows={5}
-                className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white/60 dark:bg-slate-700/50 border-2 border-slate-300/60 dark:border-slate-600/60 text-slate-800 dark:text-white placeholder:text-slate-500 dark:placeholder:text-slate-400 focus:border-sky-400 dark:focus:border-sky-400 focus:outline-none transition-all duration-300 resize-none backdrop-blur-sm"
+                className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white/60 dark:bg-white/5 border-2 border-slate-300/60 dark:border-slate-600/40 text-slate-800 dark:text-white placeholder:text-slate-500 dark:placeholder:text-slate-400 focus:border-sky-400 dark:focus:border-sky-400 focus:outline-none transition-all duration-300 resize-none backdrop-blur-sm"
               />
             </div>
           </motion.div>
@@ -173,6 +175,7 @@ const FeedbackSection = () => {
               className="w-full py-4 px-8 rounded-2xl bg-gradient-to-r from-sky-500 to-blue-600 text-white font-semibold flex items-center justify-center gap-3 shadow-lg shadow-sky-500/25 hover:shadow-xl hover:shadow-sky-500/30 disabled:opacity-70 disabled:cursor-not-allowed transition-all duration-300"
               whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
               whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 25 }}
             >
               {isSubmitting ? (
                 <>
@@ -196,6 +199,8 @@ const FeedbackSection = () => {
       </div>
     </section>
   );
-};
+});
+
+FeedbackSection.displayName = 'FeedbackSection';
 
 export default FeedbackSection;

@@ -8,7 +8,7 @@ import CTASection from '@/components/CTASection';
 import FeedbackSection from '@/components/FeedbackSection';
 import Footer from '@/components/Footer';
 
-const Home = () => {
+const Home = React.memo(() => {
   const { username, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
@@ -21,7 +21,7 @@ const Home = () => {
   if (!isAuthenticated) return null;
 
   return (
-    <div className="min-h-screen bg-background transition-colors duration-700">
+    <div className="min-h-screen dark:bg-none transition-colors duration-700">
       <Navbar />
       <main>
         <HeroSection username={username} />
@@ -32,6 +32,8 @@ const Home = () => {
       <Footer />
     </div>
   );
-};
+});
+
+Home.displayName = 'Home';
 
 export default Home;

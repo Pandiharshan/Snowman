@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { AuthProvider } from "@/contexts/AuthContext";
+import GlobalSnowEffect from "@/components/GlobalSnowEffect";
 import Login from "@/pages/Login/Login";
 import Home from "@/pages/Home/Home";
 import NotFound from "@/pages/NotFound/NotFound";
@@ -18,6 +19,7 @@ const App = () => (
         <TooltipProvider>
           <Toaster />
           <Sonner />
+          <GlobalSnowEffect />
           <BrowserRouter basename={import.meta.env.BASE_URL}>
             <Routes>
               <Route path="/" element={<Navigate to="/login" replace />} />

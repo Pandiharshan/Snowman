@@ -42,16 +42,16 @@ const features = [
   },
 ];
 
-const FeaturesSection = () => {
+const FeaturesSection = React.memo(() => {
   return (
-    <section id="features" className="py-24 px-4 bg-gradient-to-b from-blue-50/50 to-white dark:from-slate-800 dark:to-slate-900 transition-colors duration-700">
+    <section id="features" className="py-24 px-4 bg-gradient-to-b from-blue-50/50 to-white dark:bg-none transition-colors duration-700">
       <div className="max-w-7xl mx-auto">
         <motion.div
           className="text-center mb-16"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
         >
           <motion.span
             className="inline-block px-4 py-2 rounded-full bg-sky-100 dark:bg-sky-900/30 text-sky-600 dark:text-sky-400 text-sm font-medium mb-4"
@@ -76,15 +76,17 @@ const FeaturesSection = () => {
           {features.map((feature, index) => (
             <ShineEffect key={feature.title} className="h-full">
               <motion.div
-                className="group relative p-6 rounded-3xl bg-white/70 dark:bg-slate-800/50 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 hover:border-sky-300/50 dark:hover:border-sky-500/30 transition-all duration-500 h-full"
+                className="group relative p-6 rounded-3xl bg-white/70 dark:bg-white/5 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/30 hover:border-sky-300/50 dark:hover:border-sky-500/30 transition-all duration-500 h-full"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: index * 0.1, duration: 0.6 }}
+                transition={{ delay: index * 0.1, duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
                 whileHover={{ 
                   y: -8,
                   boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.15)',
+                  transition: { type: 'spring', stiffness: 400, damping: 25 }
                 }}
+                style={{ willChange: 'transform' }}
               >
                 {/* Glow effect on hover - color only visible on hover */}
                 <div className={`absolute inset-0 rounded-3xl bg-gradient-to-r ${feature.gradient} opacity-0 group-hover:opacity-15 transition-opacity duration-500`} />
@@ -110,6 +112,8 @@ const FeaturesSection = () => {
       </div>
     </section>
   );
-};
+});
+
+FeaturesSection.displayName = 'FeaturesSection';
 
 export default FeaturesSection;
