@@ -15,4 +15,19 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    chunkSizeWarningLimit: 1600,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          ui: ['@radix-ui/react-accordion', '@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu'],
+          three: ['three', '@react-three/fiber', '@react-three/drei'],
+          router: ['react-router-dom'],
+          query: ['@tanstack/react-query'],
+          motion: ['framer-motion'],
+        },
+      },
+    },
+  },
 });

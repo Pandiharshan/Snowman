@@ -10,7 +10,7 @@ interface ModelProps {
 
 const Model = ({ mousePosition }: ModelProps) => {
   const groupRef = useRef<THREE.Group>(null);
-  const modelPath = '/Snowman/assets/models/snow_man.glb';
+  const modelPath = '/assets/models/snow_man.glb';
   const { scene } = useGLTF(modelPath);
   const [targetRotation, setTargetRotation] = useState({ x: 0, y: 0 });
   const velocity = useRef({ x: 0, y: 0 });
