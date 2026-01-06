@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import GlobalSnowEffect from "@/components/GlobalSnowEffect";
+import CursorGlow from "@/components/CursorGlow";
 import Login from "@/pages/Login/Login";
 import Home from "@/pages/Home/Home";
 import NotFound from "@/pages/NotFound/NotFound";
@@ -19,6 +20,7 @@ const App = () => (
         <TooltipProvider>
           <Toaster />
           <Sonner />
+          <CursorGlow />
           <GlobalSnowEffect />
           <BrowserRouter basename={import.meta.env.BASE_URL}>
             <Routes>

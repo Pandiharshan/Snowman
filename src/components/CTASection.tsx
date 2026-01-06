@@ -32,7 +32,7 @@ const ctaCards = [
 
 const CTASection = React.memo(() => {
   return (
-    <section id="about" className="py-24 px-4 bg-gradient-to-b from-white to-sky-50/50 dark:bg-none transition-colors duration-700">
+    <section id="about" className="py-24 px-4 bg-gradient-to-b from-blue-50/60 via-slate-50/80 to-sky-50/70 dark:bg-none transition-colors duration-700">
       <div className="max-w-7xl mx-auto">
         <motion.div
           className="text-center mb-16"
@@ -63,7 +63,7 @@ const CTASection = React.memo(() => {
               transition={{ delay: index * 0.15, duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
             >
               <motion.div
-                className="h-full p-8 rounded-3xl bg-white/80 dark:bg-white/5 backdrop-blur-xl border border-slate-200/50 dark:border-slate-700/30 flex flex-col items-center text-center transition-all duration-500 relative"
+                className="h-full p-8 rounded-3xl bg-white dark:bg-[#0a0a0a] border border-slate-300/60 dark:border-white/10 hover:border-sky-400/60 dark:hover:border-white/20 flex flex-col items-center text-center shadow-lg dark:shadow-none hover:shadow-xl transition-all duration-500 relative"
                 whileHover={{ 
                   y: -8,
                   boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.15)',

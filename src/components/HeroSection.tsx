@@ -12,7 +12,7 @@ const HeroSection = React.memo(({ username }: HeroSectionProps) => {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
       {/* Background gradient - light mode only, dark mode uses body gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-sky-50 via-white to-blue-50 dark:bg-none transition-colors duration-700" />
+      <div className="absolute inset-0 bg-gradient-to-br from-sky-100/40 via-blue-50/30 to-indigo-100/40 dark:bg-none transition-colors duration-700" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-8 items-center">
         {/* Left Content */}
@@ -24,7 +24,7 @@ const HeroSection = React.memo(({ username }: HeroSectionProps) => {
           style={{ willChange: 'transform, opacity' }}
         >
           <motion.div
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-sky-100/80 dark:bg-sky-900/30 text-sky-700 dark:text-sky-300 text-sm font-medium mb-6"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-sky-100 dark:bg-sky-900/30 text-sky-700 dark:text-sky-300 text-sm font-medium mb-6 shadow-sm"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
@@ -74,7 +74,7 @@ const HeroSection = React.memo(({ username }: HeroSectionProps) => {
               </motion.button>
             </ShineEffect>
             <motion.button
-              className="px-8 py-4 rounded-2xl bg-white/80 dark:bg-slate-800/80 text-slate-700 dark:text-slate-200 font-semibold border border-slate-200 dark:border-slate-700 hover:bg-white dark:hover:bg-slate-700 transition-all duration-300"
+              className="px-8 py-4 rounded-2xl bg-white dark:bg-slate-800/80 text-slate-700 dark:text-slate-200 font-semibold border border-slate-300 dark:border-slate-700 hover:bg-white hover:border-slate-400 dark:hover:bg-slate-700 shadow-md hover:shadow-lg transition-all duration-300"
               whileHover={{ scale: 1.03, y: -2 }}
               whileTap={{ scale: 0.98 }}
               transition={{ type: 'spring', stiffness: 400, damping: 25 }}

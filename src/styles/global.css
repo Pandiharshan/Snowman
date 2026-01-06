@@ -97,6 +97,8 @@
 @layer base {
   * {
     @apply border-border;
+    /* Hide default cursor globally */
+    cursor: none !important;
   }
 
   body {
@@ -106,6 +108,15 @@
     /* Performance optimization */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* Hide default cursor */
+    cursor: none;
+  }
+
+  /* Light mode - Premium gradient background */
+  body {
+    background: linear-gradient(180deg, hsl(210, 50%, 97%) 0%, hsl(210, 45%, 95%) 50%, hsl(210, 50%, 96%) 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
   }
 
   /* Dark mode - ONE continuous vertical gradient (Deep Black) */

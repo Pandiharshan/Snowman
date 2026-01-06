@@ -36,7 +36,7 @@ const FeedbackSection = React.memo(() => {
   };
 
   return (
-    <section id="contact" className="py-24 px-4 bg-gradient-to-b from-sky-50/50 to-white dark:bg-none transition-colors duration-700">
+    <section id="contact" className="py-24 px-4 bg-gradient-to-b from-slate-50/80 via-sky-50/70 to-blue-50/60 dark:bg-none transition-colors duration-700">
       <div className="max-w-4xl mx-auto">
         <motion.div
           className="text-center mb-12"
@@ -46,7 +46,7 @@ const FeedbackSection = React.memo(() => {
           transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
         >
           <motion.div
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-sky-100 dark:bg-sky-900/30 text-sky-600 dark:text-sky-400 text-sm font-medium mb-4"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-sky-100 dark:bg-sky-900/30 text-sky-700 dark:text-sky-400 text-sm font-medium mb-4 shadow-sm"
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
@@ -67,7 +67,7 @@ const FeedbackSection = React.memo(() => {
 
         <motion.form
           onSubmit={handleSubmit}
-          className="relative p-8 md:p-12 rounded-3xl bg-white/80 dark:bg-white/5 backdrop-blur-xl border border-slate-200/50 dark:border-slate-700/30 group transition-all duration-500"
+          className="relative p-8 md:p-12 rounded-3xl bg-white dark:bg-[#0a0a0a] border border-slate-300/60 dark:border-white/10 group shadow-lg dark:shadow-none hover:shadow-xl transition-all duration-500"
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -107,7 +107,7 @@ const FeedbackSection = React.memo(() => {
                   onBlur={() => setFocusedField(null)}
                   placeholder="Your name"
                   required
-                  className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white/40 dark:bg-white/5 border-2 border-slate-300/60 dark:border-slate-600/40 text-slate-800 dark:text-white placeholder:text-slate-500 dark:placeholder:text-slate-400 focus:border-sky-400 dark:focus:border-sky-400 focus:outline-none transition-all duration-300 backdrop-blur-sm"
+                  className="w-full pl-12 pr-4 py-4 rounded-2xl bg-slate-50 dark:bg-[#111111] border-2 border-slate-300/60 dark:border-white/10 text-slate-800 dark:text-white placeholder:text-slate-500 dark:placeholder:text-slate-500 focus:border-sky-400 dark:focus:border-white/30 focus:outline-none transition-all duration-300"
                 />
               </div>
             </motion.div>
@@ -134,7 +134,7 @@ const FeedbackSection = React.memo(() => {
                   onBlur={() => setFocusedField(null)}
                   placeholder="your@email.com"
                   required
-                  className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white/40 dark:bg-white/5 border-2 border-slate-300/60 dark:border-slate-600/40 text-slate-800 dark:text-white placeholder:text-slate-500 dark:placeholder:text-slate-400 focus:border-sky-400 dark:focus:border-sky-400 focus:outline-none transition-all duration-300 backdrop-blur-sm"
+                  className="w-full pl-12 pr-4 py-4 rounded-2xl bg-slate-50 dark:bg-[#111111] border-2 border-slate-300/60 dark:border-white/10 text-slate-800 dark:text-white placeholder:text-slate-500 dark:placeholder:text-slate-500 focus:border-sky-400 dark:focus:border-white/30 focus:outline-none transition-all duration-300"
                 />
               </div>
             </motion.div>
@@ -162,7 +162,7 @@ const FeedbackSection = React.memo(() => {
                 placeholder="Share your thoughts, suggestions, or feedback..."
                 required
                 rows={5}
-                className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white/60 dark:bg-white/5 border-2 border-slate-300/60 dark:border-slate-600/40 text-slate-800 dark:text-white placeholder:text-slate-500 dark:placeholder:text-slate-400 focus:border-sky-400 dark:focus:border-sky-400 focus:outline-none transition-all duration-300 resize-none backdrop-blur-sm"
+                className="w-full pl-12 pr-4 py-4 rounded-2xl bg-slate-50 dark:bg-[#111111] border-2 border-slate-300/60 dark:border-white/10 text-slate-800 dark:text-white placeholder:text-slate-500 dark:placeholder:text-slate-500 focus:border-sky-400 dark:focus:border-white/30 focus:outline-none transition-all duration-300 resize-none"
               />
             </div>
           </motion.div>

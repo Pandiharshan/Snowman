@@ -44,7 +44,7 @@ const features = [
 
 const FeaturesSection = React.memo(() => {
   return (
-    <section id="features" className="py-24 px-4 bg-gradient-to-b from-blue-50/50 to-white dark:bg-none transition-colors duration-700">
+    <section id="features" className="py-24 px-4 bg-gradient-to-b from-slate-50/80 via-blue-50/60 to-slate-50/80 dark:bg-none transition-colors duration-700">
       <div className="max-w-7xl mx-auto">
         <motion.div
           className="text-center mb-16"
@@ -54,7 +54,7 @@ const FeaturesSection = React.memo(() => {
           transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
         >
           <motion.span
-            className="inline-block px-4 py-2 rounded-full bg-sky-100 dark:bg-sky-900/30 text-sky-600 dark:text-sky-400 text-sm font-medium mb-4"
+            className="inline-block px-4 py-2 rounded-full bg-sky-100 dark:bg-sky-900/30 text-sky-700 dark:text-sky-400 text-sm font-medium mb-4 shadow-sm"
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
@@ -76,7 +76,7 @@ const FeaturesSection = React.memo(() => {
           {features.map((feature, index) => (
             <ShineEffect key={feature.title} className="h-full">
               <motion.div
-                className="group relative p-6 rounded-3xl bg-white/70 dark:bg-white/5 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/30 hover:border-sky-300/50 dark:hover:border-sky-500/30 transition-all duration-500 h-full"
+                className="group relative p-6 rounded-3xl bg-white dark:bg-[#0a0a0a] border border-slate-300/60 dark:border-white/10 hover:border-sky-400/60 dark:hover:border-white/20 shadow-lg dark:shadow-none hover:shadow-xl transition-all duration-500 h-full"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
