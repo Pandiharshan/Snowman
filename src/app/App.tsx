@@ -10,6 +10,8 @@ import CursorGlow from "@/components/CursorGlow";
 import Login from "@/pages/Login/Login";
 import Home from "@/pages/Home/Home";
 import World from "@/pages/World/World";
+import Create from "@/pages/Create/Create";
+import CollectionDetail from "@/pages/Collections/CollectionDetail";
 import NotFound from "@/pages/NotFound/NotFound";
 
 const queryClient = new QueryClient();
@@ -29,6 +31,8 @@ const App = () => (
               <Route path="/login" element={<Login />} />
               <Route path="/home" element={<Home />} />
               <Route path="/world" element={<World />} />
+              <Route path="/create" element={<Create />} />
+              <Route path="/collection/:id" element={<CollectionDetail />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

@@ -6,6 +6,7 @@ import { useTheme } from '@/contexts/ThemeContext';
 import { Sparkles, BookOpen, Images, Snowflake } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import CollectionsSection from './CollectionsSection';
 
 interface PathCardProps {
   icon: React.ElementType;
@@ -86,6 +87,7 @@ const World = React.memo(() => {
       title: 'Create an Image',
       subtitle: 'Bring your imagination to life with words',
       gradient: 'from-sky-500 to-blue-600',
+      onClick: () => navigate('/create'),
     },
     {
       icon: BookOpen,
@@ -164,11 +166,15 @@ const World = React.memo(() => {
                 subtitle={path.subtitle}
                 gradient={path.gradient}
                 delay={0.4 + index * 0.1}
+                onClick={path.onClick}
               />
             ))}
           </div>
 
         </div>
+
+        {/* Collections Section */}
+        <CollectionsSection />
       </main>
 
       <Footer />
