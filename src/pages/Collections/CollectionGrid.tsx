@@ -8,19 +8,22 @@ interface CollectionGridProps {
 }
 
 const CollectionGrid = React.memo(({ items, onItemFocus }: CollectionGridProps) => {
-  // Split items into columns for masonry layout
+  // Pinterest-style masonry with varied heights
   const columns = useMemo(() => {
     const cols: MediaItem[][] = [[], [], [], []];
+    
     items.forEach((item, index) => {
+      // Distribute items across columns
       cols[index % 4].push(item);
     });
+    
     return cols;
   }, [items]);
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 auto-rows-max">
       {columns.map((column, colIndex) => (
-        <div key={colIndex} className="flex flex-col gap-3 md:gap-4">
+        <div key={colIndex} className="flex flex-col gap-6">
           {column.map((item) => (
             <CollectionItem key={item.id} item={item} onFocus={onItemFocus} />
           ))}

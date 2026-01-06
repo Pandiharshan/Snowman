@@ -1,129 +1,232 @@
-import React from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { useTheme } from '@/contexts/ThemeContext';
+import { Download } from 'lucide-react';
 
-interface CollectionCardProps {
+interface MediaFile {
   id: string;
-  title: string;
-  hint?: string;
-  imageUrl: string;
-  height: 'tall' | 'medium' | 'short';
-  delay: number;
+  src: string;
+  name: string;
+  type: 'image' | 'video';
+  collection: string;
 }
 
-const CollectionCard = React.memo(({ id, title, hint, imageUrl, height, delay }: CollectionCardProps) => {
-  const { isDark } = useTheme();
-  const navigate = useNavigate();
-  
-  const heightClasses = {
-    tall: 'h-80',
-    medium: 'h-64',
-    short: 'h-52',
-  };
+// Premium Media Card Component
+const MediaCard = React.memo(({ item, onClick }: { item: MediaFile; onClick: () => void }) => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isHovered, setIsHovered] = useState(false);
+  const [loaded, setLoaded] = useState(false);
 
-  const handleClick = () => {
-    navigate(`/collection/${id}`);
-  };
+  // Video autoplay on hover
+  useEffect(() => {
+    if (item.type !== 'video' || !videoRef.current) return;
+    
+    if (isHovered) {
+      videoRef.current.play().catch(() => {});
+    } else {
+      videoRef.current.pause();
+      videoRef.current.currentTime = 0;
+    }
+  }, [isHovered, item.type]);
+
+  const handleDownload = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+    const link = document.createElement('a');
+    link.href = item.src;
+    link.download = item.name;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }, [item.src, item.name]);
 
   return (
     <motion.div
-      onClick={handleClick}
-      className={`
-        group relative overflow-hidden rounded-2xl
-        ${heightClasses[height]}
-        ${isDark ? 'bg-slate-900' : 'bg-slate-200'}
-        cursor-pointer
-      `}
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-50px' }}
-      transition={{ delay, duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
+      className="group relative overflow-hidden rounded-2xl cursor-pointer break-inside-avoid mb-4"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onClick={onClick}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4 }}
     >
-      {/* Image with CSS-only hover zoom */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-105"
-        style={{ backgroundImage: `url(${imageUrl})` }}
-      />
-      
-      {/* Gradient overlay */}
+      {item.type === 'image' ? (
+        <>
+          {!loaded && (
+            <div className="w-full aspect-[3/4] bg-gradient-to-br from-slate-800 to-slate-900 animate-pulse rounded-2xl" />
+          )}
+          <img
+            src={item.src}
+            alt=""
+            loading="lazy"
+            onLoad={() => setLoaded(true)}
+            className={`
+              w-full h-auto object-cover rounded-2xl
+              transition-all duration-500 ease-out
+              ${loaded ? 'opacity-100' : 'opacity-0'}
+              ${isHovered ? 'scale-105' : 'scale-100'}
+            `}
+          />
+        </>
+      ) : (
+        <div className="relative">
+          <video
+            ref={videoRef}
+            src={item.src}
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            className={`
+              w-full h-auto object-cover rounded-2xl
+              transition-transform duration-500
+              ${isHovered ? 'scale-105' : 'scale-100'}
+            `}
+          />
+          {/* Play indicator */}
+          {!isHovered && (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-12 h-12 rounded-full bg-white/30 backdrop-blur-sm flex items-center justify-center">
+                <svg className="w-5 h-5 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Hover overlay */}
       <div className={`
-        absolute inset-0 
-        bg-gradient-to-t from-black/70 via-black/20 to-transparent
-        transition-opacity duration-500
-        group-hover:from-black/80
+        absolute inset-0 rounded-2xl transition-all duration-300
+        ${isHovered 
+          ? 'bg-gradient-to-t from-black/60 via-transparent to-transparent ring-2 ring-white/20' 
+          : 'bg-transparent'
+        }
       `} />
 
-      {/* Hover elevation effect - CSS only */}
-      <div className="absolute inset-0 transition-shadow duration-500 group-hover:shadow-xl group-hover:shadow-black/20" />
+      {/* Download button - bottom left */}
+      <button
+        onClick={handleDownload}
+        className={`
+          absolute bottom-3 left-3 z-10
+          p-2.5 rounded-full
+          bg-white/90 hover:bg-white
+          text-slate-900
+          transition-all duration-300 ease-out
+          shadow-lg
+          ${isHovered 
+            ? 'opacity-100 scale-100 translate-y-0' 
+            : 'opacity-0 scale-75 translate-y-2 pointer-events-none'
+          }
+        `}
+        aria-label="Download"
+      >
+        <Download className="w-4 h-4" />
+      </button>
 
-      {/* Content */}
-      <div className="absolute bottom-0 left-0 right-0 p-5">
-        <h3 className="text-white font-semibold text-lg mb-1">
-          {title}
-        </h3>
-        {hint && (
-          <p className="text-white/70 text-sm">
-            {hint}
-          </p>
-        )}
-      </div>
+      {/* Three dots menu - bottom right */}
+      <button
+        className={`
+          absolute bottom-3 right-3 z-10
+          p-2.5 rounded-full
+          bg-white/90 hover:bg-white
+          text-slate-900
+          transition-all duration-300 ease-out
+          shadow-lg
+          ${isHovered 
+            ? 'opacity-100 scale-100 translate-y-0' 
+            : 'opacity-0 scale-75 translate-y-2 pointer-events-none'
+          }
+        `}
+        onClick={(e) => e.stopPropagation()}
+        aria-label="More options"
+      >
+        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+          <circle cx="12" cy="6" r="2" />
+          <circle cx="12" cy="12" r="2" />
+          <circle cx="12" cy="18" r="2" />
+        </svg>
+      </button>
     </motion.div>
   );
 });
 
-CollectionCard.displayName = 'CollectionCard';
+MediaCard.displayName = 'MediaCard';
 
 const CollectionsSection = React.memo(() => {
-  // Placeholder images using gradient backgrounds (will be replaced with real images)
-  const collections = [
-    {
-      id: 'dream-worlds',
-      title: 'Dream Worlds',
-      hint: 'Surreal landscapes',
-      imageUrl: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?w=600&q=80',
-      height: 'tall' as const,
-    },
-    {
-      id: 'cute-characters',
-      title: 'Cute Characters',
-      hint: 'Friendly creatures',
-      imageUrl: 'https://images.unsplash.com/photo-1535591273668-578e31182c4f?w=600&q=80',
-      height: 'medium' as const,
-    },
-    {
-      id: 'winter-stories',
-      title: 'Winter Stories',
-      hint: 'Snowy adventures',
-      imageUrl: 'https://images.unsplash.com/photo-1491002052546-bf38f186af56?w=600&q=80',
-      height: 'short' as const,
-    },
-    {
-      id: 'fantasy-places',
-      title: 'Fantasy Places',
-      hint: 'Magical realms',
-      imageUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=600&q=80',
-      height: 'medium' as const,
-    },
-    {
-      id: 'space-dreams',
-      title: 'Space Dreams',
-      hint: 'Cosmic wonders',
-      imageUrl: 'https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=600&q=80',
-      height: 'tall' as const,
-    },
-    {
-      id: 'ocean-magic',
-      title: 'Ocean Magic',
-      hint: 'Underwater worlds',
-      imageUrl: 'https://images.unsplash.com/photo-1559825481-12a05cc00344?w=600&q=80',
-      height: 'short' as const,
-    },
-  ];
+  const navigate = useNavigate();
+  const [allMedia, setAllMedia] = useState<MediaFile[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Load all media from all collections
+  useEffect(() => {
+    const loadAllMedia = async () => {
+      try {
+        const manifestRes = await fetch('/assets/collections/manifest.json');
+        if (!manifestRes.ok) return;
+        const manifest = await manifestRes.json();
+
+        const allFiles: MediaFile[] = [];
+        
+        for (const collection of manifest.collections) {
+          try {
+            const filesRes = await fetch(`/assets/collections/${collection.name}/files.json`);
+            if (!filesRes.ok) continue;
+            const files: string[] = await filesRes.json();
+
+            files.forEach((fileName, index) => {
+              const ext = fileName.toLowerCase().substring(fileName.lastIndexOf('.'));
+              const isVideo = ['.mp4', '.webm', '.mov'].includes(ext);
+              const isImage = ['.jpg', '.jpeg', '.png', '.webp', '.avif'].includes(ext);
+              
+              if (isImage || isVideo) {
+                allFiles.push({
+                  id: `${collection.slug}-${index}`,
+                  src: `/assets/collections/${collection.name}/${fileName}`,
+                  name: fileName,
+                  type: isVideo ? 'video' : 'image',
+                  collection: collection.name,
+                });
+              }
+            });
+          } catch (err) {
+            console.error(`Failed to load ${collection.name}:`, err);
+          }
+        }
+
+        // Shuffle for variety
+        const shuffled = allFiles.sort(() => Math.random() - 0.5);
+        setAllMedia(shuffled);
+      } catch (err) {
+        console.error('Failed to load collections:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadAllMedia();
+  }, []);
+
+  const handleMediaClick = useCallback(() => {
+    navigate('/collection/all');
+  }, [navigate]);
+
+  if (loading) {
+    return (
+      <section className="py-20 px-4">
+        <div className="max-w-7xl mx-auto text-center">
+          <div className="w-10 h-10 border-2 border-sky-500 border-t-transparent rounded-full animate-spin mx-auto" />
+        </div>
+      </section>
+    );
+  }
+
+  // Take first 20 items for preview
+  const previewMedia = allMedia.slice(0, 20);
 
   return (
     <section className="py-20 px-4">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-7xl mx-auto">
         {/* Section Header */}
         <motion.div
           className="text-center mb-12"
@@ -132,28 +235,46 @@ const CollectionsSection = React.memo(() => {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-2xl md:text-3xl font-bold text-slate-800 dark:text-white mb-3">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
             Explore Collections
           </h2>
-          <p className="text-slate-600 dark:text-slate-400 text-base max-w-md mx-auto">
+          <p className="text-slate-400 text-lg max-w-md mx-auto">
             Get inspired by different creative worlds
           </p>
         </motion.div>
 
-        {/* Masonry Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {collections.map((collection, index) => (
-            <CollectionCard
-              key={collection.id}
-              id={collection.id}
-              title={collection.title}
-              hint={collection.hint}
-              imageUrl={collection.imageUrl}
-              height={collection.height}
-              delay={0.1 + index * 0.08}
+        {/* Pinterest-style Masonry Grid */}
+        <div className="columns-2 md:columns-3 lg:columns-4 xl:columns-5 gap-4">
+          {previewMedia.map((item) => (
+            <MediaCard 
+              key={item.id} 
+              item={item} 
+              onClick={handleMediaClick}
             />
           ))}
         </div>
+
+        {/* View All Button */}
+        <motion.div 
+          className="text-center mt-12"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+        >
+          <button
+            onClick={() => navigate('/collection/all')}
+            className="
+              px-8 py-4 rounded-full
+              bg-sky-500/20 hover:bg-sky-500/30
+              text-sky-300 hover:text-sky-200
+              font-medium text-lg
+              transition-all duration-300
+              ring-1 ring-sky-500/30 hover:ring-sky-500/50
+            "
+          >
+            View All {allMedia.length} Items
+          </button>
+        </motion.div>
       </div>
     </section>
   );

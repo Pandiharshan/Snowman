@@ -14,7 +14,14 @@ import Create from "@/pages/Create/Create";
 import CollectionDetail from "@/pages/Collections/CollectionDetail";
 import NotFound from "@/pages/NotFound/NotFound";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5, // 5 minutes
+      gcTime: 1000 * 60 * 10, // 10 minutes (formerly cacheTime)
+    },
+  },
+});
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -25,7 +32,13 @@ const App = () => (
           <Sonner />
           <CursorGlow />
           <GlobalSnowEffect />
-          <BrowserRouter basename={import.meta.env.BASE_URL}>
+          <BrowserRouter 
+            basename={import.meta.env.BASE_URL}
+            future={{
+              v7_startTransition: true,
+              v7_relativeSplatPath: true,
+            }}
+          >
             <Routes>
               <Route path="/" element={<Navigate to="/login" replace />} />
               <Route path="/login" element={<Login />} />

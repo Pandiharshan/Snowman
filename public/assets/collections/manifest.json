@@ -1,0 +1,46 @@
+{
+  "collections": [
+    {
+      "name": "Pretty landscapes",
+      "slug": "pretty-landscapes",
+      "coverImage": "pinterest_989806824372395472.png",
+      "hint": "Dreamy scenery and magical places"
+    },
+    {
+      "name": "Bmw m4",
+      "slug": "bmw-m4",
+      "coverImage": "pinterest_989806824377152649.jpg",
+      "hint": "Luxury automotive dreams"
+    },
+    {
+      "name": "snowman",
+      "slug": "snowman",
+      "coverImage": "pinterest_989806824378365750_5601492911525230390.jpg",
+      "hint": "Winter magic and snow"
+    },
+    {
+      "name": "Dream Worlds",
+      "slug": "dream-worlds",
+      "coverImage": "pinterest_989806824372395472.png",
+      "hint": "Surreal landscapes"
+    },
+    {
+      "name": "Fantasy Places",
+      "slug": "fantasy-places",
+      "coverImage": "pinterest_989806824378365830.jpg",
+      "hint": "Magical realms"
+    },
+    {
+      "name": "Space Dreams",
+      "slug": "space-dreams",
+      "coverImage": "pinterest_989806824378365901.jpg",
+      "hint": "Cosmic wonders"
+    },
+    {
+      "name": "Ocean Magic",
+      "slug": "ocean-magic",
+      "coverImage": "pinterest_989806824378365949.jpg",
+      "hint": "Underwater worlds"
+    }
+  ]
+}
