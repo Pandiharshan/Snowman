@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import SnowmanModel from './SnowmanModel';
 import ShineEffect from './ShineEffect';
 import { Sparkles, ArrowDown } from 'lucide-react';
@@ -9,6 +10,12 @@ interface HeroSectionProps {
 }
 
 const HeroSection = React.memo(({ username }: HeroSectionProps) => {
+  const navigate = useNavigate();
+
+  const handleGetStarted = () => {
+    navigate('/world');
+  };
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
       {/* Background gradient - light mode only, dark mode uses body gradient */}
@@ -65,6 +72,7 @@ const HeroSection = React.memo(({ username }: HeroSectionProps) => {
           >
             <ShineEffect>
               <motion.button
+                onClick={handleGetStarted}
                 className="px-8 py-4 rounded-2xl bg-gradient-to-r from-sky-500 to-blue-600 text-white font-semibold shadow-lg shadow-sky-500/25 hover:shadow-xl hover:shadow-sky-500/30 transition-all duration-300"
                 whileHover={{ scale: 1.03, y: -2 }}
                 whileTap={{ scale: 0.98 }}

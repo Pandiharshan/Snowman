@@ -9,6 +9,7 @@ import GlobalSnowEffect from "@/components/GlobalSnowEffect";
 import CursorGlow from "@/components/CursorGlow";
 import Login from "@/pages/Login/Login";
 import Home from "@/pages/Home/Home";
+import World from "@/pages/World/World";
 import NotFound from "@/pages/NotFound/NotFound";
 
 const queryClient = new QueryClient();
@@ -27,6 +28,7 @@ const App = () => (
               <Route path="/" element={<Navigate to="/login" replace />} />
               <Route path="/login" element={<Login />} />
               <Route path="/home" element={<Home />} />
+              <Route path="/world" element={<World />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
