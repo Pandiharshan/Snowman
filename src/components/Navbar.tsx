@@ -44,8 +44,8 @@ const Navbar = React.memo(() => {
         : 'rgba(30, 41, 59, 0.5)';
     }
     return isHovered 
-      ? 'rgba(255, 255, 255, 0.9)' 
-      : 'rgba(255, 255, 255, 0.4)';
+      ? 'rgba(241, 245, 249, 0.95)' 
+      : 'rgba(241, 245, 249, 0.8)';
   }, [isDark, isHovered]);
 
   // Memoize shadow style
@@ -59,7 +59,7 @@ const Navbar = React.memo(() => {
   const borderStyle = useMemo(() => ({
     border: isDark 
       ? '1px solid rgba(148, 163, 184, 0.1)' 
-      : '1px solid rgba(255, 255, 255, 0.5)',
+      : '1px solid rgba(203, 213, 225, 0.6)',
   }), [isDark]);
 
   return (
@@ -107,7 +107,7 @@ const Navbar = React.memo(() => {
               <motion.a
                 key={item}
                 href={`#${item.toLowerCase()}`}
-                className="relative text-sm font-medium text-slate-700 dark:text-slate-200 hover:text-sky-600 dark:hover:text-sky-400 transition-colors duration-300"
+                className="relative text-sm font-medium text-slate-600 dark:text-slate-200 hover:text-sky-600 dark:hover:text-sky-400 transition-colors duration-300"
                 whileHover={{ y: -2 }}
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -141,7 +141,7 @@ const Navbar = React.memo(() => {
                 </span>
                 <motion.button
                   onClick={handleLogout}
-                  className="p-2 rounded-xl bg-slate-100/80 dark:bg-slate-700/80 text-slate-600 dark:text-slate-300 hover:bg-rose-100 dark:hover:bg-rose-900/30 hover:text-rose-600 dark:hover:text-rose-400 transition-all duration-300"
+                  className="p-2 rounded-xl bg-slate-200/80 dark:bg-slate-700/80 text-slate-600 dark:text-slate-300 hover:bg-rose-100 dark:hover:bg-rose-900/30 hover:text-rose-600 dark:hover:text-rose-400 transition-all duration-300"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >

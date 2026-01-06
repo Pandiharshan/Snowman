@@ -44,7 +44,7 @@ const features = [
 
 const FeaturesSection = React.memo(() => {
   return (
-    <section id="features" className="py-24 px-4 bg-gradient-to-b from-slate-50/80 via-blue-50/60 to-slate-50/80 dark:bg-none transition-colors duration-700">
+    <section id="features" className="py-24 px-4 bg-gradient-to-b from-slate-100/70 via-slate-50/50 to-slate-100/70 dark:bg-none transition-colors duration-700">
       <div className="max-w-7xl mx-auto">
         <motion.div
           className="text-center mb-16"
@@ -54,7 +54,7 @@ const FeaturesSection = React.memo(() => {
           transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
         >
           <motion.span
-            className="inline-block px-4 py-2 rounded-full bg-sky-100 dark:bg-sky-900/30 text-sky-700 dark:text-sky-400 text-sm font-medium mb-4 shadow-sm"
+            className="inline-block px-4 py-2 rounded-full bg-slate-200/70 dark:bg-sky-900/30 text-slate-700 dark:text-sky-400 text-sm font-medium mb-4 shadow-sm border border-slate-300/50 dark:border-transparent"
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
@@ -76,7 +76,7 @@ const FeaturesSection = React.memo(() => {
           {features.map((feature, index) => (
             <ShineEffect key={feature.title} className="h-full">
               <motion.div
-                className="group relative p-6 rounded-3xl bg-white dark:bg-[#0a0a0a] border border-slate-300/60 dark:border-white/10 hover:border-sky-400/60 dark:hover:border-white/20 shadow-lg dark:shadow-none hover:shadow-xl transition-all duration-500 h-full"
+                className="group relative p-6 rounded-3xl bg-slate-50 dark:bg-[#0a0a0a] border border-slate-200 dark:border-white/10 hover:border-slate-300 dark:hover:border-white/20 shadow-sm dark:shadow-none hover:shadow-md transition-all duration-500 h-full"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}

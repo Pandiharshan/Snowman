@@ -27,10 +27,10 @@
   inset: 0;
   background: linear-gradient(
     165deg,
-    hsl(0, 0%, 100%) 0%,
-    hsl(200, 50%, 97%) 30%,
-    hsl(200, 65%, 90%) 60%,
-    hsl(200, 75%, 82%) 100%
+    hsl(220, 14%, 96%) 0%,
+    hsl(220, 16%, 93%) 30%,
+    hsl(220, 18%, 90%) 60%,
+    hsl(220, 20%, 87%) 100%
   );
   transition: background 0.7s ease;
 }
@@ -48,8 +48,8 @@
   transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   background: radial-gradient(
     ellipse 60% 50% at var(--light-x, 50%) var(--light-y, 50%),
-    hsla(200, 90%, 88%, 0.6) 0%,
-    hsla(200, 80%, 92%, 0.3) 30%,
+    hsla(199, 89%, 48%, 0.12) 0%,
+    hsla(199, 80%, 60%, 0.06) 30%,
     transparent 70%
   );
   z-index: 1;
@@ -82,9 +82,9 @@
   transform: translate(-50%, -50%);
   background: radial-gradient(
     circle,
-    hsla(200, 85%, 92%, 0.5) 0%,
-    hsla(200, 80%, 88%, 0.25) 30%,
-    hsla(200, 70%, 85%, 0.1) 50%,
+    hsla(199, 89%, 48%, 0.1) 0%,
+    hsla(199, 80%, 55%, 0.05) 30%,
+    hsla(199, 70%, 60%, 0.02) 50%,
     transparent 70%
   );
   opacity: 0;
@@ -139,9 +139,9 @@
   border-radius: 30px;
   background: linear-gradient(
     145deg,
-    hsla(200, 80%, 85%, 0.4) 0%,
-    hsla(200, 70%, 90%, 0.2) 50%,
-    hsla(200, 60%, 92%, 0.3) 100%
+    hsla(199, 89%, 48%, 0.08) 0%,
+    hsla(199, 70%, 55%, 0.04) 50%,
+    hsla(199, 60%, 60%, 0.06) 100%
   );
   opacity: 0;
   transition: opacity 0.6s ease;
@@ -170,20 +170,20 @@
 .login-card-inner {
   background: linear-gradient(
     155deg,
-    hsla(0, 0%, 100%, 0.85) 0%,
-    hsla(200, 60%, 97%, 0.7) 50%,
-    hsla(200, 70%, 94%, 0.6) 100%
+    hsla(220, 20%, 98%, 0.95) 0%,
+    hsla(220, 18%, 96%, 0.9) 50%,
+    hsla(220, 16%, 94%, 0.85) 100%
   );
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   border-radius: 28px;
-  border: 1px solid hsla(0, 0%, 100%, 0.7);
+  border: 1px solid hsla(220, 13%, 86%, 0.8);
   padding: 48px 40px;
   box-shadow: 
-    0 25px 50px hsla(200, 50%, 50%, 0.12),
-    0 10px 20px hsla(200, 50%, 60%, 0.08),
-    inset 0 1px 0 hsla(0, 0%, 100%, 0.9),
-    inset 0 -1px 0 hsla(200, 40%, 90%, 0.3);
+    0 25px 50px hsla(220, 20%, 14%, 0.08),
+    0 10px 20px hsla(220, 20%, 14%, 0.05),
+    inset 0 1px 0 hsla(0, 0%, 100%, 0.7),
+    inset 0 -1px 0 hsla(220, 14%, 90%, 0.3);
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   will-change: box-shadow, border-color;
 }
@@ -205,12 +205,12 @@
 
 .login-card.hovered .login-card-inner {
   box-shadow: 
-    0 35px 70px hsla(200, 50%, 50%, 0.18),
-    0 15px 30px hsla(200, 50%, 60%, 0.1),
-    0 0 60px hsla(200, 70%, 85%, 0.2),
-    inset 0 1px 0 hsla(0, 0%, 100%, 1),
-    inset 0 -1px 0 hsla(200, 40%, 90%, 0.4);
-  border-color: hsla(0, 0%, 100%, 0.9);
+    0 35px 70px hsla(220, 20%, 14%, 0.1),
+    0 15px 30px hsla(220, 20%, 14%, 0.06),
+    0 0 60px hsla(199, 89%, 48%, 0.08),
+    inset 0 1px 0 hsla(0, 0%, 100%, 0.8),
+    inset 0 -1px 0 hsla(220, 14%, 90%, 0.4);
+  border-color: hsla(220, 13%, 80%, 0.9);
 }
 
 .dark .login-card.hovered .login-card-inner {
@@ -230,7 +230,7 @@
 .login-title {
   font-size: 34px;
   font-weight: 650;
-  color: hsl(210, 45%, 20%);
+  color: hsl(220, 20%, 14%);
   text-align: center;
   margin: 0 0 10px 0;
   letter-spacing: -0.8px;
@@ -243,7 +243,7 @@
 
 .login-subtitle {
   font-size: 15px;
-  color: hsl(200, 25%, 50%);
+  color: hsl(220, 10%, 46%);
   text-align: center;
   margin: 0 0 44px 0;
   font-weight: 400;
@@ -273,9 +273,9 @@
   padding: 20px 22px;
   font-size: 16px;
   font-weight: 450;
-  color: hsl(210, 40%, 18%);
-  background: hsla(0, 0%, 100%, 0.7);
-  border: 1.5px solid hsla(200, 40%, 88%, 0.6);
+  color: hsl(220, 20%, 14%);
+  background: hsla(220, 14%, 96%, 0.9);
+  border: 1.5px solid hsla(220, 13%, 82%, 0.8);
   border-radius: 16px;
   outline: none;
   transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
@@ -290,11 +290,11 @@
 }
 
 .login-input:focus {
-  background: hsla(0, 0%, 100%, 0.95);
-  border-color: hsla(200, 70%, 65%, 0.8);
+  background: hsla(220, 20%, 98%, 0.98);
+  border-color: hsla(199, 89%, 48%, 0.6);
   box-shadow: 
-    0 0 0 4px hsla(200, 80%, 80%, 0.15),
-    0 8px 25px hsla(200, 50%, 60%, 0.12);
+    0 0 0 4px hsla(199, 89%, 48%, 0.1),
+    0 8px 25px hsla(220, 20%, 14%, 0.08);
 }
 
 .dark .login-input:focus {
@@ -316,7 +316,7 @@
   transform: translateY(-50%);
   font-size: 16px;
   font-weight: 450;
-  color: hsl(200, 20%, 58%);
+  color: hsl(220, 10%, 50%);
   pointer-events: none;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   will-change: transform, font-size;
@@ -331,12 +331,12 @@
   left: 18px;
   font-size: 12px;
   font-weight: 550;
-  color: hsl(200, 55%, 45%);
+  color: hsl(199, 89%, 40%);
   background: linear-gradient(
     180deg,
     transparent 0%,
-    hsl(200, 50%, 98%) 45%,
-    hsl(200, 50%, 98%) 100%
+    hsl(220, 18%, 96%) 45%,
+    hsl(220, 18%, 96%) 100%
   );
   padding: 2px 8px;
   border-radius: 4px;
@@ -476,17 +476,17 @@
 .login-link {
   font-size: 14px;
   font-weight: 450;
-  color: hsl(200, 45%, 48%);
+  color: hsl(199, 89%, 40%);
   text-decoration: none;
   transition: all 0.3s ease;
 }
 
 .login-link:hover {
-  color: hsl(200, 60%, 38%);
+  color: hsl(199, 89%, 32%);
 }
 
 .login-divider {
-  color: hsl(200, 25%, 75%);
+  color: hsl(220, 13%, 75%);
   font-size: 8px;
 }
 

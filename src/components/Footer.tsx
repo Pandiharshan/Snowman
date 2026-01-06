@@ -15,15 +15,15 @@ const Footer = React.memo(() => {
         : 'rgba(30, 41, 59, 0.5)';
     }
     return isHovered 
-      ? 'rgba(255, 255, 255, 0.9)' 
-      : 'rgba(255, 255, 255, 0.4)';
+      ? 'rgba(241, 245, 249, 0.95)' 
+      : 'rgba(241, 245, 249, 0.8)';
   }, [isDark, isHovered]);
 
   // Memoize border style - same as navbar
   const borderStyle = useMemo(() => ({
     border: isDark 
       ? '1px solid rgba(148, 163, 184, 0.1)' 
-      : '1px solid rgba(255, 255, 255, 0.5)',
+      : '1px solid rgba(203, 213, 225, 0.6)',
   }), [isDark]);
 
   return (

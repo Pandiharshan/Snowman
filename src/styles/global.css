@@ -6,51 +6,51 @@
 
 @layer base {
   :root {
-    /* Light Mode - Winter Theme */
-    --background: 210 40% 98%;
-    --foreground: 210 45% 20%;
+    /* Light Mode - Premium Cool Neutrals (Linear/Notion inspired) */
+    --background: 220 14% 96%;
+    --foreground: 220 20% 14%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 210 45% 20%;
+    --card: 220 20% 98%;
+    --card-foreground: 220 20% 14%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 210 45% 20%;
+    --popover: 220 20% 98%;
+    --popover-foreground: 220 20% 14%;
 
-    /* Snowman Primary - Icy Blue */
-    --primary: 200 80% 52%;
-    --primary-foreground: 210 40% 98%;
+    /* Snowman Primary - Deep Sky Blue */
+    --primary: 199 89% 48%;
+    --primary-foreground: 0 0% 100%;
 
-    /* Secondary - Frost White */
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 210 45% 20%;
+    /* Secondary - Cool Gray */
+    --secondary: 220 14% 91%;
+    --secondary-foreground: 220 20% 14%;
 
-    /* Muted - Soft Gray */
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Muted - Sophisticated Gray */
+    --muted: 220 14% 91%;
+    --muted-foreground: 220 10% 46%;
 
-    /* Accent - Snowflake Blue */
-    --accent: 200 85% 60%;
-    --accent-foreground: 210 40% 98%;
+    /* Accent - Elegant Sky */
+    --accent: 199 89% 48%;
+    --accent-foreground: 0 0% 100%;
 
     /* Destructive - Warm Red */
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 200 80% 52%;
+    --border: 220 13% 86%;
+    --input: 220 14% 91%;
+    --ring: 199 89% 48%;
 
     --radius: 0.5rem;
 
     /* Sidebar */
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 200 80% 52%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 220 14% 95%;
+    --sidebar-foreground: 220 20% 14%;
+    --sidebar-primary: 199 89% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 14% 89%;
+    --sidebar-accent-foreground: 220 20% 14%;
+    --sidebar-border: 220 13% 86%;
+    --sidebar-ring: 199 89% 48%;
   }
 
   .dark {
@@ -112,9 +112,9 @@
     cursor: none;
   }
 
-  /* Light mode - Premium gradient background */
+  /* Light mode - Premium cool gradient background */
   body {
-    background: linear-gradient(180deg, hsl(210, 50%, 97%) 0%, hsl(210, 45%, 95%) 50%, hsl(210, 50%, 96%) 100%);
+    background: linear-gradient(180deg, hsl(220, 14%, 96%) 0%, hsl(220, 16%, 93%) 50%, hsl(220, 14%, 95%) 100%);
     background-attachment: fixed;
     min-height: 100vh;
   }

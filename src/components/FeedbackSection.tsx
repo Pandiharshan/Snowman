@@ -36,7 +36,7 @@ const FeedbackSection = React.memo(() => {
   };
 
   return (
-    <section id="contact" className="py-24 px-4 bg-gradient-to-b from-slate-50/80 via-sky-50/70 to-blue-50/60 dark:bg-none transition-colors duration-700">
+    <section id="contact" className="py-24 px-4 bg-gradient-to-b from-slate-100/70 via-slate-50/50 to-slate-100/60 dark:bg-none transition-colors duration-700">
       <div className="max-w-4xl mx-auto">
         <motion.div
           className="text-center mb-12"
@@ -46,12 +46,12 @@ const FeedbackSection = React.memo(() => {
           transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
         >
           <motion.div
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-sky-100 dark:bg-sky-900/30 text-sky-700 dark:text-sky-400 text-sm font-medium mb-4 shadow-sm"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-200/70 dark:bg-sky-900/30 text-slate-700 dark:text-sky-400 text-sm font-medium mb-4 shadow-sm border border-slate-300/50 dark:border-transparent"
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
           >
-            <MessageSquare className="w-4 h-4" />
+            <MessageSquare className="w-4 h-4 text-sky-500" />
             <span>We'd love to hear from you</span>
           </motion.div>
           <h2 className="text-3xl md:text-5xl font-bold text-slate-800 dark:text-white mb-4">
@@ -67,7 +67,7 @@ const FeedbackSection = React.memo(() => {
 
         <motion.form
           onSubmit={handleSubmit}
-          className="relative p-8 md:p-12 rounded-3xl bg-white dark:bg-[#0a0a0a] border border-slate-300/60 dark:border-white/10 group shadow-lg dark:shadow-none hover:shadow-xl transition-all duration-500"
+          className="relative p-8 md:p-12 rounded-3xl bg-slate-50 dark:bg-[#0a0a0a] border border-slate-200 dark:border-white/10 group shadow-sm dark:shadow-none hover:shadow-md transition-all duration-500"
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -85,7 +85,6 @@ const FeedbackSection = React.memo(() => {
           {/* Content wrapper */}
           <div className="relative z-10">
             <div className="grid md:grid-cols-2 gap-6 mb-6">
-            {/* Name Field */}
             <motion.div
               className="relative"
               initial={{ opacity: 0, x: -20 }}
@@ -97,7 +96,7 @@ const FeedbackSection = React.memo(() => {
                 Name
               </label>
               <div className="relative">
-                <User className={`absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 transition-colors duration-300 ${focusedField === 'name' ? 'text-sky-500' : 'text-slate-800 dark:text-slate-300'}`} />
+                <User className={`absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 transition-colors duration-300 ${focusedField === 'name' ? 'text-sky-500' : 'text-slate-400 dark:text-slate-300'}`} />
                 <input
                   type="text"
                   name="name"
@@ -107,7 +106,7 @@ const FeedbackSection = React.memo(() => {
                   onBlur={() => setFocusedField(null)}
                   placeholder="Your name"
                   required
-                  className="w-full pl-12 pr-4 py-4 rounded-2xl bg-slate-50 dark:bg-[#111111] border-2 border-slate-300/60 dark:border-white/10 text-slate-800 dark:text-white placeholder:text-slate-500 dark:placeholder:text-slate-500 focus:border-sky-400 dark:focus:border-white/30 focus:outline-none transition-all duration-300"
+                  className="w-full pl-12 pr-4 py-4 rounded-2xl bg-slate-100 dark:bg-[#111111] border-2 border-slate-200 dark:border-white/10 text-slate-800 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-sky-400 dark:focus:border-white/30 focus:outline-none transition-all duration-300"
                 />
               </div>
             </motion.div>
@@ -124,7 +123,7 @@ const FeedbackSection = React.memo(() => {
                 Email
               </label>
               <div className="relative">
-                <Mail className={`absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 transition-colors duration-300 ${focusedField === 'email' ? 'text-sky-500' : 'text-slate-800 dark:text-slate-300'}`} />
+                <Mail className={`absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 transition-colors duration-300 ${focusedField === 'email' ? 'text-sky-500' : 'text-slate-400 dark:text-slate-300'}`} />
                 <input
                   type="email"
                   name="email"
@@ -134,7 +133,7 @@ const FeedbackSection = React.memo(() => {
                   onBlur={() => setFocusedField(null)}
                   placeholder="your@email.com"
                   required
-                  className="w-full pl-12 pr-4 py-4 rounded-2xl bg-slate-50 dark:bg-[#111111] border-2 border-slate-300/60 dark:border-white/10 text-slate-800 dark:text-white placeholder:text-slate-500 dark:placeholder:text-slate-500 focus:border-sky-400 dark:focus:border-white/30 focus:outline-none transition-all duration-300"
+                  className="w-full pl-12 pr-4 py-4 rounded-2xl bg-slate-100 dark:bg-[#111111] border-2 border-slate-200 dark:border-white/10 text-slate-800 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-sky-400 dark:focus:border-white/30 focus:outline-none transition-all duration-300"
                 />
               </div>
             </motion.div>
@@ -152,7 +151,7 @@ const FeedbackSection = React.memo(() => {
               Message
             </label>
             <div className="relative">
-              <MessageSquare className={`absolute left-4 top-4 w-5 h-5 transition-colors duration-300 ${focusedField === 'message' ? 'text-sky-500' : 'text-slate-800 dark:text-slate-300'}`} />
+              <MessageSquare className={`absolute left-4 top-4 w-5 h-5 transition-colors duration-300 ${focusedField === 'message' ? 'text-sky-500' : 'text-slate-400 dark:text-slate-300'}`} />
               <textarea
                 name="message"
                 value={formData.message}
@@ -162,7 +161,7 @@ const FeedbackSection = React.memo(() => {
                 placeholder="Share your thoughts, suggestions, or feedback..."
                 required
                 rows={5}
-                className="w-full pl-12 pr-4 py-4 rounded-2xl bg-slate-50 dark:bg-[#111111] border-2 border-slate-300/60 dark:border-white/10 text-slate-800 dark:text-white placeholder:text-slate-500 dark:placeholder:text-slate-500 focus:border-sky-400 dark:focus:border-white/30 focus:outline-none transition-all duration-300 resize-none"
+                className="w-full pl-12 pr-4 py-4 rounded-2xl bg-slate-100 dark:bg-[#111111] border-2 border-slate-200 dark:border-white/10 text-slate-800 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-sky-400 dark:focus:border-white/30 focus:outline-none transition-all duration-300 resize-none"
               />
             </div>
           </motion.div>
