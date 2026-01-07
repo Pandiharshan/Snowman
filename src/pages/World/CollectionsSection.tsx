@@ -2,6 +2,8 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Download } from 'lucide-react';
+import { generateBlurHash, calculateAspectRatio } from '@/utils/media';
+import { initPerformanceMonitoring } from '@/utils/performance';
 
 interface MediaFile {
   id: string;
@@ -16,6 +18,24 @@ const MediaCard = React.memo(({ item, onClick }: { item: MediaFile; onClick: () 
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isHovered, setIsHovered] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  const [blurHashLoaded, setBlurHashLoaded] = useState(false);
+  const [aspectRatio, setAspectRatio] = useState<number | null>(null);
+
+  // Calculate aspect ratio for proper layout
+  useEffect(() => {
+    if (item.type === 'image' && !aspectRatio) {
+      calculateAspectRatio(item.src).then(ratio => {
+        setAspectRatio(ratio);
+      });
+    }
+  }, [item, aspectRatio]);
+
+  // Load blurhash when item becomes visible
+  useEffect(() => {
+    if (item.type === 'image' && !blurHashLoaded) {
+      setBlurHashLoaded(true);
+    }
+  }, [item, blurHashLoaded]);
 
   // Video autoplay on hover
   useEffect(() => {
@@ -51,24 +71,49 @@ const MediaCard = React.memo(({ item, onClick }: { item: MediaFile; onClick: () 
     >
       {item.type === 'image' ? (
         <>
-          {!loaded && (
-            <div className="w-full aspect-[3/4] bg-gradient-to-br from-slate-800 to-slate-900 animate-pulse rounded-2xl" />
+          {/* Blurhash placeholder */}
+          {!blurHashLoaded && (
+            <div className="w-full aspect-[3/4] bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl" />
+          )}
+          {blurHashLoaded && !loaded && (
+            <img
+              src={generateBlurHash(item.src)}
+              alt=""
+              className="w-full h-auto object-cover rounded-2xl blur-sm scale-110"
+              style={{ aspectRatio: aspectRatio || '3/4' }}
+            />
           )}
           <img
             src={item.src}
             alt=""
             loading="lazy"
+            decoding="async"
             onLoad={() => setLoaded(true)}
             className={`
               w-full h-auto object-cover rounded-2xl
               transition-all duration-500 ease-out
-              ${loaded ? 'opacity-100' : 'opacity-0'}
+              ${loaded ? 'opacity-100 blur-none scale-100' : 'opacity-0 absolute inset-0'}
               ${isHovered ? 'scale-105' : 'scale-100'}
             `}
+            style={{
+              aspectRatio: aspectRatio || '3/4',
+              transform: 'translateZ(0)',
+            }}
           />
         </>
       ) : (
         <div className="relative">
+          {/* Video placeholder */}
+          {!loaded && (
+            <div className="w-full h-auto object-cover rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center"
+              style={{ aspectRatio: aspectRatio || '16/9' }}>
+              <div className="w-12 h-12 rounded-full bg-white/30 backdrop-blur-sm flex items-center justify-center">
+                <svg className="w-5 h-5 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              </div>
+            </div>
+          )}
           <video
             ref={videoRef}
             src={item.src}
@@ -79,11 +124,17 @@ const MediaCard = React.memo(({ item, onClick }: { item: MediaFile; onClick: () 
             className={`
               w-full h-auto object-cover rounded-2xl
               transition-transform duration-500
+              ${loaded ? 'opacity-100' : 'opacity-0 absolute inset-0'}
               ${isHovered ? 'scale-105' : 'scale-100'}
             `}
+            style={{
+              aspectRatio: aspectRatio || '16/9',
+              transform: 'translateZ(0)',
+            }}
+            onLoadedMetadata={() => setLoaded(true)}
           />
           {/* Play indicator */}
-          {!isHovered && (
+          {!isHovered && loaded && (
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="w-12 h-12 rounded-full bg-white/30 backdrop-blur-sm flex items-center justify-center">
                 <svg className="w-5 h-5 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
@@ -160,6 +211,9 @@ const CollectionsSection = React.memo(() => {
 
   // Load all media from all collections
   useEffect(() => {
+    // Initialize performance monitoring
+    initPerformanceMonitoring();
+    
     const loadAllMedia = async () => {
       try {
         const manifestRes = await fetch('/assets/collections/manifest.json');

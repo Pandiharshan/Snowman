@@ -2,6 +2,8 @@ import React, { useMemo, useState, useCallback, useEffect, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Download, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { generateBlurHash, calculateAspectRatio } from '@/utils/media';
+import { initPerformanceMonitoring } from '@/utils/performance';
 
 interface MediaFile {
   id: string;
@@ -11,22 +13,212 @@ interface MediaFile {
   collection: string;
 }
 
-// Premium Media Card
-const MediaCard = React.memo(({ item, onFocus }: { item: MediaFile; onFocus: (item: MediaFile) => void }) => {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [isHovered, setIsHovered] = useState(false);
-  const [loaded, setLoaded] = useState(false);
+// Enhanced caching and prefetching strategies
+const MAX_CACHE_SIZE = 100;
+const imageCache = new Map<string, HTMLImageElement>();
+const videoCache = new Map<string, HTMLVideoElement>();
+const prefetchQueue: string[] = [];
+let isPrefetching = false;
 
+// Enhanced prefetch with priority queue
+const prefetchImage = (src: string, priority: 'high' | 'normal' | 'low' = 'normal') => {
+  if (imageCache.has(src)) return;
+  
+  if (priority === 'high') {
+    prefetchQueue.unshift(src); // High priority at front
+  } else {
+    prefetchQueue.push(src); // Normal/low priority at back
+  }
+  
+  if (!isPrefetching) {
+    isPrefetching = true;
+    // Use requestIdleCallback for non-critical prefetching
+    requestIdleCallback(() => {
+      processPrefetchQueue();
+    }, { timeout: 5000 });
+  }
+};
+
+// Process prefetch queue
+const processPrefetchQueue = () => {
+  const nextSrc = prefetchQueue.shift();
+  if (nextSrc && !imageCache.has(nextSrc)) {
+    const img = new Image();
+    img.onload = () => {
+      // Add to cache
+      imageCache.set(nextSrc, img);
+      // Maintain cache size
+      if (imageCache.size > MAX_CACHE_SIZE) {
+        const firstKey = imageCache.keys().next().value;
+        imageCache.delete(firstKey);
+      }
+      isPrefetching = false;
+      if (prefetchQueue.length > 0) {
+        requestIdleCallback(processPrefetchQueue, { timeout: 2000 });
+      }
+    };
+    img.onerror = () => {
+      isPrefetching = false;
+      if (prefetchQueue.length > 0) {
+        requestIdleCallback(processPrefetchQueue, { timeout: 2000 });
+      }
+    };
+    img.src = nextSrc;
+  } else {
+    isPrefetching = false;
+  }
+};
+
+// Prefetch video metadata
+const prefetchVideo = (src: string) => {
+  if (videoCache.has(src)) return;
+  
+  const video = document.createElement('video');
+  video.preload = 'metadata';
+  
+  const handleLoaded = () => {
+    videoCache.set(src, video);
+    // Maintain cache size
+    if (videoCache.size > MAX_CACHE_SIZE / 2) { // Smaller video cache
+      const firstKey = videoCache.keys().next().value;
+      videoCache.delete(firstKey);
+    }
+    video.removeEventListener('loadedmetadata', handleLoaded);
+    video.removeEventListener('error', handleError);
+  };
+  
+  const handleError = () => {
+    video.removeEventListener('loadedmetadata', handleLoaded);
+    video.removeEventListener('error', handleError);
+  };
+  
+  video.addEventListener('loadedmetadata', handleLoaded);
+  video.addEventListener('error', handleError);
+  video.src = src;
+};
+
+// Clear cache
+const clearCache = () => {
+  imageCache.clear();
+  videoCache.clear();
+};
+
+// Get cached media
+const getCachedMedia = (src: string, type: 'image' | 'video') => {
+  if (type === 'image') {
+    return imageCache.get(src) || null;
+  }
+  return videoCache.get(src) || null;
+};
+
+// Preload critical media
+const preloadCriticalMedia = async (sources: string[]) => {
+  const promises = sources.map(src => {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.onload = resolve;
+      img.onerror = resolve;
+      img.src = src;
+    });
+  });
+  
+  await Promise.all(promises);
+};
+
+// Batch prefetch with rate limiting
+const batchPrefetch = async (sources: string[], batchSize = 5) => {
+  for (let i = 0; i < sources.length; i += batchSize) {
+    const batch = sources.slice(i, i + batchSize);
+    batch.forEach(src => prefetchImage(src, 'low'));
+    // Small delay between batches to prevent blocking
+    await new Promise(resolve => setTimeout(resolve, 100));
+  }
+};
+
+// Cache statistics
+const getCacheStats = () => {
+  return {
+    imageCacheSize: imageCache.size,
+    videoCacheSize: videoCache.size,
+    prefetchQueueLength: prefetchQueue.length,
+  };
+};
+
+// Premium Media Card with optimized loading
+const MediaCard = React.memo(({ item, onFocus, index }: { item: MediaFile; onFocus: (item: MediaFile) => void; index: number }) => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const [isNearViewport, setIsNearViewport] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const [loadState, setLoadState] = useState<'skeleton' | 'blur' | 'loaded'>('skeleton');
+  const [blurHashLoaded, setBlurHashLoaded] = useState(false);
+  const [aspectRatio, setAspectRatio] = useState<number | null>(null);
+
+  // Calculate aspect ratio for proper layout
+  useEffect(() => {
+    if (item.type === 'image' && isNearViewport && !aspectRatio) {
+      calculateAspectRatio(item.src).then(ratio => {
+        setAspectRatio(ratio);
+      });
+    }
+  }, [item, isNearViewport, aspectRatio]);
+
+  // Load blurhash when item becomes near viewport
+  useEffect(() => {
+    if (item.type === 'image' && isNearViewport && !blurHashLoaded) {
+      setBlurHashLoaded(true);
+    }
+  }, [item, isNearViewport, blurHashLoaded]);
+
+  // Intersection Observer with optimized thresholds: near viewport & visible
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.intersectionRatio > 0) {
+            setIsNearViewport(true);
+          }
+          if (entry.intersectionRatio > 0.25) {
+            setIsVisible(true);
+          }
+        });
+      },
+      { 
+        rootMargin: '300px 0px', // Preload 300px before entering viewport
+        threshold: [0, 0.1, 0.25, 0.5, 1.0] // Multiple thresholds for better performance
+      }
+    );
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  // Prefetch next images during idle
+  useEffect(() => {
+    if (isNearViewport && item.type === 'image') {
+      prefetchImage(item.src, 'normal');
+    } else if (isNearViewport && item.type === 'video') {
+      prefetchVideo(item.src);
+    }
+  }, [isNearViewport, item.src, item.type]);
+
+  // Video hover play with GPU acceleration
   useEffect(() => {
     if (item.type !== 'video' || !videoRef.current) return;
     
-    if (isHovered) {
-      videoRef.current.play().catch(() => {});
+    const video = videoRef.current;
+    
+    if (isHovered && isVisible) {
+      video.play().catch(() => {});
     } else {
-      videoRef.current.pause();
-      videoRef.current.currentTime = 0;
+      video.pause();
+      video.currentTime = 0;
     }
-  }, [isHovered, item.type]);
+  }, [isHovered, isVisible, item.type]);
 
   const handleDownload = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
@@ -38,51 +230,120 @@ const MediaCard = React.memo(({ item, onFocus }: { item: MediaFile; onFocus: (it
     document.body.removeChild(link);
   }, [item.src, item.name]);
 
+  const handleImageLoad = useCallback(() => {
+    setLoadState('loaded');
+    perfMonitor.recordCacheHit(); // Record that the image loaded successfully
+  }, []);
+
+  // Check if image is cached
+  useEffect(() => {
+    if (item.type === 'image' && imageCache.has(item.src)) {
+      setLoadState('loaded');
+    }
+  }, [item.src, item.type]);
+
   return (
-    <motion.div
+    <div
+      ref={containerRef}
       className="group relative overflow-hidden rounded-2xl cursor-pointer break-inside-avoid mb-4"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={() => onFocus(item)}
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4 }}
+      style={{
+        transform: 'translateZ(0)', // Force GPU layer
+        willChange: isHovered ? 'transform' : 'auto',
+      }}
     >
+      {/* Skeleton placeholder */}
+      {loadState === 'skeleton' && (
+        <div className="w-full aspect-[3/4] bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl overflow-hidden">
+          <div 
+            className="w-full h-full animate-pulse"
+            style={{
+              background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent)',
+              backgroundSize: '200% 100%',
+              animation: 'shimmer 1.5s infinite',
+            }}
+          />
+        </div>
+      )}
+      
       {item.type === 'image' ? (
         <>
-          {!loaded && (
-            <div className="w-full aspect-[3/4] bg-gradient-to-br from-slate-800 to-slate-900 animate-pulse rounded-2xl" />
+          {/* Blurhash placeholder */}
+          {isNearViewport && !blurHashLoaded && (
+            <div className="w-full aspect-[3/4] bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl" />
           )}
-          <img
-            src={item.src}
-            alt=""
-            loading="lazy"
-            onLoad={() => setLoaded(true)}
-            className={`
-              w-full h-auto object-cover rounded-2xl
-              transition-all duration-500 ease-out
-              ${loaded ? 'opacity-100' : 'opacity-0'}
-              ${isHovered ? 'scale-105' : 'scale-100'}
-            `}
-          />
+          {isNearViewport && blurHashLoaded && loadState !== 'loaded' && (
+            <img
+              src={generateBlurHash(item.src)}
+              alt=""
+              className="w-full h-auto object-cover rounded-2xl blur-sm scale-110"
+              style={{ aspectRatio: aspectRatio || '3/4' }}
+            />
+          )}
+          {/* Only render image when near viewport */}
+          {isNearViewport && (
+            <img
+              src={item.src}
+              alt=""
+              loading="lazy"
+              decoding="async"
+              onLoad={handleImageLoad}
+              className={`
+                w-full h-auto object-cover rounded-2xl
+                transition-transform duration-500 ease-out
+                ${loadState === 'loaded' ? 'opacity-100 blur-none scale-100' : 'opacity-0 absolute inset-0'}
+                ${isHovered ? 'scale-105' : 'scale-100'}
+              `}
+              style={{
+                aspectRatio: aspectRatio || '3/4',
+                transform: `translateZ(0) ${isHovered ? 'scale(1.05)' : 'scale(1)'}`,
+              }}
+            />
+          )}
         </>
       ) : (
         <div className="relative">
-          <video
-            ref={videoRef}
-            src={item.src}
-            muted
-            loop
-            playsInline
-            preload="metadata"
-            className={`
-              w-full h-auto object-cover rounded-2xl
-              transition-transform duration-500
-              ${isHovered ? 'scale-105' : 'scale-100'}
-            `}
-          />
-          {!isHovered && (
-            <div className="absolute inset-0 flex items-center justify-center">
+          {/* Video placeholder */}
+          {loadState !== 'loaded' && (
+            <div className="w-full h-auto object-cover rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center"
+              style={{ aspectRatio: aspectRatio || '16/9' }}>
+              <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              </div>
+            </div>
+          )}
+          {/* Video - only load when near viewport */}
+          {isNearViewport && (
+            <video
+              ref={videoRef}
+              src={item.src}
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              className={`
+                w-full h-auto object-cover rounded-2xl
+                transition-transform duration-500
+                ${loadState === 'loaded' ? 'opacity-100' : 'opacity-0 absolute inset-0'}
+                ${isHovered ? 'scale-105' : 'scale-100'}
+              `}
+              style={{
+                aspectRatio: aspectRatio || '16/9',
+                transform: 'translateZ(0)',
+              }}
+              onLoadedMetadata={() => {
+                setLoadState('loaded');
+                perfMonitor.recordCacheHit(); // Record that the video loaded successfully
+              }}
+            />
+          )}
+          {/* Play indicator */}
+          {!isHovered && loadState === 'loaded' && (
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
               <div className="w-12 h-12 rounded-full bg-white/30 backdrop-blur-sm flex items-center justify-center">
                 <svg className="w-5 h-5 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M8 5v14l11-7z" />
@@ -93,14 +354,18 @@ const MediaCard = React.memo(({ item, onFocus }: { item: MediaFile; onFocus: (it
         </div>
       )}
 
-      {/* Hover overlay */}
-      <div className={`
-        absolute inset-0 rounded-2xl transition-all duration-300
-        ${isHovered 
-          ? 'bg-gradient-to-t from-black/60 via-transparent to-transparent ring-2 ring-white/20' 
-          : 'bg-transparent'
-        }
-      `} />
+      {/* Hover overlay - GPU accelerated */}
+      <div 
+        className={`
+          absolute inset-0 rounded-2xl pointer-events-none
+          transition-opacity duration-300
+          ${isHovered 
+            ? 'opacity-100 bg-gradient-to-t from-black/60 via-transparent to-transparent ring-2 ring-white/20' 
+            : 'opacity-0'
+          }
+        `}
+        style={{ transform: 'translateZ(0)' }}
+      />
 
       {/* Download button - bottom left */}
       <button
@@ -110,13 +375,14 @@ const MediaCard = React.memo(({ item, onFocus }: { item: MediaFile; onFocus: (it
           p-2.5 rounded-full
           bg-white/90 hover:bg-white
           text-slate-900
-          transition-all duration-300 ease-out
           shadow-lg
+          transition-all duration-300 ease-out
           ${isHovered 
-            ? 'opacity-100 scale-100 translate-y-0' 
-            : 'opacity-0 scale-75 translate-y-2 pointer-events-none'
+            ? 'opacity-100 translate-y-0' 
+            : 'opacity-0 translate-y-2 pointer-events-none'
           }
         `}
+        style={{ transform: 'translateZ(0)' }}
         aria-label="Download"
       >
         <Download className="w-4 h-4" />
@@ -129,13 +395,14 @@ const MediaCard = React.memo(({ item, onFocus }: { item: MediaFile; onFocus: (it
           p-2.5 rounded-full
           bg-white/90 hover:bg-white
           text-slate-900
-          transition-all duration-300 ease-out
           shadow-lg
+          transition-all duration-300 ease-out
           ${isHovered 
-            ? 'opacity-100 scale-100 translate-y-0' 
-            : 'opacity-0 scale-75 translate-y-2 pointer-events-none'
+            ? 'opacity-100 translate-y-0' 
+            : 'opacity-0 translate-y-2 pointer-events-none'
           }
         `}
+        style={{ transform: 'translateZ(0)' }}
         onClick={(e) => e.stopPropagation()}
         aria-label="More options"
       >
@@ -145,8 +412,10 @@ const MediaCard = React.memo(({ item, onFocus }: { item: MediaFile; onFocus: (it
           <circle cx="12" cy="18" r="2" />
         </svg>
       </button>
-    </motion.div>
+    </div>
   );
+}, (prevProps, nextProps) => {
+  return prevProps.item.id === nextProps.item.id;
 });
 
 MediaCard.displayName = 'MediaCard';
@@ -252,6 +521,9 @@ const CollectionDetail = React.memo(() => {
 
   // Load all media from all collections
   useEffect(() => {
+    // Initialize performance monitoring
+    initPerformanceMonitoring();
+    
     const loadAllMedia = async () => {
       try {
         const manifestRes = await fetch('/assets/collections/manifest.json');
@@ -342,21 +614,31 @@ const CollectionDetail = React.memo(() => {
         </div>
       </div>
 
-      {/* Pinterest Masonry Grid */}
+      {/* Optimized Pinterest Masonry Grid with CSS columns */}
       <main className="max-w-7xl mx-auto px-6 py-8">
-        <div className="columns-2 md:columns-3 lg:columns-4 xl:columns-5 gap-4">
-          {allMedia.map((item) => (
-            <MediaCard 
-              key={item.id} 
-              item={item} 
-              onFocus={setFocusedItem}
-            />
+        <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 xl:columns-5 gap-4">
+          {allMedia.map((item, index) => (
+            <div key={item.id} className="mb-4 break-inside-avoid">
+              <MediaCard 
+                item={item} 
+                index={index}
+                onFocus={setFocusedItem}
+              />
+            </div>
           ))}
         </div>
       </main>
 
       {/* Focus Modal */}
       <FocusModal item={focusedItem} onClose={() => setFocusedItem(null)} />
+
+      {/* Shimmer animation keyframes */}
+      <style>{`
+        @keyframes shimmer {
+          0% { background-position: -200% 0; }
+          100% { background-position: 200% 0; }
+        }
+      `}</style>
     </div>
   );
 });

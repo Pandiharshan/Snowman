@@ -1,6 +1,8 @@
-import React, { useRef, useEffect, useState, useCallback } from 'react';
+import React, { useRef, useEffect, useState, useCallback, useMemo } from 'react';
 import { Download } from 'lucide-react';
 import { MediaItem } from './collections.data';
+import { generateBlurHash, calculateAspectRatio } from '@/utils/media';
+import { perfMonitor } from '@/utils/performance';
 
 interface CollectionItemProps {
   item: MediaItem;
@@ -13,6 +15,24 @@ const CollectionItem = React.memo(({ item, onFocus }: CollectionItemProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [blurHashLoaded, setBlurHashLoaded] = useState(false);
+  const [aspectRatio, setAspectRatio] = useState<number | null>(null);
+
+  // Calculate aspect ratio for proper layout
+  useEffect(() => {
+    if (item.type === 'image' && isVisible && !aspectRatio) {
+      calculateAspectRatio(item.src).then(ratio => {
+        setAspectRatio(ratio);
+      });
+    }
+  }, [item, isVisible, aspectRatio]);
+
+  // Load blurhash when item becomes visible
+  useEffect(() => {
+    if (item.type === 'image' && isVisible && !blurHashLoaded) {
+      setBlurHashLoaded(true);
+    }
+  }, [item, isVisible, blurHashLoaded]);
 
   // Intersection Observer for lazy loading
   useEffect(() => {
@@ -20,7 +40,10 @@ const CollectionItem = React.memo(({ item, onFocus }: CollectionItemProps) => {
       ([entry]) => {
         setIsVisible(entry.isIntersecting);
       },
-      { rootMargin: '150px', threshold: 0.1 }
+      { 
+        rootMargin: '250px 0px', // Preload 250px before entering viewport
+        threshold: [0, 0.1, 0.5] // Multiple thresholds for better performance
+      }
     );
 
     if (containerRef.current) {
@@ -44,7 +67,10 @@ const CollectionItem = React.memo(({ item, onFocus }: CollectionItemProps) => {
 
   const handleMouseEnter = useCallback(() => setIsHovered(true), []);
   const handleMouseLeave = useCallback(() => setIsHovered(false), []);
-  const handleImageLoad = useCallback(() => setImageLoaded(true), []);
+  const handleImageLoad = useCallback(() => {
+    setImageLoaded(true);
+    perfMonitor.recordCacheHit(); // Record that the image loaded successfully
+  }, []);
   const handleClick = useCallback(() => onFocus(item), [item, onFocus]);
 
   const handleDownload = useCallback((e: React.MouseEvent) => {
@@ -73,9 +99,17 @@ const CollectionItem = React.memo(({ item, onFocus }: CollectionItemProps) => {
 
       {item.type === 'image' ? (
         <>
-          {/* Placeholder skeleton */}
-          {!imageLoaded && (
-            <div className="absolute inset-0 bg-gradient-to-br from-slate-800 to-slate-900 animate-pulse" />
+          {/* Blurhash placeholder */}
+          {!blurHashLoaded && (
+            <div className="absolute inset-0 bg-gradient-to-br from-slate-800 to-slate-900" />
+          )}
+          {blurHashLoaded && !imageLoaded && (
+            <img
+              src={generateBlurHash(item.src)}
+              alt=""
+              className="w-full h-full object-cover blur-sm scale-110"
+              style={{ aspectRatio: aspectRatio || '3/4' }}
+            />
           )}
           {/* Image */}
           {isVisible && (
@@ -83,19 +117,24 @@ const CollectionItem = React.memo(({ item, onFocus }: CollectionItemProps) => {
               src={item.src}
               alt=""
               loading="lazy"
+              decoding="async"
               onLoad={handleImageLoad}
               className={`
                 w-full h-full object-cover
                 transition-all duration-500 ease-out
-                ${imageLoaded ? 'opacity-100' : 'opacity-0'}
+                ${imageLoaded ? 'opacity-100 blur-none scale-100' : 'opacity-0 absolute inset-0'}
                 ${isHovered ? 'scale-110' : 'scale-100'}
               `}
+              style={{
+                aspectRatio: aspectRatio || '3/4',
+                transform: 'translateZ(0)',
+              }}
             />
           )}
         </>
       ) : (
         <>
-          {/* Video thumbnail */}
+          {/* Video thumbnail or placeholder */}
           {item.thumbnail && (
             <img
               src={item.thumbnail}
@@ -103,11 +142,14 @@ const CollectionItem = React.memo(({ item, onFocus }: CollectionItemProps) => {
               className={`
                 absolute inset-0 w-full h-full object-cover
                 transition-opacity duration-300
-                ${isHovered ? 'opacity-0' : 'opacity-100'}
+                ${isHovered || imageLoaded ? 'opacity-0' : 'opacity-100'}
               `}
+              style={{
+                aspectRatio: aspectRatio || '16/9',
+              }}
             />
           )}
-          {/* Video */}
+          {/* Video - only load when visible */}
           {isVisible && (
             <video
               ref={videoRef}
@@ -119,8 +161,16 @@ const CollectionItem = React.memo(({ item, onFocus }: CollectionItemProps) => {
               className={`
                 absolute inset-0 w-full h-full object-cover
                 transition-opacity duration-300
-                ${isHovered ? 'opacity-100' : 'opacity-0'}
+                ${isHovered && imageLoaded ? 'opacity-100' : 'opacity-0'}
               `}
+              style={{
+                aspectRatio: aspectRatio || '16/9',
+                transform: 'translateZ(0)',
+              }}
+              onLoadedData={() => {
+                setImageLoaded(true);
+                perfMonitor.recordCacheHit(); // Record that the video loaded successfully
+              }}
             />
           )}
         </>
