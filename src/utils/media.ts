@@ -42,20 +42,20 @@ export const preloadVideoMetadata = (src: string): Promise<HTMLVideoElement> => 
   return new Promise((resolve, reject) => {
     const video = document.createElement('video');
     video.preload = 'metadata';
-    
+
     const handleLoaded = () => {
       resolve(video);
       // Clean up event listeners
       video.removeEventListener('loadedmetadata', handleLoaded);
       video.removeEventListener('error', handleError);
     };
-    
+
     const handleError = () => {
       reject(new Error(`Failed to load video metadata: ${src}`));
       video.removeEventListener('loadedmetadata', handleLoaded);
       video.removeEventListener('error', handleError);
     };
-    
+
     video.addEventListener('loadedmetadata', handleLoaded);
     video.addEventListener('error', handleError);
     video.src = src;
@@ -68,7 +68,7 @@ export const isMediaCached = (src: string, type: 'image' | 'video'): boolean => 
     const cached = document.querySelector(`img[src="${src}"]`);
     return !!cached;
   }
-  
+
   // For videos, check if they're in memory cache
   return false; // Simplified check
 };
@@ -82,7 +82,7 @@ export const calculateAspectRatio = (src: string): Promise<number> => {
     };
     img.onerror = () => {
       // Default aspect ratio if image fails to load
-      resolve(3/4); // Portrait aspect ratio
+      resolve(3 / 4); // Portrait aspect ratio
     };
     img.src = src;
   });
@@ -98,13 +98,14 @@ export const debounce = <T extends (...args: any[]) => any>(func: T, wait: numbe
 };
 
 // Throttle function for performance-critical events
+// Optimized: Uses timestamp delta instead of timeouts for lighter execution
 export const throttle = <T extends (...args: any[]) => any>(func: T, limit: number) => {
-  let inThrottle: boolean;
+  let lastRun = 0;
   return ((...args: Parameters<T>) => {
-    if (!inThrottle) {
+    const now = Date.now();
+    if (now - lastRun >= limit) {
       func(...args);
-      inThrottle = true;
-      setTimeout(() => inThrottle = false, limit);
+      lastRun = now;
     }
   }) as T;
 };

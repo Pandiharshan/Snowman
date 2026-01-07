@@ -15,18 +15,19 @@ export interface Collection {
   files: MediaFile[];
 }
 
-// Image extensions
-const IMAGE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.webp', '.avif'];
+// Image extensions - O(1) lookup
+const IMAGE_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.webp', '.avif']);
 
-// Video extensions  
-const VIDEO_EXTENSIONS = ['.mp4', '.webm', '.mov'];
+// Video extensions - O(1) lookup
+const VIDEO_EXTENSIONS = new Set(['.mp4', '.webm', '.mov']);
 
 // Detect file type by extension
 export const getFileType = (filename: string): 'image' | 'video' | null => {
-  const ext = filename.toLowerCase().substring(filename.lastIndexOf('.'));
-  
-  if (IMAGE_EXTENSIONS.includes(ext)) return 'image';
-  if (VIDEO_EXTENSIONS.includes(ext)) return 'video';
+  // Optimization: Single generic extension extraction
+  const ext = filename.toLowerCase().slice(filename.lastIndexOf('.'));
+
+  if (IMAGE_EXTENSIONS.has(ext)) return 'image';
+  if (VIDEO_EXTENSIONS.has(ext)) return 'video';
   return null;
 };
 
@@ -42,7 +43,7 @@ export const toSlug = (name: string): string => {
 
 // Convert slug back to folder name (for display)
 export const fromSlug = (slug: string): string => {
-  return slug.split('-').map(word => 
+  return slug.split('-').map(word =>
     word.charAt(0).toUpperCase() + word.slice(1)
   ).join(' ');
 };
@@ -51,9 +52,9 @@ export const fromSlug = (slug: string): string => {
 export const isValidMediaFile = (filename: string): boolean => {
   const type = getFileType(filename);
   if (!type) return false;
-  
+
   // Filter out audio track files
   if (filename.includes('faudio')) return false;
-  
+
   return true;
 };
