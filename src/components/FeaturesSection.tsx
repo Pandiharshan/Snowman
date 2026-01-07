@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import ShineEffect from './ShineEffect';
 import { Zap, Shield, Sparkles, Users, Globe, Heart } from 'lucide-react';
 
@@ -43,6 +44,28 @@ const features = [
 ];
 
 const FeaturesSection = React.memo(() => {
+  const navigate = useNavigate();
+
+  const handleFeatureClick = (title: string) => {
+    switch (title) {
+      case 'Lightning Fast':
+      case 'Secure & Reliable':
+      case 'Built with Love':
+        navigate('/create');
+        break;
+      case 'Premium Quality':
+        navigate('/premium');
+        break;
+      case 'Community Driven':
+        navigate('/community');
+        break;
+      case 'Global Reach':
+        navigate('/world');
+        break;
+      default:
+        break;
+    }
+  };
   return (
     <section id="features" className="py-24 px-4 bg-gradient-to-b from-slate-100/70 via-slate-50/50 to-slate-100/70 dark:bg-none transition-colors duration-700">
       <div className="max-w-7xl mx-auto">
@@ -76,7 +99,8 @@ const FeaturesSection = React.memo(() => {
           {features.map((feature, index) => (
             <ShineEffect key={feature.title} className="h-full">
               <motion.div
-                className="group relative p-6 rounded-3xl bg-slate-50 dark:bg-[#0a0a0a] border border-slate-200 dark:border-white/10 hover:border-slate-300 dark:hover:border-white/20 shadow-sm dark:shadow-none hover:shadow-md transition-all duration-500 h-full"
+                onClick={() => handleFeatureClick(feature.title)}
+                className="group relative p-6 rounded-3xl bg-slate-50 dark:bg-[#0a0a0a] border border-slate-200 dark:border-white/10 hover:border-slate-300 dark:hover:border-white/20 shadow-sm dark:shadow-none hover:shadow-md transition-all duration-500 h-full cursor-pointer"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}

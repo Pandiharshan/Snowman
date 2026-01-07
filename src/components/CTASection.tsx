@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import ShineEffect from './ShineEffect';
 import { Briefcase, Building2, BookOpen, ArrowRight } from 'lucide-react';
 
@@ -31,6 +32,23 @@ const ctaCards = [
 ];
 
 const CTASection = React.memo(() => {
+  const navigate = useNavigate();
+
+  const handleCardClick = (cardTitle: string) => {
+    switch (cardTitle) {
+      case 'For Recruiters':
+        navigate('/recruiters');
+        break;
+      case 'For Sponsors':
+        navigate('/sponsors');
+        break;
+      case 'Learn More':
+        navigate('/learn-more');
+        break;
+      default:
+        break;
+    }
+  };
   return (
     <section id="about" className="py-24 px-4 bg-gradient-to-b from-slate-50/60 via-slate-100/70 to-slate-50/60 dark:bg-none transition-colors duration-700">
       <div className="max-w-7xl mx-auto">
@@ -94,6 +112,7 @@ const CTASection = React.memo(() => {
 
                 <ShineEffect className="w-full">
                   <motion.button
+                    onClick={() => handleCardClick(card.title)}
                     className={`w-full py-4 px-6 rounded-2xl bg-gradient-to-r ${card.gradient} text-white font-semibold flex items-center justify-center gap-2 shadow-lg ${card.shadowColor} hover:shadow-xl transition-shadow duration-300`}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}

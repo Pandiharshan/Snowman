@@ -13,6 +13,11 @@ import World from "@/pages/World/World";
 import Create from "@/pages/Create/Create";
 import CollectionDetail from "@/pages/Collections/CollectionDetail";
 import NotFound from "@/pages/NotFound/NotFound";
+import Recruiters from "@/pages/Recruiters/Recruiters";
+import Sponsors from "@/pages/Sponsors/Sponsors";
+import LearnMore from "@/pages/LearnMore/LearnMore";
+import Community from "@/pages/Community/Community";
+import Premium from "@/pages/Premium/Premium";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -46,6 +51,11 @@ const App = () => (
               <Route path="/world" element={<World />} />
               <Route path="/create" element={<Create />} />
               <Route path="/collection/:id" element={<CollectionDetail />} />
+              <Route path="/recruiters" element={<Recruiters />} />
+              <Route path="/sponsors" element={<Sponsors />} />
+              <Route path="/learn-more" element={<LearnMore />} />
+              <Route path="/community" element={<Community />} />
+              <Route path="/premium" element={<Premium />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

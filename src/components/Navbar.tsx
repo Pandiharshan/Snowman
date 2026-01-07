@@ -4,12 +4,13 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useTheme } from '@/contexts/ThemeContext';
 import ThemeToggle from './ThemeToggle';
 import { LogOut, Snowflake } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const Navbar = React.memo(() => {
   const { username, logout } = useAuth();
   const { isDark } = useTheme();
   const navigate = useNavigate();
+  const location = useLocation();
   const [isHovered, setIsHovered] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -35,6 +36,35 @@ const Navbar = React.memo(() => {
     logout();
     navigate('/login');
   }, [logout, navigate]);
+
+  const handleLogoClick = useCallback(() => {
+    navigate('/home');
+  }, [navigate]);
+
+  const handleFeaturesClick = useCallback(() => {
+    if (location.pathname === '/home') {
+      // Smooth scroll to features section
+      const featuresSection = document.getElementById('features');
+      if (featuresSection) {
+        featuresSection.scrollIntoView({ 
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    } else {
+      // Navigate to home then scroll to features
+      navigate('/home');
+      setTimeout(() => {
+        const featuresSection = document.getElementById('features');
+        if (featuresSection) {
+          featuresSection.scrollIntoView({ 
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      }, 100);
+    }
+  }, [location.pathname, navigate]);
 
   // Memoize glass background calculation
   const glassBackground = useMemo(() => {
@@ -85,6 +115,7 @@ const Navbar = React.memo(() => {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <motion.div 
+            onClick={handleLogoClick}
             className="flex items-center gap-3 cursor-pointer"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
@@ -103,7 +134,24 @@ const Navbar = React.memo(() => {
 
           {/* Nav Links */}
           <div className="hidden md:flex items-center gap-8">
-            {['Features', 'About', 'Contact'].map((item, i) => (
+            <motion.button
+              onClick={handleFeaturesClick}
+              className="relative text-sm font-medium text-slate-600 dark:text-slate-200 hover:text-sky-600 dark:hover:text-sky-400 transition-colors duration-300"
+              whileHover={{ y: -2 }}
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1, duration: 0.5 }}
+            >
+              Features
+              <motion.span
+                className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-sky-500 to-blue-500 origin-left"
+                initial={{ scaleX: 0 }}
+                whileHover={{ scaleX: 1 }}
+                transition={{ duration: 0.3 }}
+                style={{ willChange: 'transform' }}
+              />
+            </motion.button>
+            {['About', 'Contact'].map((item, i) => (
               <motion.a
                 key={item}
                 href={`#${item.toLowerCase()}`}
@@ -111,7 +159,7 @@ const Navbar = React.memo(() => {
                 whileHover={{ y: -2 }}
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 * i, duration: 0.5 }}
+                transition={{ delay: 0.1 * (i + 2), duration: 0.5 }}
               >
                 {item}
                 <motion.span
