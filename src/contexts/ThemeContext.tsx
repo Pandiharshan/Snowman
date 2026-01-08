@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, useLayoutEffect, ReactNode } from 'react';
 
 interface ThemeContextType {
   isDark: boolean;
@@ -7,19 +7,35 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-export const ThemeProvider = ({ children }: { children: ReactNode }) => {
-  const [isDark, setIsDark] = useState(() => {
-    const saved = localStorage.getItem('theme');
-    return saved === 'dark';
-  });
+// Read theme synchronously but outside of render to avoid blocking
+const getInitialTheme = (): boolean => {
+  try {
+    return localStorage.getItem('theme') === 'dark';
+  } catch {
+    return false;
+  }
+};
 
-  useEffect(() => {
+const initialTheme = getInitialTheme();
+
+export const ThemeProvider = ({ children }: { children: ReactNode }) => {
+  const [isDark, setIsDark] = useState(initialTheme);
+
+  // Use useLayoutEffect to apply theme class before paint (prevents flash)
+  useLayoutEffect(() => {
     if (isDark) {
       document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
     } else {
       document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
+    }
+  }, [isDark]);
+
+  // Persist to localStorage asynchronously
+  useEffect(() => {
+    try {
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    } catch {
+      // Ignore storage errors
     }
   }, [isDark]);
 

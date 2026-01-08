@@ -209,10 +209,12 @@ const CollectionsSection = React.memo(() => {
   const [allMedia, setAllMedia] = useState<MediaFile[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Load all media from all collections
+  // Load all media from all collections - deferred to prevent blocking
   useEffect(() => {
-    // Initialize performance monitoring
-    initPerformanceMonitoring();
+    // Defer performance monitoring to not block initial render
+    const perfId = requestIdleCallback 
+      ? requestIdleCallback(() => initPerformanceMonitoring(), { timeout: 500 })
+      : setTimeout(() => initPerformanceMonitoring(), 200);
     
     const loadAllMedia = async () => {
       try {
@@ -258,7 +260,19 @@ const CollectionsSection = React.memo(() => {
       }
     };
 
-    loadAllMedia();
+    // Defer media loading slightly to allow UI to paint first
+    const loadId = requestAnimationFrame(() => {
+      loadAllMedia();
+    });
+
+    return () => {
+      cancelAnimationFrame(loadId);
+      if (requestIdleCallback && typeof perfId === 'number') {
+        cancelIdleCallback(perfId);
+      } else {
+        clearTimeout(perfId as unknown as number);
+      }
+    };
   }, []);
 
   const handleMediaClick = useCallback(() => {

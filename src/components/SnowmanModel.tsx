@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState, useCallback } from 'react';
+import React, { useRef, useEffect, useState, useCallback, Suspense, lazy } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { useGLTF, Environment, ContactShadows } from '@react-three/drei';
 import * as THREE from 'three';
@@ -61,12 +61,35 @@ const Model = ({ mousePosition }: ModelProps) => {
   );
 };
 
+// Loading placeholder that matches the visual space
+const ModelPlaceholder = () => (
+  <div className="w-full h-full flex items-center justify-center">
+    <div className="w-16 h-16 rounded-full border-2 border-sky-400/30 border-t-sky-400 animate-spin" />
+  </div>
+);
+
 const SnowmanModel = React.memo(() => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
+  const [isCanvasReady, setIsCanvasReady] = useState(false);
   const lastMousePos = useRef({ x: 0, y: 0 });
   const throttleRef = useRef(false);
+
+  // Defer Canvas mounting to prevent blocking initial render
+  useEffect(() => {
+    const id = requestIdleCallback 
+      ? requestIdleCallback(() => setIsCanvasReady(true), { timeout: 150 })
+      : setTimeout(() => setIsCanvasReady(true), 100);
+    
+    return () => {
+      if (requestIdleCallback && typeof id === 'number') {
+        cancelIdleCallback(id);
+      } else {
+        clearTimeout(id as unknown as number);
+      }
+    };
+  }, []);
 
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
     if (!containerRef.current || !throttleRef.current) return;
@@ -124,32 +147,38 @@ const SnowmanModel = React.memo(() => {
       onMouseLeave={handleMouseLeave}
       style={{ willChange: 'transform' }}
     >
-      <Canvas
-        shadows
-        camera={{ position: [0, 1, 5.5], fov: 50 }}
-        gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
-      >
-        <ambientLight intensity={0.6} />
-        <directionalLight
-          position={[5, 10, 5]}
-          intensity={1}
-          castShadow
-          shadow-mapSize={[2048, 2048]}
-        />
-        <pointLight position={[-5, 5, -5]} intensity={0.5} color="#a5d8ff" />
-        
-        <Model mousePosition={mousePosition} />
-        
-        <ContactShadows
-          position={[0, -1.5, 0]}
-          opacity={0.4}
-          scale={10}
-          blur={2}
-          far={4}
-        />
-        
-        <Environment preset="city" />
-      </Canvas>
+      {isCanvasReady ? (
+        <Canvas
+          shadows
+          camera={{ position: [0, 1, 5.5], fov: 50 }}
+          gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
+        >
+          <ambientLight intensity={0.6} />
+          <directionalLight
+            position={[5, 10, 5]}
+            intensity={1}
+            castShadow
+            shadow-mapSize={[2048, 2048]}
+          />
+          <pointLight position={[-5, 5, -5]} intensity={0.5} color="#a5d8ff" />
+          
+          <Suspense fallback={null}>
+            <Model mousePosition={mousePosition} />
+          </Suspense>
+          
+          <ContactShadows
+            position={[0, -1.5, 0]}
+            opacity={0.4}
+            scale={10}
+            blur={2}
+            far={4}
+          />
+          
+          <Environment preset="city" />
+        </Canvas>
+      ) : (
+        <ModelPlaceholder />
+      )}
     </motion.div>
   );
 });

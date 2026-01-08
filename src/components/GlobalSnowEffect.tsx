@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 // Single snow particle - highly optimized
@@ -37,7 +37,25 @@ const SnowParticle = React.memo(({ index, delay }: { index: number; delay: numbe
 SnowParticle.displayName = 'SnowParticle';
 
 // Global snow effect - renders once, works everywhere
+// Deferred initialization to prevent blocking first paint
 const GlobalSnowEffect = React.memo(() => {
+  const [isReady, setIsReady] = useState(false);
+
+  // Defer particle rendering until after first paint
+  useEffect(() => {
+    const id = requestIdleCallback 
+      ? requestIdleCallback(() => setIsReady(true), { timeout: 100 })
+      : setTimeout(() => setIsReady(true), 50);
+    
+    return () => {
+      if (requestIdleCallback && typeof id === 'number') {
+        cancelIdleCallback(id);
+      } else {
+        clearTimeout(id as unknown as number);
+      }
+    };
+  }, []);
+
   // Generate 40 particles with staggered delays for continuous effect
   const particles = useMemo(
     () => Array.from({ length: 40 }, (_, i) => ({
@@ -46,6 +64,8 @@ const GlobalSnowEffect = React.memo(() => {
     })),
     []
   );
+
+  if (!isReady) return null;
 
   return (
     <div className="fixed inset-0 overflow-hidden pointer-events-none z-[100]">

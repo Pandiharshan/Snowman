@@ -53,20 +53,6 @@
 
 ---
 
-## 🎥 Demo Video
-
-> Preview of the Snowman website experience.
-
-<video src="./public/assets/readmevideo/Recording 2026-01-07 111810.mp4"
-muted
-loop
-playsinline
-controls
-width="100%">
-</video>
-
----
-
 ## 📸 Screenshots
 
 ![Snowman Home Page](https://github.com/user-attachments/assets/9c3f90fd-d277-4242-b1fa-41ccc7934404)

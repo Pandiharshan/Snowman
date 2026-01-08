@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useTheme } from '@/contexts/ThemeContext';
 
 /**
@@ -10,6 +10,7 @@ const CursorGlow = React.memo(() => {
   const { isDark } = useTheme();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rafRef = useRef<number>();
+  const [isReady, setIsReady] = useState(false);
 
   const mouse = useRef({ x: -100, y: -100 });
   const dot = useRef({ x: -100, y: -100 });
@@ -23,7 +24,17 @@ const CursorGlow = React.memo(() => {
     size: number; life: number; rotation: number;
   }[]>([]);
 
+  // Defer canvas initialization to prevent blocking first paint
   useEffect(() => {
+    const id = requestAnimationFrame(() => {
+      setIsReady(true);
+    });
+    return () => cancelAnimationFrame(id);
+  }, []);
+
+  useEffect(() => {
+    if (!isReady) return;
+    
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d', { alpha: true })!;
@@ -251,7 +262,7 @@ const CursorGlow = React.memo(() => {
       document.removeEventListener('mouseenter', onEnter);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
-  }, [isDark]);
+  }, [isDark, isReady]);
 
   return (
     <canvas

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 interface AuthContextType {
   username: string | null;
@@ -9,19 +9,36 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [username, setUsername] = useState<string | null>(() => {
+// Read username synchronously but outside of render to avoid blocking
+const getInitialUsername = (): string | null => {
+  try {
     return sessionStorage.getItem('username');
-  });
+  } catch {
+    return null;
+  }
+};
+
+const initialUsername = getInitialUsername();
+
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
+  const [username, setUsername] = useState<string | null>(initialUsername);
 
   const login = (name: string) => {
     setUsername(name);
-    sessionStorage.setItem('username', name);
+    try {
+      sessionStorage.setItem('username', name);
+    } catch {
+      // Ignore storage errors
+    }
   };
 
   const logout = () => {
     setUsername(null);
-    sessionStorage.removeItem('username');
+    try {
+      sessionStorage.removeItem('username');
+    } catch {
+      // Ignore storage errors
+    }
   };
 
   return (
