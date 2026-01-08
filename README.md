@@ -79,8 +79,7 @@ Experience:
 ## 🚀 Deployment
 
 ### Live Deployments
-- **GitHub Pages:** https://pandiharshan.github.io/Snowman/  
-- **Vercel:** Recommended
+- **Vercel:** https://snowman-zeta.vercel.app/login
 
 ### Quick Deploy to Vercel
 
