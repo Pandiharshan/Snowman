@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useTransition } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import ShineEffect from './ShineEffect';
@@ -33,21 +33,24 @@ const ctaCards = [
 
 const CTASection = React.memo(() => {
   const navigate = useNavigate();
+  const [, startTransition] = useTransition();
 
   const handleCardClick = (cardTitle: string) => {
-    switch (cardTitle) {
-      case 'For Recruiters':
-        navigate('/recruiters');
-        break;
-      case 'For Sponsors':
-        navigate('/sponsors');
-        break;
-      case 'Learn More':
-        navigate('/learn-more');
-        break;
-      default:
-        break;
-    }
+    startTransition(() => {
+      switch (cardTitle) {
+        case 'For Recruiters':
+          navigate('/recruiters');
+          break;
+        case 'For Sponsors':
+          navigate('/sponsors');
+          break;
+        case 'Learn More':
+          navigate('/learn-more');
+          break;
+        default:
+          break;
+      }
+    });
   };
   return (
     <section id="about" className="py-24 px-4 bg-gradient-to-b from-slate-50/60 via-slate-100/70 to-slate-50/60 dark:bg-none transition-colors duration-700">

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef, useTransition } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Download } from 'lucide-react';
@@ -16,10 +16,26 @@ interface MediaFile {
 // Premium Media Card Component
 const MediaCard = React.memo(({ item, onClick }: { item: MediaFile; onClick: () => void }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [blurHashLoaded, setBlurHashLoaded] = useState(false);
   const [aspectRatio, setAspectRatio] = useState<number | null>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  // Use IntersectionObserver for visibility tracking
+  useEffect(() => {
+    const element = cardRef.current;
+    if (!element) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsVisible(entry.isIntersecting),
+      { rootMargin: '50px', threshold: 0 }
+    );
+
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
 
   // Calculate aspect ratio for proper layout
   useEffect(() => {
@@ -37,9 +53,15 @@ const MediaCard = React.memo(({ item, onClick }: { item: MediaFile; onClick: () 
     }
   }, [item, blurHashLoaded]);
 
-  // Video autoplay on hover
+  // Video autoplay on hover - pause when not visible (resource cleanup)
   useEffect(() => {
     if (item.type !== 'video' || !videoRef.current) return;
+    
+    // Pause video when not visible (off-screen resource cleanup)
+    if (!isVisible) {
+      videoRef.current.pause();
+      return;
+    }
     
     if (isHovered) {
       videoRef.current.play().catch(() => {});
@@ -47,7 +69,7 @@ const MediaCard = React.memo(({ item, onClick }: { item: MediaFile; onClick: () 
       videoRef.current.pause();
       videoRef.current.currentTime = 0;
     }
-  }, [isHovered, item.type]);
+  }, [isHovered, item.type, isVisible]);
 
   const handleDownload = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
@@ -61,6 +83,7 @@ const MediaCard = React.memo(({ item, onClick }: { item: MediaFile; onClick: () 
 
   return (
     <motion.div
+      ref={cardRef}
       className="group relative overflow-hidden rounded-2xl cursor-pointer break-inside-avoid mb-4"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -208,6 +231,7 @@ const CollectionsSection = React.memo(() => {
   const navigate = useNavigate();
   const [allMedia, setAllMedia] = useState<MediaFile[]>([]);
   const [loading, setLoading] = useState(true);
+  const [, startTransition] = useTransition();
 
   // Load all media from all collections - deferred to prevent blocking
   useEffect(() => {
@@ -250,9 +274,11 @@ const CollectionsSection = React.memo(() => {
           }
         }
 
-        // Shuffle for variety
+        // Shuffle for variety - wrap in startTransition for non-blocking update
         const shuffled = allFiles.sort(() => Math.random() - 0.5);
-        setAllMedia(shuffled);
+        startTransition(() => {
+          setAllMedia(shuffled);
+        });
       } catch (err) {
         console.error('Failed to load collections:', err);
       } finally {
@@ -276,7 +302,9 @@ const CollectionsSection = React.memo(() => {
   }, []);
 
   const handleMediaClick = useCallback(() => {
-    navigate('/collection/all');
+    startTransition(() => {
+      navigate('/collection/all');
+    });
   }, [navigate]);
 
   if (loading) {
@@ -330,7 +358,7 @@ const CollectionsSection = React.memo(() => {
           viewport={{ once: true }}
         >
           <button
-            onClick={() => navigate('/collection/all')}
+            onClick={() => startTransition(() => navigate('/collection/all'))}
             className="
               px-8 py-4 rounded-full
               bg-sky-500/20 hover:bg-sky-500/30

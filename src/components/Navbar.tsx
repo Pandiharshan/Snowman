@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useTransition } from 'react';
 import { motion } from 'framer-motion';
 import { useAuth } from '@/contexts/AuthContext';
 import { useTheme } from '@/contexts/ThemeContext';
@@ -13,6 +13,7 @@ const Navbar = React.memo(() => {
   const location = useLocation();
   const [isHovered, setIsHovered] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [, startTransition] = useTransition();
 
   // Throttled scroll handler
   useEffect(() => {
@@ -34,11 +35,15 @@ const Navbar = React.memo(() => {
 
   const handleLogout = useCallback(() => {
     logout();
-    navigate('/login');
+    startTransition(() => {
+      navigate('/login');
+    });
   }, [logout, navigate]);
 
   const handleLogoClick = useCallback(() => {
-    navigate('/home');
+    startTransition(() => {
+      navigate('/home');
+    });
   }, [navigate]);
 
   const handleFeaturesClick = useCallback(() => {
@@ -53,7 +58,9 @@ const Navbar = React.memo(() => {
       }
     } else {
       // Navigate to home then scroll to features
-      navigate('/home');
+      startTransition(() => {
+        navigate('/home');
+      });
       setTimeout(() => {
         const featuresSection = document.getElementById('features');
         if (featuresSection) {

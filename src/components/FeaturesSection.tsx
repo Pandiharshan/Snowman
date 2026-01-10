@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useTransition } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import ShineEffect from './ShineEffect';
@@ -45,26 +45,29 @@ const features = [
 
 const FeaturesSection = React.memo(() => {
   const navigate = useNavigate();
+  const [, startTransition] = useTransition();
 
   const handleFeatureClick = (title: string) => {
-    switch (title) {
-      case 'Lightning Fast':
-      case 'Secure & Reliable':
-      case 'Built with Love':
-        navigate('/create');
-        break;
-      case 'Premium Quality':
-        navigate('/premium');
-        break;
-      case 'Community Driven':
-        navigate('/community');
-        break;
-      case 'Global Reach':
-        navigate('/world');
-        break;
-      default:
-        break;
-    }
+    startTransition(() => {
+      switch (title) {
+        case 'Lightning Fast':
+        case 'Secure & Reliable':
+        case 'Built with Love':
+          navigate('/create');
+          break;
+        case 'Premium Quality':
+          navigate('/premium');
+          break;
+        case 'Community Driven':
+          navigate('/community');
+          break;
+        case 'Global Reach':
+          navigate('/world');
+          break;
+        default:
+          break;
+      }
+    });
   };
   return (
     <section id="features" className="py-24 px-4 bg-gradient-to-b from-slate-100/70 via-slate-50/50 to-slate-100/70 dark:bg-none transition-colors duration-700">
