@@ -6,8 +6,8 @@
 
 **A premium, immersive snow-themed web experience**
 
-[![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-Visit_Site-00d4ff?style=for-the-badge)](https://pandiharshan.github.io/Snowman/)
-[![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)](https://github.com/Pandiharshan/Snowman)
+[![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-Visit_Site-00d4ff?style=for-the-badge)](https://snowman-zeta.vercel.app/)
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)](https://snowman-zeta.vercel.app/)
 
 ![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=flat-square&logo=typescript&logoColor=white)
@@ -25,7 +25,7 @@
 
 | Platform | Link | Status |
 |----------|------|--------|
-| 🖥️ **Frontend** | [pandiharshan.github.io/Snowman](https://pandiharshan.github.io/Snowman/) | ✅ Live |
+| 🖥️ **Frontend** | [pandiharshan.github.io/Snowman](https://snowman-zeta.vercel.app/) | ✅ Live |
 | ⚙️ **Backend API** | Coming Soon | 🔄 In Progress |
 
 </div>
