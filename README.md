@@ -1,174 +1,193 @@
-# ❄️ Snowman - Premium Interactive Experience
+# ❄️ SnowMan
 
-> A modern, fully-featured web application showcasing cutting-edge web technologies and premium UI/UX design.
-
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-Visit%20Now-brightgreen?style=for-the-badge)](https://snowman-zeta.vercel.app/login)
-[![GitHub](https://img.shields.io/badge/GitHub-Repository-black?style=for-the-badge)](https://github.com/Pandiharshan/Snowman)
-[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
+**SnowMan** is a full-stack web application that delivers an immersive snow-themed experience through a responsive React frontend and a scalable Node.js + Express backend. The app features dynamic snowfall animations, REST API-driven wallpaper management, and a clean, modern UI.
 
 ---
 
-## 🎯 Project Overview
+## 🚀 Features
 
-**Snowman** is a premium interactive web application built with modern technologies and professional architecture.
-
----
-
-## ⚡ Tech Stack
-
-- **Vite 5.4.19** – Ultra-fast build tool & dev server  
-- **React 18.3.1** – Modern UI library with hooks  
-- **TypeScript 5.8.3** – Type-safe development  
-- **Tailwind CSS 3.4.17** – Utility-first styling  
-- **shadcn/ui** – Accessible, production-ready components  
-- **Radix UI** – Headless UI primitives  
-- **React Router 6.30.1** – Client-side routing  
-- **React Query 5.83.0** – Server state management  
-- **React Hook Form 7.61.1** – Form handling  
-- **Zod 3.25.76** – Schema validation  
+✅ Real-time snowfall animation using Canvas API  
+✅ Fully responsive design (mobile, tablet, desktop)  
+✅ Interactive UI built with React and CSS Modules  
+✅ Dark/Light theme toggle with system preference detection  
+✅ 3D Snowman model integration using Three.js  
+✅ REST APIs for wallpaper upload/retrieval  
+✅ Clean component architecture with lazy loading  
+✅ Accessibility-first design with ARIA support  
+✅ Frontend deployed on GitHub Pages  
+✅ Backend ready for cloud deployment (Render, Railway)
 
 ---
 
-## ✨ Key Features
+## 🛠️ Tech Stack
 
-### � Premiusm UI/UX
-- Cursor-reactive login experience  
-- Glassmorphism-based design system  
-- Diagonal shine animations on hover  
-- Dark mode support  
-- Fully responsive across devices  
-
-### 🏗️ Professional Architecture
-- Feature-based scalable structure  
-- Full TypeScript coverage  
-- Reusable UI components  
-- Robust state management  
-- Strong form validation  
-
-### 🚀 Performance & DX
-- Hot Module Replacement  
-- Fast build times  
-- Tree-shaking & code splitting  
-- Production-optimized output  
+| Frontend | Backend | Deployment |
+|-----------|---------|-------------|
+| React 19 | Node.js | GitHub Pages (frontend) |
+| React Router v7 | Express 5 | Render / Railway (backend) |
+| Three.js / React Three Fiber | Socket.io | |
+| CSS Modules | REST API | |
+| React Helmet | | |
 
 ---
 
-## 📸 Screenshots
+## 📦 Installation
 
-![Snowman Home Page](https://github.com/user-attachments/assets/9c3f90fd-d277-4242-b1fa-41ccc7934404)
-
-![Snowman Create Page](https://github.com/user-attachments/assets/101aa1db-f959-490c-b357-91c573d4373b)
-
-![Snowman Welcome Page](https://github.com/user-attachments/assets/0e6d5ec6-f8c3-4000-8f33-80a0831b2016)
-
-![Snowman Features Section](https://github.com/user-attachments/assets/18d0eef8-85c9-457a-8629-77ba07b4000c)
-
----
-
-## 🎬 Live Demo
-
-**[🌐 Visit Snowman Live Demo](https://snowman-zeta.vercel.app/login)**
-
-Experience:
-- Cursor-reactive ambient lighting  
-- Floating labels  
-- Smooth premium animations  
-
----
-
-## 🚀 Deployment
-
-### Live Deployments
-- **Vercel:** https://snowman-zeta.vercel.app/login
-
-### Quick Deploy to Vercel
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FPandiharshan%2FSnowman)
-
----
-
-## 📖 Getting Started
-
-### Prerequisites
-- Node.js 18+
-- npm or yarn
-
-### Local Development
-
+### 1️⃣ Clone the repository
 ```bash
 git clone https://github.com/Pandiharshan/Snowman.git
 cd Snowman
+```
+
+### 2️⃣ Install frontend dependencies
+```bash
 npm install
+```
+
+### 3️⃣ Install backend dependencies
+```bash
+cd backend
+npm install
+cd ..
+```
+
+### 4️⃣ Run the development server
+```bash
+npm start
+```
+
+### 5️⃣ Run the backend server (separate terminal)
+```bash
+cd backend
 npm run dev
 ```
+
+---
 
 ## 📁 Project Structure
 
 ```
 snowman/
-├── src/
-│   ├── app/
-│   ├── pages/
-│   ├── components/
-│   ├── features/
-│   ├── hooks/
-│   ├── lib/
-│   ├── styles/
-│   └── utils/
 ├── public/
-│   └── assets/
-├── vite.config.ts
+│   ├── index.html
+│   └── models/
+│       └── snow_man.glb
+├── src/
+│   ├── components/
+│   │   ├── Navbar.js / Navbar.css
+│   │   ├── Hero.js / Hero.css
+│   │   ├── About.js / About.css
+│   │   ├── Features.js / Features.css
+│   │   ├── Contact.js / Contact.css
+│   │   ├── Footer.js / Footer.css
+│   │   ├── ThemeToggle.js / ThemeToggle.css
+│   │   ├── snowfall.js
+│   │   └── SnowmanModel.js
+│   ├── pages/
+│   │   ├── HomePage.js
+│   │   ├── AboutPage.js
+│   │   ├── ContactPage.js
+│   │   └── FeaturesPage.js
+│   ├── App.js / App.css
+│   ├── Config.js
+│   └── index.js / index.css
+├── backend/
+│   ├── controllers/
+│   ├── routes/
+│   ├── services/
+│   └── server.js
 ├── package.json
 └── README.md
 ```
 
-## 🎨 Design System
+---
 
-- **Primary:** Icy Blue
-- **Secondary:** Frost White
-- **Accent:** Snowflake Blue
-- **Dark Mode:** Fully supported
+## 📅 Development Timeline
 
-## 🔐 Authentication
+This project was developed from **June 24, 2025** to **December 18, 2025**.
 
-Login page is ready for backend integration.
+> **Note:** This repository was re-initialized on December 18, 2025. The timeline below documents the actual development phases and milestones achieved during this period.
 
-## 🎭 Features
+### Phase 1: Foundation (June 24 - July 10, 2025)
+- Project initialization with Create React App
+- Basic routing setup with React Router
+- Core component structure (Navbar, Footer, Hero)
+- Global CSS reset and base styling
 
-✅ Responsive design  
-✅ Dark mode  
-✅ Premium animations  
-✅ Cursor effects  
-✅ Form validation  
-✅ Client-side routing  
+### Phase 2: Core Components (July 11 - August 5, 2025)
+- About section with content and styling
+- Features grid with card animations
+- Contact form with validation and accessibility
+- Integration of all sections into HomePage
+- ARIA roles and accessibility improvements
 
-## 📱 Browser Support
+### Phase 3: Snowfall Animation (August 6 - August 25, 2025)
+- Canvas-based snowfall animation
+- Particle system with drift and speed variations
+- Window resize handling and cleanup
+- Performance optimization with requestAnimationFrame
 
-- Chrome
-- Firefox
-- Safari
-- Edge
-- Mobile browsers
+### Phase 4: Theme System (August 26 - September 15, 2025)
+- Dark/Light theme toggle component
+- CSS custom properties for theming
+- System preference detection
+- LocalStorage persistence for user preference
 
-## 📝 License
+### Phase 5: 3D Integration (September 16 - October 10, 2025)
+- Three.js and React Three Fiber setup
+- 3D Snowman model integration
+- Lighting configuration (ambient, directional, point)
+- OrbitControls for model interaction
 
-MIT License
+### Phase 6: Backend Development (October 11 - November 5, 2025)
+- Express server setup
+- REST API routes for AI image generation
+- CORS and middleware configuration
+- Error handling middleware
 
-## 👨‍💼 For Recruiters
-
-This project demonstrates:
-
-- Modern React + TypeScript skills
-- Professional UI/UX execution
-- Scalable architecture
-- Production-ready deployment
-
-**Live Demo:** https://snowman-zeta.vercel.app/login
+### Phase 7: Polish & Optimization (November 6 - December 18, 2025)
+- Lazy loading for route components
+- Enhanced navbar with magical effects
+- Footer animations and responsive design
+- Performance optimizations
+- Accessibility audit and fixes
+- Documentation updates
 
 ---
 
-**Built with ❄️ by Snowman**
+## 🎨 Key Components
 
-**Developer:** Pandiharshan  
-**GitHub:** https://github.com/Pandiharshan  
-**Email:** kit27.am35@gmail.com
+### Snowfall Animation
+Custom Canvas-based particle system that creates realistic falling snow effect across all pages.
+
+### Theme Toggle
+Animated sun/moon toggle with smooth transitions, system preference detection, and localStorage persistence.
+
+### 3D Snowman Model
+Interactive Three.js model with custom lighting setup for optimal visibility in both light and dark themes.
+
+---
+
+## 📋 Detailed Progress Log
+
+For a comprehensive month-by-month breakdown of development work, see [CHANGELOG.md](./CHANGELOG.md).
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+---
+
+## 📄 License
+
+This project is licensed under the ISC License.
+
+---
+
+## 👤 Author
+
+**Pandi Harshan**
+- GitHub: [@Pandiharshan](https://github.com/Pandiharshan)
+- Email: pandiharshanofficial@gmail.com
