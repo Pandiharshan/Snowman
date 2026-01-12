@@ -25,7 +25,7 @@
 
 | Platform | Link | Status |
 |----------|------|--------|
-| 🖥️ **Frontend** | [pandiharshan.github.io/Snowman](https://snowman-zeta.vercel.app/) | ✅ Live |
+| 🖥️ **Frontend** | [PandiHarshan](https://snowman-zeta.vercel.app/) | ✅ Live |
 | ⚙️ **Backend API** | Coming Soon | 🔄 In Progress |
 
 </div>
