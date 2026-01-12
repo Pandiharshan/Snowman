@@ -1,5 +1,37 @@
 # ❄️ SnowMan
 
+<div align="center">
+
+![Snowman Banner](https://img.shields.io/badge/❄️-SnowMan-blue?style=for-the-badge&labelColor=0d1117)
+
+**A premium, immersive snow-themed web experience**
+
+[![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-Visit_Site-00d4ff?style=for-the-badge)](https://pandiharshan.github.io/Snowman/)
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)](https://github.com/Pandiharshan/Snowman)
+
+![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=flat-square&logo=typescript&logoColor=white)
+![Three.js](https://img.shields.io/badge/Three.js-3D-000000?style=flat-square&logo=three.js&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind-CSS-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-Backend-339933?style=flat-square&logo=node.js&logoColor=white)
+
+</div>
+
+---
+
+## 🌐 Live Demo
+
+<div align="center">
+
+| Platform | Link | Status |
+|----------|------|--------|
+| 🖥️ **Frontend** | [pandiharshan.github.io/Snowman](https://pandiharshan.github.io/Snowman/) | ✅ Live |
+| ⚙️ **Backend API** | Coming Soon | 🔄 In Progress |
+
+</div>
+
+---
+
 **SnowMan** is a full-stack web application that delivers an immersive snow-themed experience through a responsive React frontend and a scalable Node.js + Express backend. The app features dynamic snowfall animations, REST API-driven wallpaper management, and a clean, modern UI.
 
 ---
@@ -188,6 +220,21 @@ This project is licensed under the ISC License.
 
 ## 👤 Author
 
+<div align="center">
+
 **Pandi Harshan**
-- GitHub: [@Pandiharshan](https://github.com/Pandiharshan)
-- Email: pandiharshanofficial@gmail.com
+
+[![GitHub](https://img.shields.io/badge/GitHub-@Pandiharshan-181717?style=for-the-badge&logo=github)](https://github.com/Pandiharshan)
+[![Email](https://img.shields.io/badge/Email-Contact_Me-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:pandiharshanofficial@gmail.com)
+
+</div>
+
+---
+
+<div align="center">
+
+**⭐ Star this repo if you found it helpful!**
+
+Made with ❄️ and ❤️ by Pandi Harshan
+
+</div>
